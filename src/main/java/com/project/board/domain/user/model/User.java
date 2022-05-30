@@ -30,9 +30,11 @@ public class User extends BaseTimeEntity{
     @Column(name = "user_password")
     private String password;
 
+    // 사용자 닉네임
     @Column(name = "user_nickname")
     private String nickname;
 
+    // 사용자 역할 (관리자, 사용자)
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role")
     private Role role;
