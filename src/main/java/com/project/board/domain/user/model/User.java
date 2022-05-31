@@ -1,7 +1,8 @@
 package com.project.board.domain.user.model;
 
-import com.project.board.global.model.BaseTimeEntity;
+import com.project.board.global.model.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,7 +15,7 @@ import javax.validation.constraints.Email;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class User extends BaseTimeEntity{
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,4 +39,12 @@ public class User extends BaseTimeEntity{
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role")
     private Role role;
+    @Builder
+    public User(Long id, String email, String password, String nickname, Role role) {
+        this.id = id;
+        this.Email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.role = role;
+    }
 }
