@@ -2,7 +2,7 @@ package com.project.board.global.model;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
@@ -19,7 +19,7 @@ public class BaseTimeEntity {
     @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
 
-    @LastModifiedBy
+    @LastModifiedDate
     @Column(name = "last_modified_date")
     private LocalDateTime lastModifiedDate;
 
