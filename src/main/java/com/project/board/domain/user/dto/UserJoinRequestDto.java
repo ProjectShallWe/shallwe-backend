@@ -8,8 +8,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
-public class UserRequestDto {
+public class UserJoinRequestDto {
 
     private String email;
 
