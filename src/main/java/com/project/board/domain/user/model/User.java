@@ -1,6 +1,9 @@
 package com.project.board.domain.user.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.project.board.domain.comment.model.Comment;
+import com.project.board.domain.like.model.LikeComment;
+import com.project.board.domain.like.model.LikePost;
 import com.project.board.domain.post.model.Post;
 import com.project.board.global.model.BaseEntity;
 import lombok.AccessLevel;
@@ -50,7 +53,19 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Post> posts = new ArrayList<>();
+    private final List<Post> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<LikePost> likePosts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<LikeComment> likeComments = new ArrayList<>();
 
     @Builder
     public User(Long id, String email, String password,
