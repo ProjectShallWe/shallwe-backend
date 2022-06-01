@@ -1,5 +1,7 @@
 package com.project.board.domain.user.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.project.board.domain.post.model.Post;
 import com.project.board.global.model.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,6 +11,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user_table")
@@ -43,6 +47,10 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status")
     private Status status;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Post> posts = new ArrayList<>();
 
     @Builder
     public User(Long id, String email, String password,
