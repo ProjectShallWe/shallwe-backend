@@ -39,12 +39,19 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_role")
     private Role role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_status")
+    private Status status;
+
     @Builder
-    public User(Long id, String email, String password, String nickname, Role role) {
+    public User(Long id, String email, String password,
+                String nickname, Role role, Status status) {
         this.id = id;
         this.Email = email;
         this.password = password;
         this.nickname = nickname;
         this.role = role;
+        this.status = status;
     }
 }

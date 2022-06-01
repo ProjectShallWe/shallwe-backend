@@ -14,7 +14,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/api/join")
-    public void join(@RequestBody UserRequestDto userRequestDto) {
-        userService.join(userRequestDto);
+    public Long join(@RequestBody UserRequestDto userRequestDto) {
+        return userService.join(userRequestDto);
     }
 }

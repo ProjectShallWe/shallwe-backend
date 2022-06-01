@@ -1,6 +1,8 @@
 package com.project.board.domain.user.dto;
 
 import com.project.board.domain.user.model.Role;
+import com.project.board.domain.user.model.Status;
+import com.project.board.domain.user.model.User;
 import lombok.*;
 
 @Getter
@@ -15,5 +17,13 @@ public class UserRequestDto {
 
     private String nickname;
 
-    private Role role;
+    public User toEntity() {
+        return User.builder()
+                .email(email)
+                .password(password)
+                .nickname(nickname)
+                .role(Role.USER)
+                .status(Status.ACTIVE)
+                .build();
+    }
 }
