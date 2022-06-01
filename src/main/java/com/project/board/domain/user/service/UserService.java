@@ -44,9 +44,11 @@ public class UserService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public Long delete(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 아이디가 없습니다. id =" + id));
         user.updateStatus(Status.WITHDRAWAL);
+
+        return id;
     }
 }
