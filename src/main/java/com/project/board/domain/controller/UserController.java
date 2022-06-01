@@ -2,6 +2,7 @@ package com.project.board.domain.controller;
 
 import com.project.board.domain.user.dto.UserJoinRequestDto;
 import com.project.board.domain.user.dto.UserUpdateNicknameRequestDto;
+import com.project.board.domain.user.dto.UserUpdatePasswordRequestDto;
 import com.project.board.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,5 +22,11 @@ public class UserController {
     public Long updateNickname(@PathVariable Long id,
             @RequestBody UserUpdateNicknameRequestDto userUpdateNicknameRequestDto) {
         return userService.updateNickname(id, userUpdateNicknameRequestDto);
+    }
+
+    @PutMapping("/api/user/{id}/password")
+    public Long updatePassword(@PathVariable Long id,
+                               @RequestBody UserUpdatePasswordRequestDto userUpdatePasswordRequestDto) {
+        return userService.updatePassword(id, userUpdatePasswordRequestDto);
     }
 }
