@@ -3,6 +3,7 @@ package com.project.board.domain.user.service;
 import com.project.board.domain.user.dto.UserJoinRequestDto;
 import com.project.board.domain.user.dto.UserUpdateNicknameRequestDto;
 import com.project.board.domain.user.dto.UserUpdatePasswordRequestDto;
+import com.project.board.domain.user.model.Status;
 import com.project.board.domain.user.model.User;
 import com.project.board.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,12 @@ public class UserService {
         user.updatePassword(userUpdatePasswordRequestDto.getPassword());
 
         return id;
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 아이디가 없습니다. id =" + id));
+        user.updateStatus(Status.WITHDRAWAL);
     }
 }

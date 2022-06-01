@@ -29,4 +29,10 @@ public class UserController {
                                @RequestBody UserUpdatePasswordRequestDto userUpdatePasswordRequestDto) {
         return userService.updatePassword(id, userUpdatePasswordRequestDto);
     }
+
+    @DeleteMapping("/api/user/{id}")
+    public Long delete(@PathVariable Long id) {
+        userService.delete(id);
+        return id;
+    }
 }
