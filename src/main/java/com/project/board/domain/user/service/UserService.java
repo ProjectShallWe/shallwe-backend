@@ -7,6 +7,7 @@ import com.project.board.domain.user.model.Status;
 import com.project.board.domain.user.model.User;
 import com.project.board.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,10 +18,12 @@ import javax.transaction.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Long join(UserJoinRequestDto userJoinRequestDto) {
-        return userRepository.save(userJoinRequestDto.toEntity()).getId();
+        String encodedPassword = passwordEncoder.encode(userJoinRequestDto.getPassword());
+        return userRepository.save(userJoinRequestDto.toEntity(encodedPassword)).getId();
     }
 
     @Transactional

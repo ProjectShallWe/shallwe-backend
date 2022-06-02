@@ -32,7 +32,7 @@ public class User extends BaseEntity {
     // 사용자 아이디
     @Email
     @Column(name = "user_email", unique = true)
-    private String Email;
+    private String email;
 
     // 사용자 비밀번호
     @Column(name = "user_password")
@@ -69,13 +69,18 @@ public class User extends BaseEntity {
 
     @Builder
     public User(Long id, String email, String password,
-                String nickname, Role role, Status status) {
+                String nickname, Role role, Status status,
+                List<LikePost> likePosts, List<Comment> comments,
+                List<LikeComment> likeComments) {
         this.id = id;
-        this.Email = email;
+        this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.role = role;
         this.status = status;
+        this.likePosts = likePosts;
+        this.comments = comments;
+        this.likeComments = likeComments;
     }
 
     public void updateNickname(String nickname) {

@@ -3,7 +3,10 @@ package com.project.board.domain.user.dto;
 import com.project.board.domain.user.model.Role;
 import com.project.board.domain.user.model.Status;
 import com.project.board.domain.user.model.User;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,10 +16,9 @@ public class UserJoinRequestDto {
     private String email;
 
     private String password;
-
     private String nickname;
 
-    public User toEntity() {
+    public User toEntity(String password) {
         return User.builder()
                 .email(email)
                 .password(password)
