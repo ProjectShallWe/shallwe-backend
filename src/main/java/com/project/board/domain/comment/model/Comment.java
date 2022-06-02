@@ -44,7 +44,7 @@ public class Comment extends BaseEntity {
 
     // 자식댓글일 경우 부모댓글의 comment_id값을 저장한다. 없다면 null
     @Column(name = "comment_parent_comment_id")
-    private Long parent_comment_id;
+    private Long parentCommentId;
 
     @ManyToOne
     @JsonBackReference

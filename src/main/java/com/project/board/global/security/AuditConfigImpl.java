@@ -1,6 +1,5 @@
 package com.project.board.global.security;
 
-import com.project.board.domain.user.model.User;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +13,6 @@ public class AuditConfigImpl implements AuditorAware<String> {
         if(null == authentication || !authentication.isAuthenticated()) {
             return null;
         }
-        User user = (User) authentication.getPrincipal();
-        return Optional.of(user.getEmail());
+        return Optional.of(authentication.getName());
     }
 }

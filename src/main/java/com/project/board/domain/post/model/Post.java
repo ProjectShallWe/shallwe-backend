@@ -2,6 +2,7 @@ package com.project.board.domain.post.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.project.board.domain.board.model.Board;
 import com.project.board.domain.comment.model.Comment;
 import com.project.board.domain.like.model.LikePost;
 import com.project.board.domain.user.model.User;
@@ -46,6 +47,11 @@ public class Post extends BaseEntity {
     @JsonBackReference
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "board_id")
+    private Board board;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     @JsonManagedReference
