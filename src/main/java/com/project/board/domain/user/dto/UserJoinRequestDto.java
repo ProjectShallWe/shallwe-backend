@@ -18,10 +18,10 @@ public class UserJoinRequestDto {
     private String password;
     private String nickname;
 
-    public User toEntity(String password) {
+    public User toEntity(String encodedPassword) {
         return User.builder()
                 .email(email)
-                .password(password)
+                .password(encodedPassword)
                 .nickname(nickname)
                 .role(Role.USER)
                 .status(Status.ACTIVE)
