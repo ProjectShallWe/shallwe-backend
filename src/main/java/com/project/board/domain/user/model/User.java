@@ -52,19 +52,19 @@ public class User extends BaseEntity {
     private Status status;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("user-post")
     private final List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("user-likepost")
     private List<LikePost> likePosts = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("user-comment")
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("user-likecomment")
     private List<LikeComment> likeComments = new ArrayList<>();
 
     @Builder

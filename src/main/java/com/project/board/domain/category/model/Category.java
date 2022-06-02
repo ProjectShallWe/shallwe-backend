@@ -28,6 +28,6 @@ public class Category {
     private String topic;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("category-board")
     private List<Board> boards = new ArrayList<>();
 }

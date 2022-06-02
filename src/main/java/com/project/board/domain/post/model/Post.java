@@ -8,6 +8,7 @@ import com.project.board.domain.like.model.LikePost;
 import com.project.board.domain.user.model.User;
 import com.project.board.global.model.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -44,21 +45,36 @@ public class Post extends BaseEntity {
     private Long likePost;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("user-post")
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("board-post")
     @JoinColumn(name = "board_id")
     private Board board;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("post-comment")
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("post-likepost")
     private List<LikePost> likePosts = new ArrayList<>();
 
+    @Builder
+    public Post(Long id, String title, String content,
+                Boolean isDeleted, Long likePost,
+                User user, Board board,
+                List<Comment> comments, List<LikePost> likePosts) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.isDeleted = isDeleted;
+        this.likePost = likePost;
+        this.user = user;
+        this.board = board;
+        this.comments = comments;
+        this.likePosts = likePosts;
+    }
 }

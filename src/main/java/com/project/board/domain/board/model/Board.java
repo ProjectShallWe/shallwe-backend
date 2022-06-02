@@ -30,11 +30,11 @@ public class Board {
     private String title;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("category-board")
     @JoinColumn(name = "category_id")
     private Category category;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("board-post")
     private List<Post> posts = new ArrayList<>();
 }

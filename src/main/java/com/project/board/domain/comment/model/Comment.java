@@ -47,16 +47,16 @@ public class Comment extends BaseEntity {
     private Long parentCommentId;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("user-comment")
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("post-comment")
     @JoinColumn(name = "post_id")
     private Post post;
 
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("comment-likecomment")
     private List<LikeComment> likeComments = new ArrayList<>();
 }
