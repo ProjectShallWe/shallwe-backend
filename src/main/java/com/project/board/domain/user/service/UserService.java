@@ -27,31 +27,32 @@ public class UserService {
     }
 
     @Transactional
-    public Long updateNickname(Long id,
+    public String updateNickname(String email,
                                UserUpdateNicknameRequestDto userUpdateNicknameRequestDto) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 아이디가 없습니다. id =" + id));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("해당 이메일이 없습니다. email =" + email));
         user.updateNickname(userUpdateNicknameRequestDto.getNickname());
 
-        return id;
+        return email;
     }
 
     @Transactional
-    public Long updatePassword(Long id,
+    public String updatePassword(String email,
                                UserUpdatePasswordRequestDto userUpdatePasswordRequestDto) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 아이디가 없습니다. id =" + id));
-        user.updatePassword(userUpdatePasswordRequestDto.getPassword());
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("해당 이메일이 없습니다. email =" + email));
+        String encodedPassword = passwordEncoder.encode(userUpdatePasswordRequestDto.getPassword());
+        user.updatePassword(encodedPassword);
 
-        return id;
+        return email;
     }
 
     @Transactional
-    public Long delete(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 아이디가 없습니다. id =" + id));
+    public String delete(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("해당 이메일이 없습니다. email =" + email));
         user.updateStatus(Status.WITHDRAWAL);
 
-        return id;
+        return email;
     }
 }

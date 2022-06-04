@@ -4,7 +4,9 @@ import com.project.board.domain.user.dto.UserJoinRequestDto;
 import com.project.board.domain.user.dto.UserUpdateNicknameRequestDto;
 import com.project.board.domain.user.dto.UserUpdatePasswordRequestDto;
 import com.project.board.domain.user.service.UserService;
+import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,20 +20,20 @@ public class UserController {
         return userService.join(userJoinRequestDto);
     }
 
-    @PutMapping("/api/user/{id}/nickname")
-    public Long updateNickname(@PathVariable Long id,
-            @RequestBody UserUpdateNicknameRequestDto userUpdateNicknameRequestDto) {
-        return userService.updateNickname(id, userUpdateNicknameRequestDto);
+    @PutMapping("/api/user/update/nickname")
+    public String updateNickname(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                               @RequestBody UserUpdateNicknameRequestDto userUpdateNicknameRequestDto) {
+        return userService.updateNickname(userDetails.getUsername(), userUpdateNicknameRequestDto);
     }
 
-    @PutMapping("/api/user/{id}/password")
-    public Long updatePassword(@PathVariable Long id,
+    @PutMapping("/api/user/update/password")
+    public String updatePassword(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                @RequestBody UserUpdatePasswordRequestDto userUpdatePasswordRequestDto) {
-        return userService.updatePassword(id, userUpdatePasswordRequestDto);
+        return userService.updatePassword(userDetails.getUsername(), userUpdatePasswordRequestDto);
     }
 
-    @DeleteMapping("/api/user/{id}")
-    public Long delete(@PathVariable Long id) {
-        return userService.delete(id);
+    @DeleteMapping("/api/user/delete")
+    public String delete(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.delete(userDetails.getUsername());
     }
 }
