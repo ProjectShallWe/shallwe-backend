@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.board.domain.category.model.Category;
 import com.project.board.domain.post.model.Post;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -37,4 +38,16 @@ public class Board {
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
     @JsonManagedReference("board-post")
     private List<Post> posts = new ArrayList<>();
+
+    @Builder
+    public Board(Long id, String title, Category category, List<Post> posts) {
+        this.id = id;
+        this.title = title;
+        this.category = category;
+        this.posts = posts;
+    }
+
+    public void update(String title) {
+        this.title = title;
+    }
 }
