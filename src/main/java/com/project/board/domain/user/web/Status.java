@@ -1,4 +1,4 @@
-package com.project.board.domain.user.model;
+package com.project.board.domain.user.web;
 
 public enum Status {
     ACTIVE,

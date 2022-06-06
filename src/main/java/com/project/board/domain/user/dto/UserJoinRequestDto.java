@@ -1,8 +1,8 @@
 package com.project.board.domain.user.dto;
 
-import com.project.board.domain.user.model.Role;
-import com.project.board.domain.user.model.Status;
-import com.project.board.domain.user.model.User;
+import com.project.board.domain.user.web.Role;
+import com.project.board.domain.user.web.Status;
+import com.project.board.domain.user.web.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

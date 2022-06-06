@@ -1,6 +1,6 @@
 package com.project.board.global.security;
 
-import com.project.board.domain.user.repository.UserRepository;
+import com.project.board.domain.user.web.UserRepository;
 import com.project.board.global.security.jwt.JwtAuthenticationFilter;
 import com.project.board.global.security.jwt.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;

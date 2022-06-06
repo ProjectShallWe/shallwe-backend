@@ -1,11 +1,11 @@
-package com.project.board.domain.user.service;
+package com.project.board.domain.service;
 
 import com.project.board.domain.user.dto.UserJoinRequestDto;
 import com.project.board.domain.user.dto.UserUpdateNicknameRequestDto;
 import com.project.board.domain.user.dto.UserUpdatePasswordRequestDto;
-import com.project.board.domain.user.model.Status;
-import com.project.board.domain.user.model.User;
-import com.project.board.domain.user.repository.UserRepository;
+import com.project.board.domain.user.web.Status;
+import com.project.board.domain.user.web.User;
+import com.project.board.domain.user.web.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package com.project.board.global.security;
 
-import com.project.board.domain.user.model.User;
+import com.project.board.domain.user.web.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

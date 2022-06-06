@@ -1,7 +1,7 @@
 package com.project.board.domain.post.dto;
 
-import com.project.board.domain.post.model.Post;
-import com.project.board.domain.user.model.User;
+import com.project.board.domain.post.web.Post;
+import com.project.board.domain.user.web.User;
 import lombok.*;
 
 @Getter

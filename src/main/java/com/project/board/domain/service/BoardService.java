@@ -1,11 +1,11 @@
-package com.project.board.domain.board.service;
+package com.project.board.domain.service;
 
 import com.project.board.domain.board.dto.BoardRequestDto;
-import com.project.board.domain.board.model.Board;
-import com.project.board.domain.board.repository.BoardRepository;
-import com.project.board.domain.user.model.Role;
-import com.project.board.domain.user.model.User;
-import com.project.board.domain.user.repository.UserRepository;
+import com.project.board.domain.board.web.Board;
+import com.project.board.domain.board.web.BoardRepository;
+import com.project.board.domain.user.web.Role;
+import com.project.board.domain.user.web.User;
+import com.project.board.domain.user.web.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

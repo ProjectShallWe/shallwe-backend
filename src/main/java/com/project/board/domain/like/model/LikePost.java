@@ -1,8 +1,8 @@
 package com.project.board.domain.like.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.project.board.domain.post.model.Post;
-import com.project.board.domain.user.model.User;
+import com.project.board.domain.post.web.Post;
+import com.project.board.domain.user.web.User;
 import com.project.board.global.model.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;

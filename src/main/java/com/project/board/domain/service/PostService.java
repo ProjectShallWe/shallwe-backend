@@ -1,11 +1,11 @@
-package com.project.board.domain.post.service;
+package com.project.board.domain.service;
 
 import com.project.board.domain.post.dto.PostUpdateRequestDto;
 import com.project.board.domain.post.dto.PostWriteRequestDto;
-import com.project.board.domain.post.model.Post;
-import com.project.board.domain.post.repository.PostRepository;
-import com.project.board.domain.user.model.User;
-import com.project.board.domain.user.repository.UserRepository;
+import com.project.board.domain.post.web.Post;
+import com.project.board.domain.post.web.PostRepository;
+import com.project.board.domain.user.web.User;
+import com.project.board.domain.user.web.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

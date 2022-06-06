@@ -3,7 +3,7 @@ package com.project.board.domain.controller;
 import com.project.board.domain.user.dto.UserJoinRequestDto;
 import com.project.board.domain.user.dto.UserUpdateNicknameRequestDto;
 import com.project.board.domain.user.dto.UserUpdatePasswordRequestDto;
-import com.project.board.domain.user.service.UserService;
+import com.project.board.domain.service.UserService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

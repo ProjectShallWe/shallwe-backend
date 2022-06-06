@@ -1,7 +1,7 @@
 package com.project.board.domain.controller;
 
 import com.project.board.domain.board.dto.BoardRequestDto;
-import com.project.board.domain.board.service.BoardService;
+import com.project.board.domain.service.BoardService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

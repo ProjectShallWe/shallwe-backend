@@ -1,11 +1,11 @@
-package com.project.board.domain.post.model;
+package com.project.board.domain.post.web;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.project.board.domain.board.model.Board;
+import com.project.board.domain.board.web.Board;
 import com.project.board.domain.comment.model.Comment;
 import com.project.board.domain.like.model.LikePost;
-import com.project.board.domain.user.model.User;
+import com.project.board.domain.user.web.User;
 import com.project.board.global.model.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
