@@ -2,7 +2,7 @@ package com.project.board.domain.board.web;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.project.board.domain.category.model.Category;
+import com.project.board.domain.category.web.Category;
 import com.project.board.domain.post.web.Post;
 import lombok.AccessLevel;
 import lombok.Builder;
