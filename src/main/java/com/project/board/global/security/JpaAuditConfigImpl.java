@@ -6,7 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
-public class AuditConfigImpl implements AuditorAware<String> {
+public class JpaAuditConfigImpl implements AuditorAware<String> {
 
     public Optional<String> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
