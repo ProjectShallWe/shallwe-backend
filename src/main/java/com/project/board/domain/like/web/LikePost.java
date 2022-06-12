@@ -1,4 +1,4 @@
-package com.project.board.domain.like.model;
+package com.project.board.domain.like.web;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.project.board.domain.post.web.Post;

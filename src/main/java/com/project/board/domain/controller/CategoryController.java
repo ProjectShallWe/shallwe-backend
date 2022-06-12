@@ -1,6 +1,6 @@
 package com.project.board.domain.controller;
 
-import com.project.board.domain.category.dto.CategoryRequestDto;
+import com.project.board.domain.board.dto.BoardCategoryRequestDto;
 import com.project.board.domain.service.CategoryService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -15,15 +15,15 @@ public class CategoryController {
 
     @PostMapping("/api/category/open")
     public Long open(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                     @RequestBody CategoryRequestDto categoryRequestDto) {
-        return categoryService.open(userDetails.getUsername(), categoryRequestDto);
+                     @RequestBody BoardCategoryRequestDto boardCategoryRequestDto) {
+        return categoryService.open(userDetails.getUsername(), boardCategoryRequestDto);
     }
 
     @PutMapping("/api/category/{id}/update")
     public Long update(@AuthenticationPrincipal UserDetailsImpl userDetails,
                        @PathVariable Long id,
-                       @RequestBody CategoryRequestDto categoryRequestDto) {
-        return categoryService.update(userDetails.getUsername(), id, categoryRequestDto);
+                       @RequestBody BoardCategoryRequestDto boardCategoryRequestDto) {
+        return categoryService.update(userDetails.getUsername(), id, boardCategoryRequestDto);
     }
 
     @DeleteMapping("/api/category/{id}/delete")

@@ -2,8 +2,7 @@ package com.project.board.domain.board.web;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.project.board.domain.category.web.Category;
-import com.project.board.domain.post.web.Post;
+import com.project.board.domain.post.web.PostCategory;
 import com.project.board.global.model.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -27,25 +26,25 @@ public class Board extends BaseEntity {
     @Column(name = "board_id")
     private Long id;
 
-    // 카테고리 소분류 제목 (= 게시판 제목)
+    // 게시판 제목
     @Column(name = "board_title")
     private String title;
 
     @ManyToOne
-    @JsonBackReference("category-board")
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @JsonBackReference("boardcategory-board")
+    @JoinColumn(name = "boardcategory_id")
+    private BoardCategory boardCategory;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
-    @JsonManagedReference("board-post")
-    private List<Post> posts = new ArrayList<>();
+    @JsonManagedReference("board-postcategory")
+    private List<PostCategory> postCategories = new ArrayList<>();
 
     @Builder
-    public Board(Long id, String title, Category category, List<Post> posts) {
+    public Board(Long id, String title, BoardCategory boardCategory, List<PostCategory> postCategories) {
         this.id = id;
         this.title = title;
-        this.category = category;
-        this.posts = posts;
+        this.boardCategory = boardCategory;
+        this.postCategories = postCategories;
     }
 
     public void update(String title) {

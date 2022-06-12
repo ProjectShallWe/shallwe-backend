@@ -1,6 +1,6 @@
-package com.project.board.domain.category.dto;
+package com.project.board.domain.board.dto;
 
-import com.project.board.domain.category.web.Category;
+import com.project.board.domain.board.web.BoardCategory;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class CategoryRequestDto {
+public class BoardCategoryRequestDto {
 
     String topic;
 
-    public Category toEntity() {
-        return Category.builder()
+    public BoardCategory toEntity() {
+        return BoardCategory.builder()
                 .topic(topic)
                 .build();
     }

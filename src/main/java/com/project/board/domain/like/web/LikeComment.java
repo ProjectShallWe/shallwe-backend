@@ -1,7 +1,7 @@
-package com.project.board.domain.like.model;
+package com.project.board.domain.like.web;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.project.board.domain.comment.model.Comment;
+import com.project.board.domain.comment.web.Comment;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.model.BaseEntity;
 import lombok.AccessLevel;

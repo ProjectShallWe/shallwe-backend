@@ -2,9 +2,8 @@ package com.project.board.domain.post.web;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.project.board.domain.board.web.Board;
-import com.project.board.domain.comment.model.Comment;
-import com.project.board.domain.like.model.LikePost;
+import com.project.board.domain.comment.web.Comment;
+import com.project.board.domain.like.web.LikePost;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.model.BaseEntity;
 import lombok.AccessLevel;
@@ -50,9 +49,9 @@ public class Post extends BaseEntity {
     private User user;
 
     @ManyToOne
-    @JsonBackReference("board-post")
-    @JoinColumn(name = "board_id")
-    private Board board;
+    @JsonBackReference("postcategory-post")
+    @JoinColumn(name = "postcategory_id")
+    private PostCategory postCategory;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     @JsonManagedReference("post-comment")
@@ -65,7 +64,7 @@ public class Post extends BaseEntity {
     @Builder
     public Post(Long id, String title, String content,
                 Boolean isDeleted, Long likePost,
-                User user, Board board,
+                User user, PostCategory postCategory,
                 List<Comment> comments, List<LikePost> likePosts) {
         this.id = id;
         this.title = title;
@@ -73,7 +72,7 @@ public class Post extends BaseEntity {
         this.isDeleted = isDeleted;
         this.likePost = likePost;
         this.user = user;
-        this.board = board;
+        this.postCategory = postCategory;
         this.comments = comments;
         this.likePosts = likePosts;
     }

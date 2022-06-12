@@ -1,8 +1,8 @@
-package com.project.board.domain.comment.model;
+package com.project.board.domain.comment.web;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.project.board.domain.like.model.LikeComment;
+import com.project.board.domain.like.web.LikeComment;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.model.BaseEntity;
