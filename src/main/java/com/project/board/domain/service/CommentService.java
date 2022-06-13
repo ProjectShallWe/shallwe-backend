@@ -48,7 +48,6 @@ public class CommentService {
             comment.update(commentUpdateRequestDto.getContent());
             return commentId;
         }
-
         return -1L;
     }
 
@@ -62,7 +61,6 @@ public class CommentService {
             comment.updateStatusToDisable();
             return commentId;
         }
-
         return -1L;
     }
 }

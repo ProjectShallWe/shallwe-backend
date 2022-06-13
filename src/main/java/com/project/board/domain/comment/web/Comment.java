@@ -34,7 +34,7 @@ public class Comment extends BaseEntity {
 
     // 댓글 활성화 여부
     @Enumerated(EnumType.STRING)
-    @Column(name = "comment_is_deleted")
+    @Column(name = "comment_status")
     private Status status;
 
     // 자식댓글일 경우 부모댓글의 comment_id값을 저장한다. 없다면 null

@@ -33,11 +33,11 @@ public class Post extends BaseEntity {
 
     // 글 활성화 여부
     @Enumerated(EnumType.STRING)
-    @Column(name = "post_is_deleted")
+    @Column(name = "post_status")
     private Status status;
 
     // 글의 좋아요 수 저장
-    @Column(name = "post_like_post")
+    @Column(name = "post_like_count")
     private Long likeCount;
 
     @ManyToOne

@@ -36,7 +36,6 @@ public class PostService {
            post.update(postUpdateRequestDto.getTitle(), postUpdateRequestDto.getContent());
            return id;
         }
-
         return -1L;
     }
 
@@ -50,7 +49,6 @@ public class PostService {
             post.updateStatusToDisable();
             return id;
         }
-
         return -1L;
     }
 }

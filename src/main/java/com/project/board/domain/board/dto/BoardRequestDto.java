@@ -1,6 +1,7 @@
 package com.project.board.domain.board.dto;
 
 import com.project.board.domain.board.web.Board;
+import com.project.board.domain.board.web.BoardCategory;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +14,9 @@ public class BoardRequestDto {
 
     private String title;
 
-    public Board toEntity() {
+    public Board toEntity(BoardCategory boardCategory) {
         return Board.builder()
+                .boardCategory(boardCategory)
                 .title(title)
                 .build();
 

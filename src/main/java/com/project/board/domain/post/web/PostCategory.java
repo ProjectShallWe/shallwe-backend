@@ -46,4 +46,8 @@ public class PostCategory extends BaseEntity {
         this.board = board;
         this.posts = posts;
     }
+
+    public void update(String topic) {
+        this.topic = topic;
+    }
 }

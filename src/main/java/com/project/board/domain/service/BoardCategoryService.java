@@ -52,7 +52,6 @@ public class BoardCategoryService {
             boardCategoryRepository.delete(boardCategory);
             return id;
         }
-
         return -1L;
     }
 }

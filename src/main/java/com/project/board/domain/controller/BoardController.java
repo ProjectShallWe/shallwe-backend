@@ -13,10 +13,11 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping("/api/board")
+    @PostMapping("/api/board-category/{boardCategoryId}/board")
     public Long open(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                     @PathVariable Long boardCategoryId,
                      @RequestBody BoardRequestDto boardRequestDto) {
-        return boardService.open(userDetails.getUsername(), boardRequestDto);
+        return boardService.open(userDetails.getUsername(), boardCategoryId, boardRequestDto);
     }
 
     @PutMapping("/api/board/{id}")
