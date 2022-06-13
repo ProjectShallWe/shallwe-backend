@@ -1,7 +1,7 @@
 package com.project.board.domain.controller;
 
 import com.project.board.domain.board.dto.BoardCategoryRequestDto;
-import com.project.board.domain.service.CategoryService;
+import com.project.board.domain.service.BoardCategoryService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -9,26 +9,26 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class CategoryController {
+public class BoardCategoryController {
 
-    private final CategoryService categoryService;
+    private final BoardCategoryService boardCategoryService;
 
-    @PostMapping("/api/category/open")
+    @PostMapping("/api/board-category")
     public Long open(@AuthenticationPrincipal UserDetailsImpl userDetails,
                      @RequestBody BoardCategoryRequestDto boardCategoryRequestDto) {
-        return categoryService.open(userDetails.getUsername(), boardCategoryRequestDto);
+        return boardCategoryService.open(userDetails.getUsername(), boardCategoryRequestDto);
     }
 
-    @PutMapping("/api/category/{id}/update")
+    @PutMapping("/api/board-category/{id}")
     public Long update(@AuthenticationPrincipal UserDetailsImpl userDetails,
                        @PathVariable Long id,
                        @RequestBody BoardCategoryRequestDto boardCategoryRequestDto) {
-        return categoryService.update(userDetails.getUsername(), id, boardCategoryRequestDto);
+        return boardCategoryService.update(userDetails.getUsername(), id, boardCategoryRequestDto);
     }
 
-    @DeleteMapping("/api/category/{id}/delete")
+    @DeleteMapping("/api/board-category/{id}")
     public Long delete(@AuthenticationPrincipal UserDetailsImpl userDetails,
                        @PathVariable Long id) {
-        return categoryService.delete(userDetails.getUsername(), id);
+        return boardCategoryService.delete(userDetails.getUsername(), id);
     }
 }

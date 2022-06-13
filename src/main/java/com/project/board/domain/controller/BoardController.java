@@ -13,20 +13,20 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping("/api/board/open")
+    @PostMapping("/api/board")
     public Long open(@AuthenticationPrincipal UserDetailsImpl userDetails,
                      @RequestBody BoardRequestDto boardRequestDto) {
         return boardService.open(userDetails.getUsername(), boardRequestDto);
     }
 
-    @PutMapping("/api/board/{id}/update")
+    @PutMapping("/api/board/{id}")
     public Long update(@AuthenticationPrincipal UserDetailsImpl userDetails,
                        @PathVariable Long id,
                        @RequestBody BoardRequestDto boardRequestDto) {
         return boardService.update(userDetails.getUsername(), id, boardRequestDto);
     }
 
-    @DeleteMapping("/api/board/{id}/delete")
+    @DeleteMapping("/api/board/{id}")
     public Long delete(@AuthenticationPrincipal UserDetailsImpl userDetails,
                        @PathVariable Long id) {
         return boardService.delete(userDetails.getUsername(), id);

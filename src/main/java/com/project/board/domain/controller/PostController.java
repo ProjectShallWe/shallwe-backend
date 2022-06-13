@@ -14,20 +14,20 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/api/post/write")
+    @PostMapping("/api/post")
     public Long write(@AuthenticationPrincipal UserDetailsImpl userDetails,
                       @RequestBody PostWriteRequestDto postWriteRequestDto) {
         return postService.write(userDetails.getUsername(), postWriteRequestDto);
     }
 
-    @PutMapping("/api/post/{id}/update")
+    @PutMapping("/api/post/{id}")
     public Long update(@AuthenticationPrincipal UserDetailsImpl userDetails,
                        @PathVariable Long id,
                        @RequestBody PostUpdateRequestDto postUpdateRequestDto) {
         return postService.update(userDetails.getUsername(), id, postUpdateRequestDto);
     }
 
-    @DeleteMapping("/api/post/{id}/delete")
+    @DeleteMapping("/api/post/{id}")
     public Long delete(@AuthenticationPrincipal UserDetailsImpl userDetails,
                        @PathVariable Long id) {
         return postService.delete(userDetails.getUsername(), id);

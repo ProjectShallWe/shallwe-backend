@@ -15,24 +15,24 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/api/user/join")
+    @PostMapping("/api/user")
     public Long join(@RequestBody UserJoinRequestDto userJoinRequestDto) {
         return userService.join(userJoinRequestDto);
     }
 
-    @PutMapping("/api/user/update/nickname")
+    @PutMapping("/api/user/nickname")
     public String updateNickname(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                @RequestBody UserUpdateNicknameRequestDto userUpdateNicknameRequestDto) {
         return userService.updateNickname(userDetails.getUsername(), userUpdateNicknameRequestDto);
     }
 
-    @PutMapping("/api/user/update/password")
+    @PutMapping("/api/user/password")
     public String updatePassword(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                @RequestBody UserUpdatePasswordRequestDto userUpdatePasswordRequestDto) {
         return userService.updatePassword(userDetails.getUsername(), userUpdatePasswordRequestDto);
     }
 
-    @DeleteMapping("/api/user/delete")
+    @DeleteMapping("/api/user")
     public String delete(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.delete(userDetails.getUsername());
     }

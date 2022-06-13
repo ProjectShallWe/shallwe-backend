@@ -44,6 +44,6 @@ public class PostCategory extends BaseEntity {
         this.id = id;
         this.topic = topic;
         this.board = board;
-//        this.posts = posts;
+        this.posts = posts;
     }
 }

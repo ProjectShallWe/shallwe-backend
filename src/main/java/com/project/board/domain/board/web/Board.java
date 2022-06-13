@@ -32,7 +32,7 @@ public class Board extends BaseEntity {
 
     @ManyToOne
     @JsonBackReference("boardcategory-board")
-    @JoinColumn(name = "boardcategory_id")
+    @JoinColumn(name = "board_category_id")
     private BoardCategory boardCategory;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)

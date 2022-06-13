@@ -50,7 +50,7 @@ public class Post extends BaseEntity {
 
     @ManyToOne
     @JsonBackReference("postcategory-post")
-    @JoinColumn(name = "postcategory_id")
+    @JoinColumn(name = "post_category_id")
     private PostCategory postCategory;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)

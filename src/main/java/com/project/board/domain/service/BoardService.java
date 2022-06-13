@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public Long open(String email, BoardRequestDto boardRequestDto) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다."));
@@ -29,6 +29,7 @@ public class BoardService {
         return -1L;
     }
 
+    @Transactional
     public Long update(String email, Long id, BoardRequestDto boardRequestDto) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다."));
@@ -42,11 +43,12 @@ public class BoardService {
         return -1L;
     }
 
+    @Transactional
     public Long delete(String email, Long id) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다."));
-        Board board = boardRepository.findById(id).
-                orElseThrow(() -> new IllegalArgumentException("해당 게시판을 찾을 수 없습니다. post_id : " + id));
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시판을 찾을 수 없습니다. board_id : " + id));
         if (user.getRole().equals(Role.ADMIN)) {
             boardRepository.delete(board);
             return id;
