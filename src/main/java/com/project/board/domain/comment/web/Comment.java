@@ -7,6 +7,7 @@ import com.project.board.domain.post.web.Post;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.model.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -39,9 +40,6 @@ public class Comment extends BaseEntity {
     @Column(name = "comment_is_deleted")
     private Boolean isDeleted;
 
-    @Column(name = "comment_like_commnet")
-    private Long likeComment;
-
     // 자식댓글일 경우 부모댓글의 comment_id값을 저장한다. 없다면 null
     @Column(name = "comment_parent_comment_id")
     private Long parentCommentId;
@@ -59,4 +57,26 @@ public class Comment extends BaseEntity {
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
     @JsonManagedReference("comment-likecomment")
     private List<LikeComment> likeComments = new ArrayList<>();
+
+    @Builder
+    public Comment(Long id, String content, Long likeCount,
+                   Boolean isDeleted, Long parentCommentId,
+                   User user, Post post, List<LikeComment> likeComments) {
+        this.id = id;
+        this.content = content;
+        this.likeCount = 0L;
+        this.isDeleted = false;
+        this.parentCommentId = parentCommentId;
+        this.user = user;
+        this.post = post;
+        this.likeComments = likeComments;
+    }
+
+    public void update(String content) {
+        this.content = content;
+    }
+
+    public void updateIsDeletedToTrue() {
+        this.isDeleted = true;
+    }
 }
