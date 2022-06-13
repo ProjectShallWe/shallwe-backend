@@ -3,7 +3,6 @@ package com.project.board.domain.service;
 import com.project.board.domain.user.dto.UserJoinRequestDto;
 import com.project.board.domain.user.dto.UserUpdateNicknameRequestDto;
 import com.project.board.domain.user.dto.UserUpdatePasswordRequestDto;
-import com.project.board.domain.user.web.Status;
 import com.project.board.domain.user.web.User;
 import com.project.board.domain.user.web.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +49,7 @@ public class UserService {
     public String delete(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("해당 이메일이 없습니다. email =" + email));
-        user.updateStatus(Status.WITHDRAWAL);
+        user.updateStatusToWithdrawal();
 
         return email;
     }

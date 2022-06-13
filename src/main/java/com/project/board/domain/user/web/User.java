@@ -6,10 +6,7 @@ import com.project.board.domain.like.web.LikeComment;
 import com.project.board.domain.like.web.LikePost;
 import com.project.board.domain.post.web.Post;
 import com.project.board.global.model.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -67,17 +64,35 @@ public class User extends BaseEntity {
     @JsonManagedReference("user-likecomment")
     private List<LikeComment> likeComments = new ArrayList<>();
 
+    @Getter
+    @RequiredArgsConstructor
+    public enum Role {
+        ADMIN("관리자"),
+        USER("사용자");
+
+        private final String description;
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    public enum Status {
+        ACTIVE("계정 활성화"),
+        SUSPENDED("계정 정지"),
+        WITHDRAWAL("계정 탈퇴");
+
+        private final String description;
+    }
+
     @Builder
     public User(Long id, String email, String password,
-                String nickname, Role role, Status status,
-                List<LikePost> likePosts, List<Comment> comments,
-                List<LikeComment> likeComments) {
+                String nickname, List<LikePost> likePosts,
+                List<Comment> comments, List<LikeComment> likeComments) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.role = role;
-        this.status = status;
+        this.role = Role.USER;
+        this.status = Status.ACTIVE;
         this.likePosts = likePosts;
         this.comments = comments;
         this.likeComments = likeComments;
@@ -91,7 +106,15 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public void updateStatus(Status status) {
-        this.status = status;
+    public void updateStatusToActive() {
+        this.status = Status.ACTIVE;
+    }
+
+    public void updateStatusToSuspended() {
+        this.status = Status.SUSPENDED;
+    }
+
+    public void updateStatusToWithdrawal() {
+        this.status = Status.WITHDRAWAL;
     }
 }

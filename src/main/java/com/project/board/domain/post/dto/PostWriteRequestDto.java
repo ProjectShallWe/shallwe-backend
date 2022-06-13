@@ -10,7 +10,6 @@ import lombok.*;
 public class PostWriteRequestDto {
 
     private String title;
-
     private String content;
 
     @Builder
@@ -19,8 +18,6 @@ public class PostWriteRequestDto {
                 .user(user)
                 .title(title)
                 .content(content)
-                .isDeleted(false)
-                .likePost(0L)
                 .build();
     }
 }

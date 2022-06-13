@@ -1,7 +1,5 @@
 package com.project.board.domain.user.dto;
 
-import com.project.board.domain.user.web.Role;
-import com.project.board.domain.user.web.Status;
 import com.project.board.domain.user.web.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class UserJoinRequestDto {
 
     private String email;
-
     private String password;
     private String nickname;
 
@@ -23,8 +20,6 @@ public class UserJoinRequestDto {
                 .email(email)
                 .password(encodedPassword)
                 .nickname(nickname)
-                .role(Role.USER)
-                .status(Status.ACTIVE)
                 .build();
     }
 }

@@ -6,10 +6,7 @@ import com.project.board.domain.comment.web.Comment;
 import com.project.board.domain.like.web.LikePost;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.model.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -35,13 +32,13 @@ public class Post extends BaseEntity {
     private String content;
 
     // 글 활성화 여부
-    // false가 기본 값이며, 글 삭제시 true로 바뀌어 검색되지 않는다.
+    @Enumerated(EnumType.STRING)
     @Column(name = "post_is_deleted")
-    private Boolean isDeleted;
+    private Status status;
 
     // 글의 좋아요 수 저장
     @Column(name = "post_like_post")
-    private Long likePost;
+    private Long likeCount;
 
     @ManyToOne
     @JsonBackReference("user-post")
@@ -61,16 +58,24 @@ public class Post extends BaseEntity {
     @JsonManagedReference("post-likepost")
     private List<LikePost> likePosts = new ArrayList<>();
 
+    @Getter
+    @RequiredArgsConstructor
+    public enum Status {
+        ENABLE("활성화"),
+        DISABLE("비활성화");
+
+        private final String description;
+    }
+
     @Builder
     public Post(Long id, String title, String content,
-                Boolean isDeleted, Long likePost,
                 User user, PostCategory postCategory,
                 List<Comment> comments, List<LikePost> likePosts) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.isDeleted = isDeleted;
-        this.likePost = likePost;
+        this.status = Status.ENABLE;
+        this.likeCount = 0L;
         this.user = user;
         this.postCategory = postCategory;
         this.comments = comments;
@@ -82,7 +87,11 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    public void updateIsDeletedToTrue() {
-        this.isDeleted = true;
+    public void updateStatusToEnable() {
+        this.status = Status.ENABLE;
+    }
+
+    public void updateStatusToDisable() {
+        this.status = Status.ENABLE;
     }
 }

@@ -59,7 +59,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 댓글을 찾을 수 없습니다. comment_id : " + commentId));
         if (user.getEmail().equals(comment.getUser().getEmail())) {
-            comment.updateIsDeletedToTrue();
+            comment.updateStatusToDisable();
             return commentId;
         }
 

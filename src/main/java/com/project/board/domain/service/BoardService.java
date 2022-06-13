@@ -3,7 +3,6 @@ package com.project.board.domain.service;
 import com.project.board.domain.board.dto.BoardRequestDto;
 import com.project.board.domain.board.web.Board;
 import com.project.board.domain.board.web.BoardRepository;
-import com.project.board.domain.user.web.Role;
 import com.project.board.domain.user.web.User;
 import com.project.board.domain.user.web.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ public class BoardService {
     public Long open(String email, BoardRequestDto boardRequestDto) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다."));
-        if (user.getRole().equals(Role.ADMIN)){
+        if (user.getRole().equals(User.Role.ADMIN)){
             return boardRepository.save(boardRequestDto.toEntity()).getId();
         }
         return -1L;
@@ -35,7 +34,7 @@ public class BoardService {
                 .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다."));
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시판을 찾을 수 없습니다. board_id : " + id));
-        if (user.getRole().equals(Role.ADMIN)) {
+        if (user.getRole().equals(User.Role.ADMIN)) {
             board.update(boardRequestDto.getTitle());
 
             return id;
@@ -49,7 +48,7 @@ public class BoardService {
                 .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다."));
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시판을 찾을 수 없습니다. board_id : " + id));
-        if (user.getRole().equals(Role.ADMIN)) {
+        if (user.getRole().equals(User.Role.ADMIN)) {
             boardRepository.delete(board);
             return id;
         }

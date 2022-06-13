@@ -6,10 +6,7 @@ import com.project.board.domain.like.web.LikeComment;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.model.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -36,9 +33,9 @@ public class Comment extends BaseEntity {
     private Long likeCount;
 
     // 댓글 활성화 여부
-    // false가 기본 값이며, 댓글 삭제시 true로 바뀌어 검색되지 않는다.
+    @Enumerated(EnumType.STRING)
     @Column(name = "comment_is_deleted")
-    private Boolean isDeleted;
+    private Status status;
 
     // 자식댓글일 경우 부모댓글의 comment_id값을 저장한다. 없다면 null
     @Column(name = "comment_parent_comment_id")
@@ -58,14 +55,23 @@ public class Comment extends BaseEntity {
     @JsonManagedReference("comment-likecomment")
     private List<LikeComment> likeComments = new ArrayList<>();
 
+    @Getter
+    @RequiredArgsConstructor
+    public enum Status {
+        ENABLE("활성화"),
+        DISABLE("비활성화");
+
+        private final String description;
+    }
+
     @Builder
-    public Comment(Long id, String content, Long likeCount,
-                   Boolean isDeleted, Long parentCommentId,
-                   User user, Post post, List<LikeComment> likeComments) {
+    public Comment(Long id, String content,
+                   Long parentCommentId, User user, Post post,
+                   List<LikeComment> likeComments) {
         this.id = id;
         this.content = content;
         this.likeCount = 0L;
-        this.isDeleted = false;
+        this.status = Status.ENABLE;
         this.parentCommentId = parentCommentId;
         this.user = user;
         this.post = post;
@@ -76,7 +82,11 @@ public class Comment extends BaseEntity {
         this.content = content;
     }
 
-    public void updateIsDeletedToTrue() {
-        this.isDeleted = true;
+    public void updateStatusToEnable() {
+        this.status = Status.ENABLE;
+    }
+
+    public void updateStatusToDisable() {
+        this.status = Status.ENABLE;
     }
 }

@@ -47,7 +47,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 글을 찾을 수 없습니다. post_id : " + id));
         if (user.getEmail().equals(post.getUser().getEmail())) {
-            post.updateIsDeletedToTrue();
+            post.updateStatusToDisable();
             return id;
         }
 
