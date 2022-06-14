@@ -1,4 +1,4 @@
-package com.project.board.global.model;
+package com.project.board.global.audit;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;

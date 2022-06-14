@@ -1,4 +1,4 @@
-package com.project.board.global.security;
+package com.project.board.global.audit;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
