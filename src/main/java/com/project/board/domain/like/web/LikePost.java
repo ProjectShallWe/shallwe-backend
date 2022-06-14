@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.model.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -32,4 +30,11 @@ public class LikePost extends BaseEntity {
     @JsonBackReference("post-likepost")
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @Builder
+    public LikePost(Long id, User user, Post post) {
+        this.id = id;
+        this.user = user;
+        this.post = post;
+    }
 }

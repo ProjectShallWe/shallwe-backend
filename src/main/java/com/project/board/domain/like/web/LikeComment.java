@@ -5,6 +5,7 @@ import com.project.board.domain.comment.web.Comment;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.model.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -32,4 +33,11 @@ public class LikeComment extends BaseEntity {
     @JsonBackReference("comment-likecomment")
     @JoinColumn(name = "comment_id")
     private Comment comment;
+
+    @Builder
+    public LikeComment(Long id, User user, Comment comment) {
+        this.id = id;
+        this.user = user;
+        this.comment = comment;
+    }
 }
