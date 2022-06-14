@@ -1,7 +1,7 @@
 package com.project.board.domain.service;
 
 import com.project.board.domain.board.web.Board;
-import com.project.board.domain.board.web.BoardRepository;
+import com.project.board.domain.board.web.BoardReader;
 import com.project.board.domain.post.dto.PostCategoryRequestDto;
 import com.project.board.domain.post.web.PostCategory;
 import com.project.board.domain.post.web.PostCategoryReader;
@@ -20,14 +20,13 @@ public class PostCategoryService {
     private final UserReader userReader;
     private final PostCategoryReader postCategoryReader;
     private final PostCategoryStore postCategoryStore;
-    private final BoardRepository boardRepository;
+    private final BoardReader boardReader;
 
 
     @Transactional
     public Long open(String email, Long boardId, PostCategoryRequestDto postCategoryDto) {
         User user = userReader.getUserBy(email);
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시판을 찾을 수 없습니다. board_id: " + boardId));
+        Board board = boardReader.getBoardBy(boardId);
         if (isAdmin(user)) {
             return postCategoryStore.store(postCategoryDto.toEntity(board)).getId();
         }
