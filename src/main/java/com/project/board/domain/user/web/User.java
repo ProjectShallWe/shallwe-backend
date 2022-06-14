@@ -5,8 +5,10 @@ import com.project.board.domain.comment.web.Comment;
 import com.project.board.domain.like.web.LikeComment;
 import com.project.board.domain.like.web.LikePost;
 import com.project.board.domain.post.web.Post;
-import com.project.board.global.model.BaseEntity;
+import com.project.board.global.audit.BaseEntity;
+import com.project.board.global.exception.InvalidParamException;
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -99,10 +101,12 @@ public class User extends BaseEntity {
     }
 
     public void updateNickname(String nickname) {
+        if (StringUtils.isEmpty(nickname)) throw new InvalidParamException("User.nickname");
         this.nickname = nickname;
     }
 
     public void updatePassword(String password) {
+        if (StringUtils.isEmpty(password)) throw new InvalidParamException("User.password");
         this.password = password;
     }
 

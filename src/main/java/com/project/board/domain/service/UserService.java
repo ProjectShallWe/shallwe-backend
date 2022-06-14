@@ -4,7 +4,8 @@ import com.project.board.domain.user.dto.UserJoinRequestDto;
 import com.project.board.domain.user.dto.UserUpdateNicknameRequestDto;
 import com.project.board.domain.user.dto.UserUpdatePasswordRequestDto;
 import com.project.board.domain.user.web.User;
-import com.project.board.domain.user.web.UserRepository;
+import com.project.board.domain.user.web.UserReader;
+import com.project.board.domain.user.web.UserStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,32 +15,30 @@ import javax.transaction.Transactional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
-    private final UserRepository userRepository;
+    private final UserReader userReader;
+    private final UserStore userStore;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public Long join(UserJoinRequestDto userJoinRequestDto) {
-        String encodedPassword = passwordEncoder.encode(userJoinRequestDto.getPassword());
-        return userRepository.save(userJoinRequestDto.toEntity(encodedPassword)).getId();
+    public Long join(UserJoinRequestDto joinDto) {
+        String encodedPassword = passwordEncoder.encode(joinDto.getPassword());
+        return userStore.store(joinDto.toEntity(encodedPassword)).getId();
     }
 
     @Transactional
     public String updateNickname(String email,
-                               UserUpdateNicknameRequestDto userUpdateNicknameRequestDto) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("해당 이메일이 없습니다. email =" + email));
-        user.updateNickname(userUpdateNicknameRequestDto.getNickname());
+                               UserUpdateNicknameRequestDto nicknameUpdateDto) {
+        User user = userReader.getUserBy(email);
+        user.updateNickname(nicknameUpdateDto.getNickname());
 
         return email;
     }
 
     @Transactional
     public String updatePassword(String email,
-                               UserUpdatePasswordRequestDto userUpdatePasswordRequestDto) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("해당 이메일이 없습니다. email =" + email));
-        String encodedPassword = passwordEncoder.encode(userUpdatePasswordRequestDto.getPassword());
+                               UserUpdatePasswordRequestDto passwordUpdateDto) {
+        User user = userReader.getUserBy(email);
+        String encodedPassword = passwordEncoder.encode(passwordUpdateDto.getPassword());
         user.updatePassword(encodedPassword);
 
         return email;
@@ -47,10 +46,10 @@ public class UserService {
 
     @Transactional
     public String delete(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("해당 이메일이 없습니다. email =" + email));
+        User user = userReader.getUserBy(email);
         user.updateStatusToWithdrawal();
 
         return email;
     }
+
 }

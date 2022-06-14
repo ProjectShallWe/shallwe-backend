@@ -3,7 +3,7 @@ package com.project.board.domain.like.web;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.user.web.User;
-import com.project.board.global.model.BaseEntity;
+import com.project.board.global.audit.BaseEntity;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

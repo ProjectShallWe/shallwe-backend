@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.board.domain.comment.web.Comment;
 import com.project.board.domain.like.web.LikePost;
 import com.project.board.domain.user.web.User;
-import com.project.board.global.model.BaseEntity;
+import com.project.board.global.audit.BaseEntity;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
