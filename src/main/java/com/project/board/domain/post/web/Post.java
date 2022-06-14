@@ -6,7 +6,9 @@ import com.project.board.domain.comment.web.Comment;
 import com.project.board.domain.like.web.LikePost;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.audit.BaseEntity;
+import com.project.board.global.exception.InvalidParamException;
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -83,6 +85,9 @@ public class Post extends BaseEntity {
     }
 
     public void update(String title, String content) {
+        if (StringUtils.isEmpty(title)) throw new InvalidParamException("Post.title");
+        if (StringUtils.isEmpty(content)) throw new InvalidParamException("Post.content");
+
         this.title = title;
         this.content = content;
     }

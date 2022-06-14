@@ -87,6 +87,6 @@ public class Comment extends BaseEntity {
     }
 
     public void updateStatusToDisable() {
-        this.status = Status.ENABLE;
+        this.status = Status.DISABLE;
     }
 }

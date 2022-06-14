@@ -3,11 +3,11 @@ package com.project.board.domain.service;
 import com.project.board.domain.post.dto.PostUpdateRequestDto;
 import com.project.board.domain.post.dto.PostWriteRequestDto;
 import com.project.board.domain.post.web.Post;
-import com.project.board.domain.post.web.PostRepository;
+import com.project.board.domain.post.web.PostReader;
+import com.project.board.domain.post.web.PostStore;
 import com.project.board.domain.user.web.User;
-import com.project.board.domain.user.web.UserRepository;
+import com.project.board.domain.user.web.UserReader;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,24 +16,22 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 public class PostService {
 
-    private final UserRepository userRepository;
-    private final PostRepository postRepository;
+    private final UserReader userReader;
+    private final PostReader postReader;
+    private final PostStore postStore;
 
     @Transactional
-    public Long write(String email, PostWriteRequestDto postWriteRequestDto) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다."));
-        return postRepository.save(postWriteRequestDto.toEntity(user)).getId();
+    public Long write(String email, PostWriteRequestDto writeDto) {
+        User user = userReader.getUserBy(email);
+        return postStore.store(writeDto.toEntity(user)).getId();
     }
 
     @Transactional
-    public Long update(String email, Long id, PostUpdateRequestDto postUpdateRequestDto) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다."));
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 글을 찾을 수 없습니다. post_id : " + id));
-        if (user.getEmail().equals(post.getUser().getEmail())) {
-           post.update(postUpdateRequestDto.getTitle(), postUpdateRequestDto.getContent());
+    public Long update(String email, Long id, PostUpdateRequestDto updateDto) {
+        User user = userReader.getUserBy(email);
+        Post post = postReader.getPostBy(id);
+        if (isPostWriter(user, post)) {
+           post.update(updateDto.getTitle(), updateDto.getContent());
            return id;
         }
         return -1L;
@@ -41,14 +39,20 @@ public class PostService {
 
     @Transactional
     public Long delete(String email, Long id) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다."));
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 글을 찾을 수 없습니다. post_id : " + id));
-        if (user.getEmail().equals(post.getUser().getEmail())) {
+        User user = userReader.getUserBy(email);
+        Post post = postReader.getPostBy(id);
+        if (isPostWriter(user, post) || isAdmin(user)) {
             post.updateStatusToDisable();
             return id;
         }
         return -1L;
+    }
+
+    private Boolean isPostWriter(User user, Post post) {
+        return user.getEmail().equals(post.getUser().getEmail());
+    }
+
+    private Boolean isAdmin(User user) {
+        return user.getRole().equals(User.Role.ADMIN);
     }
 }
