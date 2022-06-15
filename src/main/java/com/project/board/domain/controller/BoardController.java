@@ -1,11 +1,14 @@
 package com.project.board.domain.controller;
 
 import com.project.board.domain.board.dto.BoardRequestDto;
+import com.project.board.domain.board.dto.BoardResponseDto;
 import com.project.board.domain.service.BoardService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,5 +34,11 @@ public class BoardController {
     public Long delete(@AuthenticationPrincipal UserDetailsImpl userDetails,
                        @PathVariable Long id) {
         return boardService.delete(userDetails.getUsername(), id);
+    }
+
+    @GetMapping("/api/board/{id}/post-category")
+    public List<BoardResponseDto> getBoardWithPostCategory (
+                       @PathVariable Long id) {
+        return boardService.getBoardWithPostCategory(id);
     }
 }

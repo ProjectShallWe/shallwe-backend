@@ -1,6 +1,7 @@
 package com.project.board.domain.service;
 
 import com.project.board.domain.board.dto.BoardRequestDto;
+import com.project.board.domain.board.dto.BoardResponseDto;
 import com.project.board.domain.board.web.*;
 import com.project.board.domain.user.web.User;
 import com.project.board.domain.user.web.UserReader;
@@ -8,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,5 +57,13 @@ public class BoardService {
 
     private Boolean isAdmin (User user) {
         return user.getRole().equals(User.Role.ADMIN);
+    }
+
+    public List<BoardResponseDto> getBoardWithPostCategory(Long id) {
+        List<Board> boards = boardReader.getAllBoardWithPostCategory(id);
+        List<BoardResponseDto> boardResponseDtos = boards.stream()
+                .map(b -> new BoardResponseDto(b))
+                .collect(Collectors.toList());
+        return boardResponseDtos;
     }
 }
