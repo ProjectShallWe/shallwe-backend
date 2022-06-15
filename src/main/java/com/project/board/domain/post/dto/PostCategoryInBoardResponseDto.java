@@ -5,14 +5,14 @@ import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PostCategoryResponseDto {
+public class PostCategoryInBoardResponseDto {
 
     private Long postCategoryId;
 
     private String topic;
 
     @Builder
-    public PostCategoryResponseDto(PostCategory postCategory) {
+    public PostCategoryInBoardResponseDto(PostCategory postCategory) {
         this.postCategoryId = postCategory.getId();
         this.topic = postCategory.getTopic();
     }

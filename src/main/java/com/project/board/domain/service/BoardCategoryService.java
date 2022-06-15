@@ -9,8 +9,9 @@ import com.project.board.domain.user.web.User;
 import com.project.board.domain.user.web.UserReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,6 +59,7 @@ public class BoardCategoryService {
         return user.getRole().equals(User.Role.ADMIN);
     }
 
+    @Transactional(readOnly = true)
     public List<BoardCategoryResponseDto> getAllBoardCategoryWithBoard() {
         List<BoardCategory> boardCategories = boardCategoryReader.getAllBoardCategoryWithBoard();
         List<BoardCategoryResponseDto> boardCategoryResponseDtos = boardCategories.stream()

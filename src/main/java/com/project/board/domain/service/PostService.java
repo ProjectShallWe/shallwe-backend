@@ -2,15 +2,18 @@ package com.project.board.domain.service;
 
 import com.project.board.domain.post.dto.PostUpdateRequestDto;
 import com.project.board.domain.post.dto.PostWriteRequestDto;
-import com.project.board.domain.post.web.Post;
-import com.project.board.domain.post.web.PostReader;
-import com.project.board.domain.post.web.PostStore;
+import com.project.board.domain.post.dto.PostsResponseDto;
+import com.project.board.domain.post.web.*;
 import com.project.board.domain.user.web.User;
 import com.project.board.domain.user.web.UserReader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,11 +22,13 @@ public class PostService {
     private final UserReader userReader;
     private final PostReader postReader;
     private final PostStore postStore;
+    private final PostCategoryReader postCategoryReader;
 
     @Transactional
-    public Long write(String email, PostWriteRequestDto writeDto) {
+    public Long write(String email, Long id, PostWriteRequestDto writeDto) {
         User user = userReader.getUserBy(email);
-        return postStore.store(writeDto.toEntity(user)).getId();
+        PostCategory postCategory = postCategoryReader.getPostCategoryBy(id);
+        return postStore.store(writeDto.toEntity(user, postCategory)).getId();
     }
 
     @Transactional
@@ -54,5 +59,15 @@ public class PostService {
 
     private Boolean isAdmin(User user) {
         return user.getRole().equals(User.Role.ADMIN);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostsResponseDto> getPostsInPostCategory(Long id, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<Post> posts = postReader.getPostsInPostCategory(id, pageRequest);
+        List<PostsResponseDto> postsResponseDtos = posts.stream()
+                .map(p -> new PostsResponseDto(p))
+                .collect(Collectors.toList());
+        return postsResponseDtos;
     }
 }

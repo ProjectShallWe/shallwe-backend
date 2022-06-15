@@ -10,8 +10,8 @@ import com.project.board.domain.user.web.User;
 import com.project.board.domain.user.web.UserReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor

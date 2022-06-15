@@ -1,7 +1,7 @@
 package com.project.board.domain.board.dto;
 
 import com.project.board.domain.board.web.Board;
-import com.project.board.domain.post.dto.PostCategoryResponseDto;
+import com.project.board.domain.post.dto.PostCategoryInBoardResponseDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,15 +17,14 @@ public class BoardResponseDto {
 
     private Long boardId;
     private String title;
-    private List<PostCategoryResponseDto> postCategories = new ArrayList<>();
+    private List<PostCategoryInBoardResponseDto> postCategories = new ArrayList<>();
 
     @Builder
     public BoardResponseDto(Board board) {
-        System.out.println("pass BoardResponseDto");
         this.boardId = board.getId();
         this.title = board.getTitle();
         this.postCategories = board.getPostCategories().stream()
-                .map(pc -> (new PostCategoryResponseDto(pc)))
+                .map(pc -> (new PostCategoryInBoardResponseDto(pc)))
                 .collect(Collectors.toList());
     }
 }
