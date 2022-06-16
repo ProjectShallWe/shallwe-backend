@@ -14,6 +14,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("select distinct p " +
             "from Post p " +
             "join p.postCategory pc " +
-            "where pc.id =:id")
+            "where pc.id =:id " +
+            "order by p.id desc ")
     Page<Post> findAllInPostCategory(@Param("id") Long id, Pageable pageable);
 }

@@ -12,9 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -62,12 +59,11 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostsResponseDto> getPostsInPostCategory(Long id, Integer page) {
+    public Page<PostsResponseDto> getPostsInPostCategory(Long id, Integer page) {
         PageRequest pageRequest = PageRequest.of(page, 10);
         Page<Post> posts = postReader.getPostsInPostCategory(id, pageRequest);
-        List<PostsResponseDto> postsResponseDtos = posts.stream()
-                .map(p -> new PostsResponseDto(p))
-                .collect(Collectors.toList());
+        Page<PostsResponseDto> postsResponseDtos = posts.map(
+                post -> new PostsResponseDto(post));
         return postsResponseDtos;
     }
 }
