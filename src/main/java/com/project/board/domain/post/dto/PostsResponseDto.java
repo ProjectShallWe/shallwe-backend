@@ -13,6 +13,7 @@ public class PostsResponseDto {
 
     private Long postId;
     private String title;
+    private String postCategory;
     private String nickname;
     private Long likeCount;
     private String createdAt;
@@ -20,6 +21,7 @@ public class PostsResponseDto {
     @Builder
     public PostsResponseDto (Post post) {
         this.postId = post.getId();
+        this.postCategory = post.getPostCategory().getTopic();
         this.title = post.getTitle();
         this.nickname = post.getUser().getNickname();
         this.likeCount = post.getLikeCount();
