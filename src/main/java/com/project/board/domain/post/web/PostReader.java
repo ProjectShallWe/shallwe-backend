@@ -17,8 +17,29 @@ public class PostReader {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
+    public Page<Post> getPostsInBoard(Long id, PageRequest pageRequest) {
+        return postRepository.findAllInBoard(id, pageRequest);
+    }
+
     public Page<Post> getPostsInPostCategory(Long id, PageRequest pageRequest) {
         return postRepository.findAllInPostCategory(id, pageRequest);
     }
+
+    public Page<Post> getPostsByPostTitleInBoard(Long id, String title, PageRequest pageRequest) {
+        return postRepository.findPostsByPostTitleInBoard(id, title, pageRequest);
+    }
+
+    public Page<Post> getPostsByPostContentInBoard(Long id, String content, PageRequest pageRequest) {
+        return postRepository.findPostsByPostContentInBoard(id, content, pageRequest);
+    }
+
+    public Page<Post> getPostsByPostTitleOrPostContentInBoard(Long id, String keyword, PageRequest pageRequest) {
+        return postRepository.findPostsByPostTitleOrPostContentInBoard(id, keyword, pageRequest);
+    }
+
+    public Page<Post> getPostsByUserNicknameInBoard(Long id, String keyword, PageRequest pageRequest) {
+        return postRepository.findPostsByUserNicknameInBoard(id, keyword, pageRequest);
+    }
+
 
 }

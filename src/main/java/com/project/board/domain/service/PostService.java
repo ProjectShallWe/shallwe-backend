@@ -50,12 +50,13 @@ public class PostService {
         return -1L;
     }
 
-    private Boolean isPostWriter(User user, Post post) {
-        return user.getEmail().equals(post.getUser().getEmail());
-    }
-
-    private Boolean isAdmin(User user) {
-        return user.getRole().equals(User.Role.ADMIN);
+    @Transactional(readOnly = true)
+    public Page<PostsResponseDto> getPostsInBoard(Long id, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<Post> posts = postReader.getPostsInBoard(id, pageRequest);
+        Page<PostsResponseDto> postsResponseDtos = posts.map(
+                post -> new PostsResponseDto(post));
+        return postsResponseDtos;
     }
 
     @Transactional(readOnly = true)
@@ -65,5 +66,49 @@ public class PostService {
         Page<PostsResponseDto> postsResponseDtos = posts.map(
                 post -> new PostsResponseDto(post));
         return postsResponseDtos;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostsResponseDto> getPostsByPostTitleInBoard(Long id, String title, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<Post> posts = postReader.getPostsByPostTitleInBoard(id, title, pageRequest);
+        Page<PostsResponseDto> postsResponseDtos = posts.map(
+                post -> new PostsResponseDto(post));
+        return postsResponseDtos;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostsResponseDto> getPostsByPostContentInBoard(Long id, String content, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<Post> posts = postReader.getPostsByPostContentInBoard(id, content, pageRequest);
+        Page<PostsResponseDto> postsResponseDtos = posts.map(
+                post -> new PostsResponseDto(post));
+        return postsResponseDtos;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostsResponseDto> getPostsByPostTitleOrPostContentInBoard(Long id, String keyword, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<Post> posts = postReader.getPostsByPostTitleOrPostContentInBoard(id, keyword, pageRequest);
+        Page<PostsResponseDto> postsResponseDtos = posts.map(
+                post -> new PostsResponseDto(post));
+        return postsResponseDtos;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<PostsResponseDto> getPostsByUserNicknameInBoard(Long id, String keyword, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<Post> posts = postReader.getPostsByUserNicknameInBoard(id, keyword, pageRequest);
+        Page<PostsResponseDto> postsResponseDtos = posts.map(
+                post -> new PostsResponseDto(post));
+        return postsResponseDtos;
+    }
+
+    private Boolean isPostWriter(User user, Post post) {
+        return user.getEmail().equals(post.getUser().getEmail());
+    }
+
+    private Boolean isAdmin(User user) {
+        return user.getRole().equals(User.Role.ADMIN);
     }
 }
