@@ -19,13 +19,12 @@ public class BoardService {
     private final BoardReader boardReader;
     private final BoardStore boardStore;
     private final UserReader userReader;
-    private final BoardCategoryRepository boardCategoryRepository;
+    private final BoardCategoryReader boardCategoryReader;
 
     @Transactional
     public Long open(String email, Long boardCategoryId, BoardRequestDto boardRequestDto) {
         User user = userReader.getUserBy(email);
-        BoardCategory boardCategory = boardCategoryRepository.findById(boardCategoryId)
-                .orElseThrow(() -> new IllegalArgumentException("게시판 카테고리를 찾을 수 없습니다."));
+        BoardCategory boardCategory = boardCategoryReader.getBoardCategoryBy(boardCategoryId);
         if (isAdmin(user)){
             return boardStore.store(boardRequestDto.toEntity(boardCategory)).getId();
         }

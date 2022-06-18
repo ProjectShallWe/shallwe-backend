@@ -1,7 +1,7 @@
 package com.project.board.global.security;
 
 import com.project.board.domain.user.web.User;
-import com.project.board.domain.user.web.UserRepository;
+import com.project.board.infrastructure.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

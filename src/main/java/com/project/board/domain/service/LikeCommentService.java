@@ -1,12 +1,12 @@
 package com.project.board.domain.service;
 
 import com.project.board.domain.comment.web.Comment;
-import com.project.board.domain.comment.web.CommentRepository;
+import com.project.board.infrastructure.comment.CommentRepository;
 import com.project.board.domain.like.dto.LikeCommentRequestDto;
 import com.project.board.domain.like.web.LikeComment;
-import com.project.board.domain.like.web.LikeCommentRepository;
+import com.project.board.infrastructure.like.LikeCommentRepository;
 import com.project.board.domain.user.web.User;
-import com.project.board.domain.user.web.UserRepository;
+import com.project.board.infrastructure.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

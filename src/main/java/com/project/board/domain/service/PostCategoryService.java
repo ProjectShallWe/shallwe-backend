@@ -1,13 +1,13 @@
 package com.project.board.domain.service;
 
 import com.project.board.domain.board.web.Board;
-import com.project.board.domain.board.web.BoardReader;
 import com.project.board.domain.post.dto.PostCategoryRequestDto;
 import com.project.board.domain.post.web.PostCategory;
 import com.project.board.domain.post.web.PostCategoryReader;
 import com.project.board.domain.post.web.PostCategoryStore;
 import com.project.board.domain.user.web.User;
 import com.project.board.domain.user.web.UserReader;
+import com.project.board.infrastructure.board.BoardReaderImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ public class PostCategoryService {
     private final UserReader userReader;
     private final PostCategoryReader postCategoryReader;
     private final PostCategoryStore postCategoryStore;
-    private final BoardReader boardReader;
+    private final BoardReaderImpl boardReader;
 
 
     @Transactional

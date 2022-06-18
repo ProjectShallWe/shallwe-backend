@@ -1,5 +1,6 @@
-package com.project.board.domain.user.web;
+package com.project.board.infrastructure.user;
 
+import com.project.board.domain.user.web.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -3,7 +3,7 @@ package com.project.board.global.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.project.board.domain.user.web.User;
-import com.project.board.domain.user.web.UserRepository;
+import com.project.board.infrastructure.user.UserRepository;
 import com.project.board.global.security.UserDetailsImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

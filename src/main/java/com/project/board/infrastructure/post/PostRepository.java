@@ -1,5 +1,6 @@
-package com.project.board.domain.post.web;
+package com.project.board.infrastructure.post;
 
+import com.project.board.domain.post.web.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

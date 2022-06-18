@@ -2,11 +2,11 @@ package com.project.board.domain.service;
 
 import com.project.board.domain.like.dto.LikePostRequestDto;
 import com.project.board.domain.like.web.LikePost;
-import com.project.board.domain.like.web.LikePostRepository;
+import com.project.board.infrastructure.like.LikePostRepository;
 import com.project.board.domain.post.web.Post;
-import com.project.board.domain.post.web.PostRepository;
+import com.project.board.infrastructure.post.PostRepository;
 import com.project.board.domain.user.web.User;
-import com.project.board.domain.user.web.UserRepository;
+import com.project.board.infrastructure.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
