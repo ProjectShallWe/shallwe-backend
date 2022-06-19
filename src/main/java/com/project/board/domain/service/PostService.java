@@ -2,6 +2,7 @@ package com.project.board.domain.service;
 
 import com.project.board.domain.post.dto.PostUpdateRequestDto;
 import com.project.board.domain.post.dto.PostWriteRequestDto;
+import com.project.board.domain.post.dto.PostDetailResponseDto;
 import com.project.board.domain.post.dto.PostsResponseDto;
 import com.project.board.domain.post.web.*;
 import com.project.board.domain.user.web.User;
@@ -103,6 +104,12 @@ public class PostService {
         Page<PostsResponseDto> postsResponseDtos = posts.map(
                 post -> new PostsResponseDto(post));
         return postsResponseDtos;
+    }
+
+    @Transactional(readOnly = true)
+    public PostDetailResponseDto getPostsDetail(Long id) {
+        PostDetailResponseDto postDetailResponseDto = postReader.getPostDetail(id);
+        return postDetailResponseDto;
     }
 
     private Boolean isPostWriter(User user, Post post) {

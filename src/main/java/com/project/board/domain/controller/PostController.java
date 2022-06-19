@@ -1,5 +1,6 @@
 package com.project.board.domain.controller;
 
+import com.project.board.domain.post.dto.PostDetailResponseDto;
 import com.project.board.domain.post.dto.PostUpdateRequestDto;
 import com.project.board.domain.post.dto.PostWriteRequestDto;
 import com.project.board.domain.post.dto.PostsResponseDto;
@@ -71,5 +72,10 @@ public class PostController {
         }
 
         return postService.getPostsInBoard(id, page);
+    }
+
+    @GetMapping("/api/post/{id}")
+    public PostDetailResponseDto getPostDetails(@PathVariable Long id) {
+        return postService.getPostsDetail(id);
     }
 }

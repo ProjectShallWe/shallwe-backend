@@ -1,6 +1,6 @@
 package com.project.board.domain.post.web;
 
-import com.project.board.domain.post.web.Post;
+import com.project.board.domain.post.dto.PostDetailResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -13,5 +13,5 @@ public interface PostReader {
     Page<Post> getPostsByPostContentInBoard(Long id, String content, PageRequest pageRequest);
     Page<Post> getPostsByPostTitleOrPostContentInBoard(Long id, String keyword, PageRequest pageRequest);
     Page<Post> getPostsByUserNicknameInBoard(Long id, String keyword, PageRequest pageRequest);
-
+    PostDetailResponseDto getPostDetail(Long id);
 }

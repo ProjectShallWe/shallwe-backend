@@ -1,5 +1,6 @@
 package com.project.board.infrastructure.post;
 
+import com.project.board.domain.post.dto.PostDetailResponseDto;
 import com.project.board.domain.post.web.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -69,4 +70,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findPostsByUserNicknameInBoard(@Param("id") Long id,
                                              @Param("nickname") String nickname,
                                              Pageable pageable);
+
+    @Query("select new com.project.board.domain.post.dto.PostDetailResponseDto(" +
+            "p.id, u.nickname, p.createdDate, pc.topic, " +
+            "p.likeCount, p.commentCount, " +
+            "p.title, p.content) " +
+            "from Post p " +
+            "join p.postCategory pc " +
+            "join p.user u " +
+            "where p.id =:id")
+    PostDetailResponseDto findPostDetailByPostId(@Param("id") Long id);
 }

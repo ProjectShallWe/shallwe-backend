@@ -1,18 +1,16 @@
 package com.project.board.global.util;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DateConverter {
 
-    public static String getDate(LocalDateTime localDateTime) {
-        return checkNumLength(String.valueOf(localDateTime.getMonthValue())) +
-               "-" + checkNumLength(String.valueOf(localDateTime.getDayOfMonth()));
+    public static String convertLocalDateTimeToMMdd(LocalDateTime localDateTime) {
+        return localDateTime.format(DateTimeFormatter.ofPattern("MM-dd"));
     }
 
-    private static String checkNumLength (String num) {
-        if (num.length() == 1) {
-            return "0" + num;
-        }
-        return num;
+    public static String convertLocalDateTimeFromYearToMinute(LocalDateTime localDateTime) {
+        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
+
 }

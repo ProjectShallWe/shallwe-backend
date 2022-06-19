@@ -1,7 +1,8 @@
 package com.project.board.infrastructure.post;
 
-import com.project.board.domain.post.web.PostReader;
+import com.project.board.domain.post.dto.PostDetailResponseDto;
 import com.project.board.domain.post.web.Post;
+import com.project.board.domain.post.web.PostReader;
 import com.project.board.global.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -41,6 +42,11 @@ public class PostReaderImpl implements PostReader {
 
     public Page<Post> getPostsByUserNicknameInBoard(Long id, String keyword, PageRequest pageRequest) {
         return postRepository.findPostsByUserNicknameInBoard(id, keyword, pageRequest);
+    }
+
+    @Override
+    public PostDetailResponseDto getPostDetail(Long id) {
+        return postRepository.findPostDetailByPostId(id);
     }
 
 

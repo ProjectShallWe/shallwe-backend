@@ -42,6 +42,10 @@ public class Post extends BaseEntity {
     @Column(name = "post_like_count")
     private Long likeCount;
 
+    // 댓글 갯수 저장
+    @Column(name = "post_comment_count")
+    private Long commentCount;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("user-post")
     @JoinColumn(name = "user_id")
@@ -78,6 +82,7 @@ public class Post extends BaseEntity {
         this.content = content;
         this.status = Status.ENABLE;
         this.likeCount = 0L;
+        this.commentCount = 0L;
         this.user = user;
         this.postCategory = postCategory;
         this.comments = comments;

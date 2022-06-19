@@ -1,11 +1,12 @@
 package com.project.board.domain.post.dto;
 
 import com.project.board.domain.post.web.Post;
-import com.project.board.global.util.DateConverter;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import static com.project.board.global.util.DateConverter.convertLocalDateTimeToMMdd;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,7 +17,7 @@ public class PostsResponseDto {
     private String postCategory;
     private String nickname;
     private Long likeCount;
-    private String createdAt;
+    private String createdDate;
 
     @Builder
     public PostsResponseDto (Post post) {
@@ -25,6 +26,6 @@ public class PostsResponseDto {
         this.title = post.getTitle();
         this.nickname = post.getUser().getNickname();
         this.likeCount = post.getLikeCount();
-        this.createdAt = DateConverter.getDate(post.getCreatedDate());
+        this.createdDate = convertLocalDateTimeToMMdd(post.getCreatedDate());
     }
 }
