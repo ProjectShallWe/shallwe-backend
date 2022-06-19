@@ -24,12 +24,12 @@ public class LikeComment extends BaseEntity {
     @Column(name = "like_comment_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("user-likecomment")
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("comment-likecomment")
     @JoinColumn(name = "comment_id")
     private Comment comment;

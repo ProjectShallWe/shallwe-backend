@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 public class DateConverter {
 
-
     public static String getDate(LocalDateTime localDateTime) {
         return checkNumLength(String.valueOf(localDateTime.getMonthValue())) +
                "-" + checkNumLength(String.valueOf(localDateTime.getDayOfMonth()));

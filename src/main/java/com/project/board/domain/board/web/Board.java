@@ -32,7 +32,7 @@ public class Board extends BaseEntity {
     @Column(name = "board_title")
     private String title;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("boardcategory-board")
     @JoinColumn(name = "board_category_id")
     private BoardCategory boardCategory;

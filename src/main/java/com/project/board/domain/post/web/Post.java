@@ -42,12 +42,12 @@ public class Post extends BaseEntity {
     @Column(name = "post_like_count")
     private Long likeCount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("user-post")
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("postcategory-post")
     @JoinColumn(name = "post_category_id")
     private PostCategory postCategory;
@@ -98,5 +98,13 @@ public class Post extends BaseEntity {
 
     public void updateStatusToDisable() {
         this.status = Status.ENABLE;
+    }
+
+    public void addLikeCount() {
+        likeCount += 1;
+    }
+
+    public void minusLikeCount() {
+        likeCount -= 1;
     }
 }

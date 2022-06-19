@@ -32,7 +32,7 @@ public class PostCategory extends BaseEntity {
     @Column(name = "post_category_topic")
     private String topic;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("board-postcategory")
     @JoinColumn(name = "board_id")
     private Board board;

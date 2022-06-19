@@ -37,7 +37,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             chain.doFilter(request, response);
             return;
         }
-        System.out.println("header : "+header);
+        System.out.println("header : " + header);
 
         // JWT 토큰을 검증해서 정상적인 사용자인지 확인
         // 헤더에 키가 Authorization이면 값에 Bearer 뒤에 " "를 없앰(토큰 값만 추출하기 위해)

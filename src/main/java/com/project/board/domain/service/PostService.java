@@ -63,6 +63,7 @@ public class PostService {
     public Page<PostsResponseDto> getPostsInPostCategory(Long id, Integer page) {
         PageRequest pageRequest = PageRequest.of(page, 10);
         Page<Post> posts = postReader.getPostsInPostCategory(id, pageRequest);
+        System.out.println("test");
         Page<PostsResponseDto> postsResponseDtos = posts.map(
                 post -> new PostsResponseDto(post));
         return postsResponseDtos;

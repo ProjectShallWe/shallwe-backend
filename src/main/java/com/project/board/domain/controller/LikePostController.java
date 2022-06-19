@@ -14,15 +14,16 @@ public class LikePostController {
     private final LikePostService likePostService;
 
     @PostMapping("/api/post/{postId}/like-post")
-    public Long open(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public Long like(@AuthenticationPrincipal UserDetailsImpl userDetails,
                      @PathVariable Long postId,
                      @RequestBody LikePostRequestDto likePostRequestDto) {
         return likePostService.like(userDetails.getUsername(), postId, likePostRequestDto);
     }
 
-    @DeleteMapping("/api/like-post/{likePostId}")
+    @DeleteMapping("/api/post/{postId}/like-post/{likePostId}")
     public Long cancel(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                       @PathVariable Long postId,
                        @PathVariable Long likePostId) {
-        return likePostService.cancel(userDetails.getUsername(), likePostId);
+        return likePostService.cancel(userDetails.getUsername(), postId, likePostId);
     }
 }

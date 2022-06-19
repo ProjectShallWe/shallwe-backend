@@ -21,12 +21,12 @@ public class LikePost extends BaseEntity {
     @Column(name = "like_post_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("user-likepost")
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("post-likepost")
     @JoinColumn(name = "post_id")
     private Post post;
