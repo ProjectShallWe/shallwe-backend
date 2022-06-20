@@ -1,4 +1,4 @@
-package com.project.board.domain.service;
+package com.project.board.domain.like.web;
 
 import com.project.board.domain.like.dto.LikePostRequestDto;
 import com.project.board.domain.like.web.LikePost;

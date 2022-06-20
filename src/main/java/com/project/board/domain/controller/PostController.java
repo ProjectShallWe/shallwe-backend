@@ -4,7 +4,7 @@ import com.project.board.domain.post.dto.PostDetailResponseDto;
 import com.project.board.domain.post.dto.PostUpdateRequestDto;
 import com.project.board.domain.post.dto.PostWriteRequestDto;
 import com.project.board.domain.post.dto.PostsResponseDto;
-import com.project.board.domain.service.PostService;
+import com.project.board.domain.post.web.PostService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;

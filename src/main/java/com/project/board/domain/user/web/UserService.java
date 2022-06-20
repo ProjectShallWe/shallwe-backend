@@ -1,4 +1,4 @@
-package com.project.board.domain.service;
+package com.project.board.domain.user.web;
 
 import com.project.board.domain.user.dto.UserJoinRequestDto;
 import com.project.board.domain.user.dto.UserUpdateNicknameRequestDto;

@@ -1,4 +1,4 @@
-package com.project.board.domain.service;
+package com.project.board.domain.post.web;
 
 import com.project.board.domain.post.dto.PostUpdateRequestDto;
 import com.project.board.domain.post.dto.PostWriteRequestDto;

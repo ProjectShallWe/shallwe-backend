@@ -1,9 +1,6 @@
-package com.project.board.domain.service;
+package com.project.board.domain.comment.web;
 
 import com.project.board.domain.comment.dto.*;
-import com.project.board.domain.comment.web.Comment;
-import com.project.board.domain.comment.web.CommentReader;
-import com.project.board.domain.comment.web.CommentStore;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.post.web.PostReader;
 import com.project.board.domain.user.web.User;

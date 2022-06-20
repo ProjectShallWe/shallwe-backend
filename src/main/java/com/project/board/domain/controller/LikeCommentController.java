@@ -1,7 +1,7 @@
 package com.project.board.domain.controller;
 
 import com.project.board.domain.like.dto.LikeCommentRequestDto;
-import com.project.board.domain.service.LikeCommentService;
+import com.project.board.domain.like.web.LikeCommentService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

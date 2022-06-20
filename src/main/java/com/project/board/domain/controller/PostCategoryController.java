@@ -2,7 +2,7 @@ package com.project.board.domain.controller;
 
 
 import com.project.board.domain.post.dto.PostCategoryRequestDto;
-import com.project.board.domain.service.PostCategoryService;
+import com.project.board.domain.post.web.PostCategoryService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

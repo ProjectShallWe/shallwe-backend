@@ -1,4 +1,4 @@
-package com.project.board.domain.service;
+package com.project.board.domain.board.web;
 
 import com.project.board.domain.board.dto.BoardCategoryRequestDto;
 import com.project.board.domain.board.dto.BoardCategoryResponseDto;

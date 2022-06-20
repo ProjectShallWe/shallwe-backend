@@ -1,4 +1,4 @@
-package com.project.board.domain.service;
+package com.project.board.domain.like.web;
 
 import com.project.board.domain.comment.web.Comment;
 import com.project.board.infrastructure.comment.CommentRepository;

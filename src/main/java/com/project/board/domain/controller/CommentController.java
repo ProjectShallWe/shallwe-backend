@@ -3,7 +3,7 @@ package com.project.board.domain.controller;
 import com.project.board.domain.comment.dto.CommentUpdateRequestDto;
 import com.project.board.domain.comment.dto.CommentWriteRequestDto;
 import com.project.board.domain.comment.dto.ParentCommentsResponseDto;
-import com.project.board.domain.service.CommentService;
+import com.project.board.domain.comment.web.CommentService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
