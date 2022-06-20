@@ -20,10 +20,9 @@ public class LikePostController {
         return likePostService.like(userDetails.getUsername(), postId, likePostRequestDto);
     }
 
-    @DeleteMapping("/api/post/{postId}/like-post/{likePostId}")
+    @DeleteMapping("/api/post/{postId}/like-post")
     public Long cancel(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                       @PathVariable Long postId,
-                       @PathVariable Long likePostId) {
-        return likePostService.cancel(userDetails.getUsername(), postId, likePostId);
+                       @PathVariable Long postId) {
+        return likePostService.cancel(userDetails.getUsername(), postId);
     }
 }

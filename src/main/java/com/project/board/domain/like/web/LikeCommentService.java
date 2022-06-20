@@ -33,14 +33,14 @@ public class LikeCommentService {
     }
 
     @Transactional
-    public Long cancel(String email, Long commentId, Long likeCommentId) {
+    public Long cancel(String email, Long commentId) {
         User user = userReader.getUserBy(email);
         Comment comment = commentReader.getCommentBy(commentId);
-        LikeComment likeComment = likeCommentReader.getLikeCommentBy(likeCommentId);
+        LikeComment likeComment = likeCommentReader.getLikeCommentBy(user.getId(), comment.getId());
         if(isLikeCommentWriter(user, likeComment)) {
             comment.minusLikeCount();
             likeCommentStore.delete(likeComment);
-            return likeCommentId;
+            return likeComment.getId();
         }
         return -1L;
 

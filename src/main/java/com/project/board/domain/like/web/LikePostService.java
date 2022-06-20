@@ -35,14 +35,14 @@ public class LikePostService {
     }
 
     @Transactional
-    public Long cancel(String email, Long postId, Long likePostId) {
+    public Long cancel(String email, Long postId) {
         User user = userReader.getUserBy(email);
         Post post = postReader.getPostBy(postId);
-        LikePost likePost = likePostReader.getLikePostBy(likePostId);
+        LikePost likePost = likePostReader.getLikePostBy(user.getId(), post.getId());
         if(isLikePostWriter(user, likePost)) {
             post.minusLikeCount();
             likePostStore.delete(likePost);
-            return likePostId;
+            return likePost.getId();
         }
         return -1L;
 
