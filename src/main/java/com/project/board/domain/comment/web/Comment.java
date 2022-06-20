@@ -89,4 +89,11 @@ public class Comment extends BaseEntity {
     public void updateStatusToDisable() {
         this.status = Status.DISABLE;
     }
+
+    public void addLikeCount() {
+        likeCount += 1;
+    }
+    public void minusLikeCount() {
+        likeCount -= 1;
+    }
 }

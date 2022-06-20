@@ -1,17 +1,14 @@
 package com.project.board.domain.like.web;
 
 import com.project.board.domain.like.dto.LikePostRequestDto;
-import com.project.board.domain.like.web.LikePost;
-import com.project.board.domain.like.web.LikePostReader;
-import com.project.board.domain.like.web.LikePostStore;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.post.web.PostReader;
 import com.project.board.domain.user.web.User;
 import com.project.board.domain.user.web.UserReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor

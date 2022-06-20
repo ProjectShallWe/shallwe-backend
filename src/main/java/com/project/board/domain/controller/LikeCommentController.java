@@ -20,9 +20,10 @@ public class LikeCommentController {
         return likeCommentService.like(userDetails.getUsername(), commentId, likeCommentRequestDto);
     }
 
-    @DeleteMapping("/api/like-comment/{likeCommentId}")
+    @DeleteMapping("/api/comment/{commentId}/like-comment/{likeCommentId}")
     public Long cancel(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                       @PathVariable Long commentId,
                        @PathVariable Long likeCommentId) {
-        return likeCommentService.cancel(userDetails.getUsername(), likeCommentId);
+        return likeCommentService.cancel(userDetails.getUsername(), commentId, likeCommentId);
     }
 }
