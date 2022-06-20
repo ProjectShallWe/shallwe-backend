@@ -3,11 +3,11 @@ package com.project.board.domain.service;
 import com.project.board.domain.comment.dto.*;
 import com.project.board.domain.comment.web.Comment;
 import com.project.board.domain.comment.web.CommentReader;
+import com.project.board.domain.comment.web.CommentStore;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.post.web.PostReader;
 import com.project.board.domain.user.web.User;
 import com.project.board.domain.user.web.UserReader;
-import com.project.board.infrastructure.comment.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,20 +21,25 @@ public class CommentService {
 
     private final UserReader userReader;
     private final PostReader postReader;
-    private final CommentRepository commentRepository;
     private final CommentReader commentReader;
+    private final CommentStore commentStore;
 
     @Transactional
-    public Long write(String email, Long postId, Long commentId, CommentWriteRequestDto commentWriteRequestDto) {
+    public Long writeParentComment(String email, Long postId, CommentWriteRequestDto commentWriteRequestDto) {
         User user = userReader.getUserBy(email);
         Post post = postReader.getPostBy(postId);
-        if (!(commentId == null)) {
-            Comment comment = commentReader.getCommentBy(commentId);
-            return commentRepository.save(commentWriteRequestDto.toEntity(user, post, comment.getId())).getId();
-        } else {
-            return commentRepository.save(commentWriteRequestDto.toEntity(user, post, commentId)).getId();
-        }
+        return commentStore.store(commentWriteRequestDto.toEntity(user, post, null)).getId();
+    }
 
+    @Transactional
+    public Long writeChildComment(String email, Long postId, Long commentId, CommentWriteRequestDto commentWriteRequestDto) {
+        User user = userReader.getUserBy(email);
+        Post post = postReader.getPostBy(postId);
+        Comment comment = commentReader.getCommentBy(commentId);
+        if (comment.getParentCommentId() == null) {
+            return commentStore.store(commentWriteRequestDto.toEntity(user, post, comment.getId())).getId();
+        }
+        return -1L;
     }
 
     @Transactional

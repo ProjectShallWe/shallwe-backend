@@ -17,13 +17,19 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping(value = {"/api/post/{postId}/comment/{commentId}",
-                          "/api/post/{postId}/comment"})
-    public Long write(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                      @PathVariable Long postId,
-                      @PathVariable(required = false) Long commentId,
-                      @RequestBody CommentWriteRequestDto commentWriteRequestDto) {
-        return commentService.write(userDetails.getUsername(), postId, commentId, commentWriteRequestDto);
+    @PostMapping("/api/post/{postId}/comment")
+    public Long writeParentComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                   @PathVariable Long postId,
+                                   @RequestBody CommentWriteRequestDto commentWriteRequestDto) {
+        return commentService.writeParentComment(userDetails.getUsername(), postId, commentWriteRequestDto);
+    }
+
+    @PostMapping("/api/post/{postId}/comment/{commentId}")
+    public Long writeChildComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                  @PathVariable Long postId,
+                                  @PathVariable Long commentId,
+                                  @RequestBody CommentWriteRequestDto commentWriteRequestDto) {
+        return commentService.writeChildComment(userDetails.getUsername(), postId, commentId, commentWriteRequestDto);
     }
 
     @PutMapping("/api/comment/{commentId}")
