@@ -1,6 +1,6 @@
 package com.project.board.domain.controller;
 
-import com.project.board.domain.post.dto.PostDetailResponseDto;
+import com.project.board.domain.post.dto.PostDetailsResponseDto;
 import com.project.board.domain.post.dto.PostUpdateRequestDto;
 import com.project.board.domain.post.dto.PostWriteRequestDto;
 import com.project.board.domain.post.dto.PostsResponseDto;
@@ -16,40 +16,41 @@ import static com.project.board.domain.controller.PostSearchType.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/post")
 public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/api/post-category/{id}/post")
+    @PostMapping
     public Long write(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                      @PathVariable Long id,
+                      @RequestParam("category") Long postCategoryId,
                       @RequestBody PostWriteRequestDto postWriteRequestDto) {
-        return postService.write(userDetails.getUsername(), id, postWriteRequestDto);
+        return postService.write(userDetails.getUsername(), postCategoryId, postWriteRequestDto);
     }
 
-    @PutMapping("/api/post/{id}")
+    @PutMapping("/{id}")
     public Long update(@AuthenticationPrincipal UserDetailsImpl userDetails,
                        @PathVariable Long id,
                        @RequestBody PostUpdateRequestDto postUpdateRequestDto) {
         return postService.update(userDetails.getUsername(), id, postUpdateRequestDto);
     }
 
-    @DeleteMapping("/api/post/{id}")
+    @DeleteMapping("/{id}")
     public Long delete(@AuthenticationPrincipal UserDetailsImpl userDetails,
                        @PathVariable Long id) {
         return postService.delete(userDetails.getUsername(), id);
     }
 
-    @GetMapping("/api/post-category/{id}/post")
+    @GetMapping
     public Page<PostsResponseDto> getPostsInPostCategory(
-            @PathVariable Long id,
+            @RequestParam("category") Long postCategoryId,
             @RequestParam Integer page) {
-        return postService.getPostsInPostCategory(id, page);
+        return postService.getPostsInPostCategory(postCategoryId, page);
     }
 
-    @GetMapping("/api/board/{id}/post")
+    @GetMapping("/search")
     public Page<PostsResponseDto> getPostsBySearchKeywordInBoard(
-            @PathVariable Long id,
+            @RequestParam("board") Long boardId,
             @RequestParam Integer page,
             @RequestParam(required = false) String type,
             @RequestParam(required = false) String keyword) {
@@ -59,23 +60,23 @@ public class PostController {
         }
 
         if (type.equals(TICON.stringValue)) {
-            return postService.getPostsByPostTitleOrPostContentInBoard(id, keyword, page);
+            return postService.getPostsByPostTitleOrPostContentInBoard(boardId, keyword, page);
         }
         if (type.equals(TITLE.stringValue)) {
-            return postService.getPostsByPostTitleInBoard(id, keyword, page);
+            return postService.getPostsByPostTitleInBoard(boardId, keyword, page);
         }
         if (type.equals(CONTENT.stringValue)) {
-            return postService.getPostsByPostContentInBoard(id, keyword, page);
+            return postService.getPostsByPostContentInBoard(boardId, keyword, page);
         }
         if (type.equals(NICKNAME.stringValue)) {
-            return postService.getPostsByUserNicknameInBoard(id, keyword, page);
+            return postService.getPostsByUserNicknameInBoard(boardId, keyword, page);
         }
 
-        return postService.getPostsInBoard(id, page);
+        return postService.getPostsInBoard(boardId, page);
     }
 
-    @GetMapping("/api/post/{id}")
-    public PostDetailResponseDto getPostDetails(@PathVariable Long id) {
-        return postService.getPostsDetail(id);
+    @GetMapping("/{id}")
+    public PostDetailsResponseDto getPostDetails(@PathVariable Long id) {
+        return postService.getPostDetails(id);
     }
 }

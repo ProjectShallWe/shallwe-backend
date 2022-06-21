@@ -19,7 +19,7 @@ public class ChildCommentsResponseDto {
     String content;
 
     @Builder
-    public ChildCommentsResponseDto(EntityToCommentResponseDto ETCResponseDto) {
+    public ChildCommentsResponseDto(CommentQueryDto ETCResponseDto) {
         this.commentId = ETCResponseDto.getCommentId();
         this.parentId = ETCResponseDto.getParentId();
         this.nickname = ETCResponseDto.getNickname();

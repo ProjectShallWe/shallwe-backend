@@ -22,7 +22,7 @@ public class ParentCommentsResponseDto {
     List<ChildCommentsResponseDto> childComments;
 
     @Builder
-    public ParentCommentsResponseDto(EntityToCommentResponseDto ETCResponseDto) {
+    public ParentCommentsResponseDto(CommentQueryDto ETCResponseDto) {
         this.commentId = ETCResponseDto.getCommentId();
         this.nickname = ETCResponseDto.getNickname();
         this.createdDate = convertLocalDateTimeFromYearToSecond(ETCResponseDto.getCreatedDate());

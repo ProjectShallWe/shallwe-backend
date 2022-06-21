@@ -63,7 +63,7 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public List<ParentCommentsResponseDto> getCommentsInPost(Long postId) {
-        List<EntityToCommentResponseDto> ETCResponseDtos = commentReader.getCommentsInPostByPostId(postId);
+        List<CommentQueryDto> ETCResponseDtos = commentReader.getCommentsInPostByPostId(postId);
         List<ParentCommentsResponseDto> PCResponseDtos = new ArrayList<>();
         List<ChildCommentsResponseDto> CCResponseDtos = new ArrayList<>();
 
@@ -96,7 +96,7 @@ public class CommentService {
         return user.getEmail().equals(comment.getUser().getEmail());
     }
 
-    private boolean isParentComment(List<EntityToCommentResponseDto> ETCResponseDtos, int i) {
+    private boolean isParentComment(List<CommentQueryDto> ETCResponseDtos, int i) {
         return ETCResponseDtos.get(i).getParentId() == null;
     }
 

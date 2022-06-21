@@ -1,6 +1,7 @@
 package com.project.board.infrastructure.post;
 
-import com.project.board.domain.post.dto.PostDetailResponseDto;
+import com.project.board.domain.post.dto.PostDetailsQueryDto;
+import com.project.board.domain.post.dto.PostsQueryDto;
 import com.project.board.domain.post.web.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,65 +14,81 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findById(Long id);
 
-    @Query("select distinct p " +
+    @Query("select distinct new com.project.board.domain.post.dto.PostsQueryDto(" +
+            "p.id, pc.topic, p.title, u.nickname, p.createdDate, p.likeCount) " +
             "from Post p " +
+            "join p.user u " +
             "join p.postCategory pc " +
             "join pc.board b " +
             "where b.id =:id " +
             "order by p.id desc")
-    Page<Post> findAllInBoard(@Param("id") Long id,
-                                     Pageable pageable);
+    Page<PostsQueryDto> findAllInBoard(@Param("id") Long id,
+                                       Pageable pageable);
 
-    @Query("select distinct p " +
+    @Query("select distinct new com.project.board.domain.post.dto.PostsQueryDto(" +
+            "p.id, pc.topic, p.title, u.nickname, p.createdDate, p.likeCount) " +
             "from Post p " +
+            "join p.user u " +
             "join p.postCategory pc " +
             "where pc.id =:id " +
             "order by p.id desc")
-    Page<Post> findAllInPostCategory(@Param("id") Long id,
-                                     Pageable pageable);
+    Page<PostsQueryDto> findAllInPostCategory(@Param("id") Long id,
+                                              Pageable pageable);
 
-    @Query("select distinct p from Post p " +
+    @Query("select distinct new com.project.board.domain.post.dto.PostsQueryDto(" +
+            "p.id, pc.topic, p.title, u.nickname, p.createdDate, p.likeCount) " +
+            "from Post p " +
+            "join p.user u " +
             "join p.postCategory pc " +
             "join pc.board b " +
             "where b.id =:id " +
             "and p.title like concat('%',:title,'%') " +
             "order by p.id desc")
-    Page<Post> findPostsByPostTitleInBoard(@Param("id") Long id,
-                                           @Param("title") String title,
-                                           Pageable pageable);
+    Page<PostsQueryDto> findPostsByPostTitleInBoard(@Param("id") Long id,
+                                                    @Param("title") String title,
+                                                    Pageable pageable);
 
-    @Query("select distinct p from Post p " +
+    @Query("select distinct new com.project.board.domain.post.dto.PostsQueryDto(" +
+            "p.id, pc.topic, p.title, u.nickname, p.createdDate, p.likeCount) " +
+            "from Post p " +
+            "join p.user u " +
             "join p.postCategory pc " +
             "join pc.board b " +
             "where b.id =:id " +
             "and p.content like concat('%',:content,'%') " +
             "order by p.id desc")
-    Page<Post> findPostsByPostContentInBoard(@Param("id") Long id,
-                                           @Param("content") String content,
-                                           Pageable pageable);
+    Page<PostsQueryDto> findPostsByPostContentInBoard(@Param("id") Long id,
+                                                      @Param("content") String content,
+                                                      Pageable pageable);
 
-    @Query("select distinct p from Post p " +
+    @Query("select distinct new com.project.board.domain.post.dto.PostsQueryDto(" +
+            "p.id, pc.topic, p.title, u.nickname, p.createdDate, p.likeCount) " +
+            "from Post p " +
+            "join p.user u " +
             "join p.postCategory pc " +
             "join pc.board b " +
             "where b.id =:id " +
             "and p.title like concat('%',:keyword,'%')" +
             "or p.content like concat('%',:keyword,'%') " +
             "order by p.id desc")
-    Page<Post> findPostsByPostTitleOrPostContentInBoard(@Param("id") Long id,
-                                             @Param("keyword") String keyword,
-                                             Pageable pageable);
+    Page<PostsQueryDto> findPostsByPostTitleOrPostContentInBoard(@Param("id") Long id,
+                                                                 @Param("keyword") String keyword,
+                                                                 Pageable pageable);
 
-    @Query("select distinct p from Post p " +
+    @Query("select distinct new com.project.board.domain.post.dto.PostsQueryDto(" +
+            "p.id, pc.topic, p.title, u.nickname, p.createdDate, p.likeCount) " +
+            "from Post p " +
+            "join p.user u " +
             "join p.postCategory pc " +
             "join pc.board b " +
             "where b.id =:id " +
             "and p.user.nickname like concat('%',:nickname,'%') " +
             "order by p.id desc")
-    Page<Post> findPostsByUserNicknameInBoard(@Param("id") Long id,
-                                             @Param("nickname") String nickname,
-                                             Pageable pageable);
+    Page<PostsQueryDto> findPostsByUserNicknameInBoard(@Param("id") Long id,
+                                                       @Param("nickname") String nickname,
+                                                       Pageable pageable);
 
-    @Query("select new com.project.board.domain.post.dto.PostDetailResponseDto(" +
+    @Query("select new com.project.board.domain.post.dto.PostDetailsQueryDto(" +
             "p.id, u.nickname, p.createdDate, pc.topic, " +
             "p.likeCount, p.commentCount, " +
             "p.title, p.content) " +
@@ -79,5 +96,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "join p.postCategory pc " +
             "join p.user u " +
             "where p.id =:id")
-    PostDetailResponseDto findPostDetailByPostId(@Param("id") Long id);
+    PostDetailsQueryDto findPostDetailsBy(@Param("id") Long id);
 }

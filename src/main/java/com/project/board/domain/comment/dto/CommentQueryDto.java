@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class EntityToCommentResponseDto {
+public class CommentQueryDto {
 
     Long commentId;
     Long parentId;
@@ -19,12 +19,12 @@ public class EntityToCommentResponseDto {
     String content;
 
     @Builder
-    public EntityToCommentResponseDto(Long commentId,
-                                      Long parentId,
-                                      String nickname,
-                                      LocalDateTime createdDate,
-                                      Long likeCommentCount,
-                                      String content) {
+    public CommentQueryDto(Long commentId,
+                           Long parentId,
+                           String nickname,
+                           LocalDateTime createdDate,
+                           Long likeCommentCount,
+                           String content) {
         this.commentId = commentId;
         this.parentId = parentId;
         this.nickname = nickname;
