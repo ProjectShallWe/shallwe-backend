@@ -9,20 +9,21 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/like-post")
 public class LikePostController {
 
     private final LikePostService likePostService;
 
-    @PostMapping("/api/post/{postId}/like-post")
+    @PostMapping
     public Long like(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                     @PathVariable Long postId,
+                     @RequestParam("post") Long postId,
                      @RequestBody LikePostRequestDto likePostRequestDto) {
         return likePostService.like(userDetails.getUsername(), postId, likePostRequestDto);
     }
 
-    @DeleteMapping("/api/post/{postId}/like-post")
+    @DeleteMapping
     public Long cancel(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                       @PathVariable Long postId) {
+                       @RequestParam("post") Long postId) {
         return likePostService.cancel(userDetails.getUsername(), postId);
     }
 }

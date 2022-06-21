@@ -9,20 +9,21 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/like-comment")
 public class LikeCommentController {
 
     private final LikeCommentService likeCommentService;
 
-    @PostMapping("/api/comment/{commentId}/like-comment")
+    @PostMapping
     public Long open(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                     @PathVariable Long commentId,
+                     @RequestParam("comment") Long commentId,
                      @RequestBody LikeCommentRequestDto likeCommentRequestDto) {
         return likeCommentService.like(userDetails.getUsername(), commentId, likeCommentRequestDto);
     }
 
-    @DeleteMapping("/api/comment/{commentId}/like-comment")
+    @DeleteMapping
     public Long cancel(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                       @PathVariable Long commentId) {
+                       @RequestParam("comment") Long commentId) {
         return likeCommentService.cancel(userDetails.getUsername(), commentId);
     }
 }
