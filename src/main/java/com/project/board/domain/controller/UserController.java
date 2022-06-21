@@ -11,29 +11,32 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/api/user")
+    @PostMapping
     public Long join(@RequestBody UserJoinRequestDto userJoinRequestDto) {
         return userService.join(userJoinRequestDto);
     }
 
-    @PutMapping("/api/user/nickname")
+    @PutMapping("/nickname")
     public String updateNickname(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                               @PathVariable Long id,
                                @RequestBody UserUpdateNicknameRequestDto userUpdateNicknameRequestDto) {
         return userService.updateNickname(userDetails.getUsername(), userUpdateNicknameRequestDto);
     }
 
-    @PutMapping("/api/user/password")
+    @PutMapping("/password")
     public String updatePassword(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                @RequestBody UserUpdatePasswordRequestDto userUpdatePasswordRequestDto) {
         return userService.updatePassword(userDetails.getUsername(), userUpdatePasswordRequestDto);
     }
 
-    @DeleteMapping("/api/user")
-    public String delete(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @DeleteMapping
+    public String delete(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                         @PathVariable Long id) {
         return userService.delete(userDetails.getUsername());
     }
 }
