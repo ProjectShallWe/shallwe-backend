@@ -10,27 +10,28 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/post-category")
 public class PostCategoryController {
 
     private final PostCategoryService postCategoryService;
 
-    @PostMapping("/api/board/{boardId}/post-category")
-    public Long open(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                     @PathVariable Long boardId,
+    @PostMapping
+    public Long create(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                     @RequestParam("board") Long boardId,
                      @RequestBody PostCategoryRequestDto postCategoryRequestDto) {
-        return postCategoryService.open(userDetails.getUsername(), boardId, postCategoryRequestDto);
+        return postCategoryService.create(userDetails.getUsername(), boardId, postCategoryRequestDto);
     }
 
-    @PutMapping("/api/post-category/{postCategoryId}")
+    @PutMapping("/{id}")
     public Long update(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                       @PathVariable Long postCategoryId,
+                       @PathVariable Long id,
                        @RequestBody PostCategoryRequestDto postCategoryRequestDto) {
-        return postCategoryService.update(userDetails.getUsername(), postCategoryId, postCategoryRequestDto);
+        return postCategoryService.update(userDetails.getUsername(), id, postCategoryRequestDto);
     }
 
-    @DeleteMapping("/api/post-category/{postCategoryId}")
+    @DeleteMapping("/{id}")
     public Long delete(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                       @PathVariable Long postCategoryId) {
-        return postCategoryService.delete(userDetails.getUsername(), postCategoryId);
+                       @PathVariable Long id) {
+        return postCategoryService.delete(userDetails.getUsername(), id);
     }
 }
