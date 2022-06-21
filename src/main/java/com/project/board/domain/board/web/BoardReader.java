@@ -5,5 +5,5 @@ import java.util.List;
 public interface BoardReader {
 
     Board getBoardBy(Long id);
-    List<Board> getAllBoardWithPostCategory(Long id);
+    List<Board> getBoardWithPostCategories(Long id);
 }

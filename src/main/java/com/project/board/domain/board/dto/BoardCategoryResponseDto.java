@@ -22,7 +22,7 @@ public class BoardCategoryResponseDto {
         this.postCategoryId = boardCategory.getId();
         this.topic = boardCategory.getTopic();
         this.boards = boardCategory.getBoards().stream()
-                .map(b -> (new BoardInBoardCategoryResponseDto(b)))
+                .map(BoardInBoardCategoryResponseDto::new)
                 .collect(Collectors.toList());
     }
 }

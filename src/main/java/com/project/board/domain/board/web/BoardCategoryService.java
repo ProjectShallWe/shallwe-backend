@@ -56,7 +56,7 @@ public class BoardCategoryService {
     public List<BoardCategoryResponseDto> getBoardCategoriesWithBoards() {
         List<BoardCategory> boardCategories = boardCategoryReader.getBoardCategoriesWithBoards();
         List<BoardCategoryResponseDto> boardCategoryResponseDtos = boardCategories.stream()
-                .map(bc -> new BoardCategoryResponseDto(bc))
+                .map(BoardCategoryResponseDto::new)
                 .collect(Collectors.toList());
         return boardCategoryResponseDtos;
     }

@@ -13,5 +13,5 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
             "join fetch b.postCategories pc " +
             "where b.id =:id " +
             "order by b.id asc, pc.id asc")
-    List<Board> findAllWithPostCategory(@Param("id") Long id);
+    List<Board> findAllWithPostCategories(@Param("id") Long id);
 }

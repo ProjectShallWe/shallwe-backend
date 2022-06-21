@@ -24,7 +24,7 @@ public class BoardResponseDto {
         this.boardId = board.getId();
         this.title = board.getTitle();
         this.postCategories = board.getPostCategories().stream()
-                .map(pc -> (new PostCategoryInBoardResponseDto(pc)))
+                .map(PostCategoryInBoardResponseDto::new)
                 .collect(Collectors.toList());
     }
 }

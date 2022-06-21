@@ -12,33 +12,34 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/board")
 public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping("/api/board-category/{boardCategoryId}/board")
-    public Long open(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                     @PathVariable Long boardCategoryId,
+    @PostMapping
+    public Long create(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                     @RequestParam("category") Long boardCategoryId,
                      @RequestBody BoardRequestDto boardRequestDto) {
-        return boardService.open(userDetails.getUsername(), boardCategoryId, boardRequestDto);
+        return boardService.create(userDetails.getUsername(), boardCategoryId, boardRequestDto);
     }
 
-    @PutMapping("/api/board/{id}")
+    @PutMapping("/{id}")
     public Long update(@AuthenticationPrincipal UserDetailsImpl userDetails,
                        @PathVariable Long id,
                        @RequestBody BoardRequestDto boardRequestDto) {
         return boardService.update(userDetails.getUsername(), id, boardRequestDto);
     }
 
-    @DeleteMapping("/api/board/{id}")
+    @DeleteMapping("/{id}")
     public Long delete(@AuthenticationPrincipal UserDetailsImpl userDetails,
                        @PathVariable Long id) {
         return boardService.delete(userDetails.getUsername(), id);
     }
 
-    @GetMapping("/api/board/{id}/post-category")
-    public List<BoardResponseDto> getBoardWithPostCategory (
+    @GetMapping("/{id}")
+    public List<BoardResponseDto> getBoardWithPostCategories (
                        @PathVariable Long id) {
-        return boardService.getBoardWithPostCategory(id);
+        return boardService.getBoardWithPostCategories(id);
     }
 }
