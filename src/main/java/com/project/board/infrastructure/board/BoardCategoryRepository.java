@@ -8,9 +8,8 @@ import java.util.List;
 
 public interface BoardCategoryRepository extends JpaRepository<BoardCategory, Long> {
 
-    @Query("select distinct bc " +
-            "from BoardCategory bc " +
+    @Query("select distinct bc from BoardCategory bc " +
             "join fetch bc.boards b " +
             "order by bc.id asc, b.id asc")
-    List<BoardCategory> findAllWithBoard();
+    List<BoardCategory> findAllWithBoards();
 }

@@ -19,7 +19,7 @@ public class BoardCategoryReaderImpl implements BoardCategoryReader {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public List<BoardCategory> getAllBoardCategoryWithBoard() {
-        return boardCategoryRepository.findAllWithBoard();
+    public List<BoardCategory> getBoardCategoriesWithBoards() {
+        return boardCategoryRepository.findAllWithBoards();
     }
 }

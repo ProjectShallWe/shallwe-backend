@@ -33,7 +33,7 @@ public class CommentService {
         User user = userReader.getUserBy(email);
         Post post = postReader.getPostBy(postId);
         Comment comment = commentReader.getCommentBy(commentId);
-        if (comment.getParentCommentId() == null) {
+        if (isChildComment(comment)) {
             return commentStore.store(commentWriteRequestDto.toEntity(user, post, comment.getId())).getId();
         }
         return -1L;
@@ -86,6 +86,10 @@ public class CommentService {
         }
 
         return PCResponseDtos;
+    }
+
+    private boolean isChildComment(Comment comment) {
+        return comment.getParentCommentId() == null;
     }
 
     private boolean isCommentWriter(User user, Comment comment) {

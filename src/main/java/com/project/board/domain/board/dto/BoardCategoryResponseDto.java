@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,7 @@ public class BoardCategoryResponseDto {
 
     private Long postCategoryId;
     private String topic;
-    private List<BoardInBoardCategoryResponseDto> boards = new ArrayList<>();
+    private List<BoardInBoardCategoryResponseDto> boards;
 
     @Builder
     public BoardCategoryResponseDto(BoardCategory boardCategory) {
