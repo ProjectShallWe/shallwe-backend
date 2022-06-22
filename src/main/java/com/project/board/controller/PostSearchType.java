@@ -1,4 +1,4 @@
-package com.project.board.domain.controller;
+package com.project.board.controller;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

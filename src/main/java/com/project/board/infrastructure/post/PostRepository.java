@@ -2,6 +2,7 @@ package com.project.board.infrastructure.post;
 
 import com.project.board.domain.post.dto.PostDetailsQueryDto;
 import com.project.board.domain.post.dto.PostsQueryDto;
+import com.project.board.domain.post.dto.RecommendPostsInBoardQueryDto;
 import com.project.board.domain.post.web.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
@@ -96,5 +98,21 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "join p.postCategory pc " +
             "join p.user u " +
             "where p.id =:id")
-    PostDetailsQueryDto findPostDetailsBy(@Param("id") Long id);
+    Optional<PostDetailsQueryDto> findPostDetailsBy(@Param("id") Long id);
+
+    @Query("select new com.project.board.domain.post.dto.RecommendPostsInBoardQueryDto(" +
+            "p.id, pc.topic, p.title, p.commentCount) " +
+            "from Post p " +
+            "join p.postCategory pc " +
+            "join pc.board b " +
+            "where b.id = :id " +
+            "and p.createdDate < :now " +
+            "and p.createdDate > :twelveHoursAgo " +
+            "order by (p.likeCount * :likeRatios + p.commentCount * :commentRatios) desc ")
+    Page<RecommendPostsInBoardQueryDto> findRecommendPostsInBoard(@Param("id") Long id,
+                                                                  @Param("now") LocalDateTime now,
+                                                                  @Param("twelveHoursAgo") LocalDateTime twelveHoursAgo,
+                                                                  @Param("likeRatios") Long likeRatios,
+                                                                  @Param("commentRatios") Long commentRatios,
+                                                                  Pageable pageable);
 }

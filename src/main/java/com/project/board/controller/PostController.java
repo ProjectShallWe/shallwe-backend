@@ -1,9 +1,6 @@
-package com.project.board.domain.controller;
+package com.project.board.controller;
 
-import com.project.board.domain.post.dto.PostDetailsResponseDto;
-import com.project.board.domain.post.dto.PostUpdateRequestDto;
-import com.project.board.domain.post.dto.PostWriteRequestDto;
-import com.project.board.domain.post.dto.PostsResponseDto;
+import com.project.board.domain.post.dto.*;
 import com.project.board.domain.post.web.PostService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import static com.project.board.domain.controller.PostSearchType.*;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -59,16 +56,16 @@ public class PostController {
             type = "";
         }
 
-        if (type.equals(TICON.stringValue)) {
+        if (type.equals(PostSearchType.TICON.stringValue)) {
             return postService.getPostsByPostTitleOrPostContentInBoard(boardId, keyword, page);
         }
-        if (type.equals(TITLE.stringValue)) {
+        if (type.equals(PostSearchType.TITLE.stringValue)) {
             return postService.getPostsByPostTitleInBoard(boardId, keyword, page);
         }
-        if (type.equals(CONTENT.stringValue)) {
+        if (type.equals(PostSearchType.CONTENT.stringValue)) {
             return postService.getPostsByPostContentInBoard(boardId, keyword, page);
         }
-        if (type.equals(NICKNAME.stringValue)) {
+        if (type.equals(PostSearchType.NICKNAME.stringValue)) {
             return postService.getPostsByUserNicknameInBoard(boardId, keyword, page);
         }
 
@@ -78,5 +75,10 @@ public class PostController {
     @GetMapping("/{id}")
     public PostDetailsResponseDto getPostDetails(@PathVariable Long id) {
         return postService.getPostDetails(id);
+    }
+
+    @GetMapping("/recommend")
+    public List<RecommendPostsInBoardResponseDto> getRecommendPostsInBoard(@RequestParam("board") Long boardId) {
+        return postService.getRecommendPostsInBoard(boardId);
     }
 }

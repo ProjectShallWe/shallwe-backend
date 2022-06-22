@@ -9,6 +9,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.project.board.global.util.UserRoleChecker.isAdmin;
 
 @Service
@@ -19,6 +23,9 @@ public class PostService {
     private final PostCategoryReader postCategoryReader;
     private final PostReader postReader;
     private final PostStore postStore;
+
+    public final static Long LIKE_WEIGHTED_VALUE = 3L;
+    public final static Long COMMENT_WEIGHTED_VALUE = 7L;
 
     @Transactional
     public Long write(String email, Long postCategoryId, PostWriteRequestDto writeDto) {
@@ -109,6 +116,19 @@ public class PostService {
         PostDetailsResponseDto postDetailsResponseDtos
                 = new PostDetailsResponseDto(postDetailsQueryDto);
         return postDetailsResponseDtos;
+    }
+
+    @Transactional(readOnly = true)
+    public List<RecommendPostsInBoardResponseDto> getRecommendPostsInBoard(Long id) {
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        Page<RecommendPostsInBoardQueryDto> queryDtos
+                = postReader.getRecommendPostsInBoard(id,
+                LocalDateTime.now(), LocalDateTime.now().minusHours(12),
+                LIKE_WEIGHTED_VALUE, COMMENT_WEIGHTED_VALUE, pageRequest);
+        List<RecommendPostsInBoardResponseDto> responseDtos = queryDtos.stream()
+                .map(RecommendPostsInBoardResponseDto::new)
+                .collect(Collectors.toList());
+        return responseDtos;
     }
 
     private Boolean isPostWriter(User user, Post post) {

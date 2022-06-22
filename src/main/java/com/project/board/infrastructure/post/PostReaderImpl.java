@@ -2,6 +2,7 @@ package com.project.board.infrastructure.post;
 
 import com.project.board.domain.post.dto.PostDetailsQueryDto;
 import com.project.board.domain.post.dto.PostsQueryDto;
+import com.project.board.domain.post.dto.RecommendPostsInBoardQueryDto;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.post.web.PostReader;
 import com.project.board.global.exception.EntityNotFoundException;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -47,7 +50,15 @@ public class PostReaderImpl implements PostReader {
 
     @Override
     public PostDetailsQueryDto getPostDetails(Long id) {
-        return postRepository.findPostDetailsBy(id);
+        return postRepository.findPostDetailsBy(id)
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public Page<RecommendPostsInBoardQueryDto> getRecommendPostsInBoard(Long id,
+                                                                        LocalDateTime now, LocalDateTime twelveHoursAgo,
+                                                                        Long likeRatio, Long commentRatio,
+                                                                        PageRequest pageRequest) {
+        return postRepository.findRecommendPostsInBoard(id, now, twelveHoursAgo, likeRatio, commentRatio, pageRequest);
     }
 
 

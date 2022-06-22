@@ -1,4 +1,4 @@
-package com.project.board.domain.controller;
+package com.project.board.controller;
 
 import com.project.board.domain.like.dto.LikeCommentRequestDto;
 import com.project.board.domain.like.web.LikeCommentService;

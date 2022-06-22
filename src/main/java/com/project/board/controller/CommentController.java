@@ -1,4 +1,4 @@
-package com.project.board.domain.controller;
+package com.project.board.controller;
 
 import com.project.board.domain.comment.dto.CommentUpdateRequestDto;
 import com.project.board.domain.comment.dto.CommentWriteRequestDto;
