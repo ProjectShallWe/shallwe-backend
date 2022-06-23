@@ -1,6 +1,9 @@
 package com.project.board.controller;
 
-import com.project.board.domain.post.dto.*;
+import com.project.board.domain.post.dto.PostDetailsResponseDto;
+import com.project.board.domain.post.dto.PostUpdateRequestDto;
+import com.project.board.domain.post.dto.PostWriteRequestDto;
+import com.project.board.domain.post.dto.PostsResponseDto;
 import com.project.board.domain.post.web.PostService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -75,10 +76,5 @@ public class PostController {
     @GetMapping("/{id}")
     public PostDetailsResponseDto getPostDetails(@PathVariable Long id) {
         return postService.getPostDetails(id);
-    }
-
-    @GetMapping("/recommend")
-    public List<RecommendPostsInBoardResponseDto> getRecommendPostsInBoard(@RequestParam("board") Long boardId) {
-        return postService.getRecommendPostsInBoard(boardId);
     }
 }
