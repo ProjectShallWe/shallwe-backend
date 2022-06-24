@@ -1,4 +1,4 @@
-package com.project.board.global;
+package com.project.board.global.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurerSupport;

@@ -3,14 +3,11 @@ package com.project.board.domain.user.web;
 import com.project.board.domain.user.dto.UserJoinRequestDto;
 import com.project.board.domain.user.dto.UserUpdateNicknameRequestDto;
 import com.project.board.domain.user.dto.UserUpdatePasswordRequestDto;
-import com.project.board.domain.user.web.User;
-import com.project.board.domain.user.web.UserReader;
-import com.project.board.domain.user.web.UserStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor

@@ -79,7 +79,7 @@ public class CommentService {
 
         for (int i = 0; i < PCResponseDtos.size(); i++) {
             for (int j = 0; j < CCResponseDtos.size(); j++) {
-                if (isThisCommentChilds(PCResponseDtos, CCResponseDtos, i, j)) {
+                if (isThisCommentChildren(PCResponseDtos, CCResponseDtos, i, j)) {
                     PCResponseDtos.get(i).getChildComments().add(CCResponseDtos.get(j));
                 }
             }
@@ -100,7 +100,7 @@ public class CommentService {
         return ETCResponseDtos.get(i).getParentId() == null;
     }
 
-    private boolean isThisCommentChilds(List<ParentCommentsResponseDto> PCResponseDtos,
+    private boolean isThisCommentChildren(List<ParentCommentsResponseDto> PCResponseDtos,
                                     List<ChildCommentsResponseDto> CCResponseDtos,
                                     int i, int j) {
         return PCResponseDtos.get(i).getCommentId().equals(CCResponseDtos.get(j).getParentId());
