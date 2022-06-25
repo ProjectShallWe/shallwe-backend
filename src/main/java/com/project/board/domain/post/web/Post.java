@@ -3,6 +3,7 @@ package com.project.board.domain.post.web;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.board.domain.comment.web.Comment;
+import com.project.board.domain.file.PostFile;
 import com.project.board.domain.like.web.LikePost;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.audit.BaseEntity;
@@ -57,6 +58,10 @@ public class Post extends BaseEntity {
     private PostCategory postCategory;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    @JsonBackReference("postfile-post")
+    private List<PostFile> postFiles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     @JsonManagedReference("post-comment")
     private List<Comment> comments = new ArrayList<>();
 
@@ -76,7 +81,7 @@ public class Post extends BaseEntity {
     @Builder
     public Post(Long id, String title, String content,
                 User user, PostCategory postCategory,
-                List<Comment> comments, List<LikePost> likePosts) {
+                List<PostFile> postFiles, List<Comment> comments, List<LikePost> likePosts) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -85,6 +90,7 @@ public class Post extends BaseEntity {
         this.commentCount = 0L;
         this.user = user;
         this.postCategory = postCategory;
+        this.postFiles = postFiles;
         this.comments = comments;
         this.likePosts = likePosts;
     }
@@ -102,7 +108,7 @@ public class Post extends BaseEntity {
     }
 
     public void updateStatusToDisable() {
-        this.status = Status.ENABLE;
+        this.status = Status.DISABLE;
     }
 
     public void addLikeCount() {

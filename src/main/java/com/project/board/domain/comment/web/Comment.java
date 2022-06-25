@@ -2,6 +2,7 @@ package com.project.board.domain.comment.web;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.project.board.domain.file.CommentFile;
 import com.project.board.domain.like.web.LikeComment;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.user.web.User;
@@ -52,6 +53,10 @@ public class Comment extends BaseEntity {
     private Post post;
 
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
+    @JsonBackReference("commentfile-comment")
+    private List<CommentFile> commentFiles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
     @JsonManagedReference("comment-likecomment")
     private List<LikeComment> likeComments = new ArrayList<>();
 
@@ -67,6 +72,7 @@ public class Comment extends BaseEntity {
     @Builder
     public Comment(Long id, String content,
                    Long parentCommentId, User user, Post post,
+                   List<CommentFile> comments,
                    List<LikeComment> likeComments) {
         this.id = id;
         this.content = content;
@@ -75,6 +81,7 @@ public class Comment extends BaseEntity {
         this.parentCommentId = parentCommentId;
         this.user = user;
         this.post = post;
+        this.commentFiles = comments;
         this.likeComments = likeComments;
     }
 
