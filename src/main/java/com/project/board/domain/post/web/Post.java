@@ -61,7 +61,7 @@ public class Post extends BaseEntity {
     @JsonBackReference("postfile-post")
     private List<PostFile> postFiles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference("post-comment")
     private List<Comment> comments = new ArrayList<>();
 
