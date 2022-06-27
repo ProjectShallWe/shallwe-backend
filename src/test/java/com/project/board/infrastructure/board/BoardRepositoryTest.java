@@ -23,16 +23,13 @@ class BoardRepositoryTest {
     void findAllWithPostCategories() {
         //given
         Board board1 = Board.builder()
-                .id(1L)
                 .title("농구")
                 .build();
         PostCategory postCategory1 = PostCategory.builder()
-                .id(1L)
                 .topic("국내 농구")
                 .board(board1)
                 .build();
         PostCategory postCategory2 = PostCategory.builder()
-                .id(2L)
                 .topic("해외 농구")
                 .board(board1)
                 .build();

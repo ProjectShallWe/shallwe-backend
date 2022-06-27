@@ -20,7 +20,7 @@ public class LikeCommentReaderImpl implements LikeCommentReader {
 
     @Override
     public LikeComment getLikeCommentBy(Long userId, Long commentId) {
-        return likeCommentRepository.findByUserIdAndPostId(userId, commentId)
+        return likeCommentRepository.findByUserIdAndCommentId(userId, commentId)
                 .orElseThrow(EntityNotFoundException::new);
 
     }

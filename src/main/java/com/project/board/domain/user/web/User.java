@@ -50,9 +50,9 @@ public class User extends BaseEntity {
     @Column(name = "user_status")
     private Status status;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference("user-post")
-    private final List<Post> posts = new ArrayList<>();
+    private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonManagedReference("user-likepost")
@@ -87,7 +87,7 @@ public class User extends BaseEntity {
 
     @Builder
     public User(Long id, String email, String password,
-                String nickname, List<LikePost> likePosts,
+                String nickname, List<Post> posts, List<LikePost> likePosts,
                 List<Comment> comments, List<LikeComment> likeComments) {
         this.id = id;
         this.email = email;
@@ -95,10 +95,13 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         this.role = Role.USER;
         this.status = Status.ACTIVE;
+        this.posts = posts;
         this.likePosts = likePosts;
         this.comments = comments;
         this.likeComments = likeComments;
     }
+
+
 
     public void updateNickname(String nickname) {
         if (StringUtils.isEmpty(nickname)) throw new InvalidParamException("User.nickname");

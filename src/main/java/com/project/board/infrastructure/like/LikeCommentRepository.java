@@ -11,6 +11,6 @@ public interface LikeCommentRepository extends JpaRepository<LikeComment, Long> 
     @Query("select lc from LikeComment lc " +
             "where lc.user.id =:userId " +
             "and lc.comment.id =:commentId")
-    Optional<LikeComment> findByUserIdAndPostId(@Param("userId") Long userId,
+    Optional<LikeComment> findByUserIdAndCommentId(@Param("userId") Long userId,
                                            @Param("commentId") Long commentId);
 }

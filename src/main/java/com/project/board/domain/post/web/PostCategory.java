@@ -37,7 +37,7 @@ public class PostCategory extends BaseEntity {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    @OneToMany(mappedBy = "postCategory", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "postCategory", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference("postcategory-post")
     private List<Post> posts = new ArrayList<>();
 

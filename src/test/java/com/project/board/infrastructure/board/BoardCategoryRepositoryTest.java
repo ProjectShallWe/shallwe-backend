@@ -23,17 +23,14 @@ class BoardCategoryRepositoryTest {
     void findAllWithBoards() {
         //given
         BoardCategory boardCategory1 = BoardCategory.builder()
-                .id(1L)
                 .topic("스포츠 카테고리")
                 .boards(new ArrayList<>())
                 .build();
         Board board1 = Board.builder()
-                .id(1L)
                 .title("농구")
                 .boardCategory(boardCategory1)
                 .build();
         Board board2 = Board.builder()
-                .id(2L)
                 .title("축구")
                 .boardCategory(boardCategory1)
                 .build();

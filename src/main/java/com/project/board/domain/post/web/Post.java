@@ -47,12 +47,12 @@ public class Post extends BaseEntity {
     @Column(name = "post_comment_count")
     private Long commentCount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonBackReference("user-post")
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonBackReference("postcategory-post")
     @JoinColumn(name = "post_category_id")
     private PostCategory postCategory;
