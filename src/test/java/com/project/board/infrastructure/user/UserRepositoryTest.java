@@ -8,6 +8,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Optional;
 
+import static com.project.board.infrastructure.repositoryFixture.UserFixture.createUser1;
+
 @DataJpaTest
 class UserRepositoryTest {
 
@@ -17,11 +19,8 @@ class UserRepositoryTest {
     @Test
     void findByEmail() {
         //given
-        User user = User.builder()
-                .email("google1234@gmail.com")
-                .password("1234")
-                .nickname("구글1234")
-                .build();
+        User user = createUser1();
+
         User savedUser = userRepository.save(user);
 
         //when

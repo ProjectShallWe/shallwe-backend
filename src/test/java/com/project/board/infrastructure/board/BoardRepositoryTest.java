@@ -10,6 +10,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 
+import static com.project.board.infrastructure.repositoryFixture.BoardFixture.createBoard1;
+import static com.project.board.infrastructure.repositoryFixture.PostCategoryFixture.createPostCategory1;
+import static com.project.board.infrastructure.repositoryFixture.PostCategoryFixture.createPostCategory2;
+
 @DataJpaTest
 class BoardRepositoryTest {
 
@@ -22,18 +26,11 @@ class BoardRepositoryTest {
     @Test
     void findAllWithPostCategories() {
         //given
-        Board board1 = Board.builder()
-                .title("농구")
-                .build();
-        PostCategory postCategory1 = PostCategory.builder()
-                .topic("국내 농구")
-                .board(board1)
-                .build();
-        PostCategory postCategory2 = PostCategory.builder()
-                .topic("해외 농구")
-                .board(board1)
-                .build();
-        Board savedBoard1 = boardRepository.save(board1);
+        Board board = createBoard1();
+        PostCategory postCategory1 = createPostCategory1(board);
+        PostCategory postCategory2 = createPostCategory2(board);
+
+        Board savedBoard = boardRepository.save(board);
         PostCategory savedPostCategory1 = postCategoryRepository.save(postCategory1);
         PostCategory savedPostCategory2 = postCategoryRepository.save(postCategory2);
 
@@ -41,8 +38,8 @@ class BoardRepositoryTest {
         List<Board> savedBoards = boardRepository.findAllWithPostCategories(1L);
 
         //then
-        Assertions.assertThat(savedBoards.get(0).getId()).isEqualTo(savedBoard1.getId());
-        Assertions.assertThat(savedBoards.get(0).getTitle()).isEqualTo(savedBoard1.getTitle());
+        Assertions.assertThat(savedBoards.get(0).getId()).isEqualTo(savedBoard.getId());
+        Assertions.assertThat(savedBoards.get(0).getTitle()).isEqualTo(savedBoard.getTitle());
         Assertions.assertThat(savedPostCategory1.getBoard().getId()).isEqualTo(savedBoards.get(0).getId());
         Assertions.assertThat(savedPostCategory1.getBoard().getTitle()).isEqualTo(savedBoards.get(0).getTitle());
         Assertions.assertThat(savedPostCategory2.getBoard().getId()).isEqualTo(savedBoards.get(0).getId());

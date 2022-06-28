@@ -5,6 +5,7 @@ import com.project.board.domain.post.web.Post;
 import com.project.board.domain.post.web.PostCategory;
 import com.project.board.domain.user.web.User;
 import com.project.board.infrastructure.post.PostRepository;
+import com.project.board.infrastructure.repositoryFixture.LikePostFixture;
 import com.project.board.infrastructure.user.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Optional;
+
+import static com.project.board.infrastructure.repositoryFixture.PostCategoryFixture.createPostCategory1;
+import static com.project.board.infrastructure.repositoryFixture.PostFixture.createPost1;
+import static com.project.board.infrastructure.repositoryFixture.UserFixture.createUser1;
+import static com.project.board.infrastructure.repositoryFixture.UserFixture.createUser2;
 
 @DataJpaTest
 class LikePostRepositoryTest {
@@ -28,29 +34,12 @@ class LikePostRepositoryTest {
     @Test
     void findByUserIdAndPostId() {
         //given
-        User user1 = User.builder()
-                .email("google1234@gmail.com")
-                .password("1234")
-                .nickname("구글1234")
-                .build();
-        User user2 = User.builder()
-                .email("google2345@gmail.com")
-                .password("2345")
-                .nickname("구글2345")
-                .build();
-        PostCategory postCategory = PostCategory.builder()
-                .topic("국내 농구")
-                .build();
-        Post post = Post.builder()
-                .title("농구 잘하는 법")
-                .content("1. 농구공을 잘 던진다.")
-                .user(user1)
-                .postCategory(postCategory)
-                .build();
-        LikePost likePost = LikePost.builder()
-                .user(user2)
-                .post(post)
-                .build();
+        User user1 = createUser1();
+        User user2 = createUser2();
+        PostCategory postCategory = createPostCategory1();
+        Post post = createPost1(user1, postCategory);
+        LikePost likePost = LikePostFixture.createLikePost(user2, post);
+
         User savedUser1 = userRepository.save(user1);
         User savedUser2 = userRepository.save(user2);
         Post savedPost = postRepository.save(post);

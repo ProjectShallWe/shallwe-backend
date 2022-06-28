@@ -6,6 +6,8 @@ import com.project.board.domain.post.web.Post;
 import com.project.board.domain.post.web.PostCategory;
 import com.project.board.domain.user.web.User;
 import com.project.board.infrastructure.comment.CommentRepository;
+import com.project.board.infrastructure.repositoryFixture.CommentFixture;
+import com.project.board.infrastructure.repositoryFixture.PostFixture;
 import com.project.board.infrastructure.user.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Optional;
+
+import static com.project.board.infrastructure.repositoryFixture.LikeCommentFixture.createLikeComment;
+import static com.project.board.infrastructure.repositoryFixture.PostCategoryFixture.createPostCategory1;
+import static com.project.board.infrastructure.repositoryFixture.UserFixture.createUser1;
+import static com.project.board.infrastructure.repositoryFixture.UserFixture.createUser2;
 
 @DataJpaTest
 class LikeCommentRepositoryTest {
@@ -29,35 +36,13 @@ class LikeCommentRepositoryTest {
     @Test
     void findByUserIdAndPostId() {
         //given
-        User user1 = User.builder()
-                .email("google1234@gmail.com")
-                .password("1234")
-                .nickname("구글1234")
-                .build();
-        User user2 = User.builder()
-                .email("google2345@gmail.com")
-                .password("2345")
-                .nickname("구글2345")
-                .build();
-        PostCategory postCategory = PostCategory.builder()
-                .topic("국내 농구")
-                .build();
-        Post post = Post.builder()
-                .title("농구 잘하는 법")
-                .content("1. 농구공을 잘 던진다.")
-                .user(user1)
-                .postCategory(postCategory)
-                .build();
-        Comment comment = Comment.builder()
-                .user(user1)
-                .post(post)
-                .parentCommentId(null)
-                .content("농구공을 어떻게 잘 던지는데요?")
-                .build();
-        LikeComment likeComment = LikeComment.builder()
-                .user(user2)
-                .comment(comment)
-                .build();
+        User user1 = createUser1();
+        User user2 = createUser2();
+        PostCategory postCategory = createPostCategory1();
+        Post post = PostFixture.createPost1(user1, postCategory);
+        Comment comment = CommentFixture.createComment(user2, post);
+        LikeComment likeComment = createLikeComment(user2, comment);
+
         User savedUser1 = userRepository.save(user1);
         User savedUser2 = userRepository.save(user2);
         Comment savedComment = commentRepository.save(comment);
