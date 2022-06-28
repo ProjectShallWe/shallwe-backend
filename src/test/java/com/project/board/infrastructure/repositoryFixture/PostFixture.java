@@ -13,4 +13,12 @@ public class PostFixture {
                 .postCategory(postCategory)
                 .build();
     }
+
+    public static Post createPost1(User user) {
+        return Post.builder()
+                .title("농구 잘하는 법")
+                .content("1. 농구공을 잘 던진다.")
+                .user(user)
+                .build();
+    }
 }

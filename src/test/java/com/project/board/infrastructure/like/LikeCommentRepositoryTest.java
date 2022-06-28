@@ -40,7 +40,7 @@ class LikeCommentRepositoryTest {
         User user2 = createUser2();
         PostCategory postCategory = createPostCategory1();
         Post post = PostFixture.createPost1(user1, postCategory);
-        Comment comment = CommentFixture.createComment(user2, post);
+        Comment comment = CommentFixture.createComment1(user2, post);
         LikeComment likeComment = createLikeComment(user2, comment);
 
         User savedUser1 = userRepository.save(user1);
