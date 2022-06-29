@@ -47,12 +47,12 @@ public class Post extends BaseEntity {
     @Column(name = "post_comment_count")
     private Long commentCount;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("user-post")
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference("postcategory-post")
     @JoinColumn(name = "post_category_id")
     private PostCategory postCategory;
@@ -61,7 +61,7 @@ public class Post extends BaseEntity {
     @JsonBackReference("postfile-post")
     private List<PostFile> postFiles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     @JsonManagedReference("post-comment")
     private List<Comment> comments = new ArrayList<>();
 

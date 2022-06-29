@@ -50,7 +50,7 @@ public class User extends BaseEntity {
     @Column(name = "user_status")
     private Status status;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonManagedReference("user-post")
     private List<Post> posts = new ArrayList<>();
 

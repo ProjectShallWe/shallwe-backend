@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    Optional<Post> findById(Long id);
 
     @Query("select distinct new com.project.board.domain.post.dto.PostsQueryDto(" +
             "p.id, pc.topic, p.title, u.nickname, p.createdDate, p.likeCount) " +

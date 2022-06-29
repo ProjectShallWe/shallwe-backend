@@ -2,7 +2,6 @@ package com.project.board.infrastructure.like;
 
 import com.project.board.domain.like.web.LikePost;
 import com.project.board.domain.post.web.Post;
-import com.project.board.domain.post.web.PostCategory;
 import com.project.board.domain.user.web.User;
 import com.project.board.infrastructure.post.PostRepository;
 import com.project.board.infrastructure.repositoryFixture.LikePostFixture;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Optional;
 
-import static com.project.board.infrastructure.repositoryFixture.PostCategoryFixture.createPostCategory1;
 import static com.project.board.infrastructure.repositoryFixture.PostFixture.createPost1;
 import static com.project.board.infrastructure.repositoryFixture.UserFixture.createUser1;
 import static com.project.board.infrastructure.repositoryFixture.UserFixture.createUser2;
@@ -36,8 +34,8 @@ class LikePostRepositoryTest {
         //given
         User user1 = createUser1();
         User user2 = createUser2();
-        PostCategory postCategory = createPostCategory1();
-        Post post = createPost1(user1, postCategory);
+
+        Post post = createPost1(user1);
         LikePost likePost = LikePostFixture.createLikePost(user2, post);
 
         User savedUser1 = userRepository.save(user1);

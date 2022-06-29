@@ -21,4 +21,21 @@ public class PostFixture {
                 .user(user)
                 .build();
     }
+
+    public static Post createPost2(User user, PostCategory postCategory) {
+        return Post.builder()
+                .title("농구 잘하는 사람")
+                .content("1. 드리블을 잘한다.")
+                .user(user)
+                .postCategory(postCategory)
+                .build();
+    }
+
+    public static Post createPost2(User user) {
+        return Post.builder()
+                .title("농구 잘하는 법")
+                .content("1. 드리블을 잘한다.")
+                .user(user)
+                .build();
+    }
 }
