@@ -39,16 +39,9 @@ public class LikePostService {
         User user = userReader.getUserBy(email);
         Post post = postReader.getPostBy(postId);
         LikePost likePost = likePostReader.getLikePostBy(user.getId(), post.getId());
-        if(isLikePostWriter(user, likePost)) {
-            post.minusLikeCount();
-            likePostStore.delete(likePost);
-            return likePost.getId();
-        }
-        return -1L;
 
-    }
-
-    private boolean isLikePostWriter(User user, LikePost likePost) {
-        return user.getEmail().equals(likePost.getUser().getEmail());
+        post.minusLikeCount();
+        likePostStore.delete(likePost);
+        return likePost.getId();
     }
 }

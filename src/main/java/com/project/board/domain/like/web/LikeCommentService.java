@@ -37,16 +37,9 @@ public class LikeCommentService {
         User user = userReader.getUserBy(email);
         Comment comment = commentReader.getCommentBy(commentId);
         LikeComment likeComment = likeCommentReader.getLikeCommentBy(user.getId(), comment.getId());
-        if(isLikeCommentWriter(user, likeComment)) {
-            comment.minusLikeCount();
-            likeCommentStore.delete(likeComment);
-            return likeComment.getId();
-        }
-        return -1L;
 
-    }
-
-    private boolean isLikeCommentWriter(User user, LikeComment likeComment) {
-        return user.getEmail().equals(likeComment.getUser().getEmail());
+        comment.minusLikeCount();
+        likeCommentStore.delete(likeComment);
+        return likeComment.getId();
     }
 }

@@ -1,11 +1,13 @@
 package com.project.board.controller;
 
+import com.project.board.domain.comment.dto.CommentDeleteRequestDto;
 import com.project.board.domain.comment.dto.CommentUpdateRequestDto;
 import com.project.board.domain.comment.dto.CommentWriteRequestDto;
 import com.project.board.domain.comment.dto.ParentCommentsResponseDto;
 import com.project.board.domain.comment.web.CommentService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,16 +35,21 @@ public class CommentController {
     }
 
     @PutMapping("/api/comment/{commentId}")
-    public Long update(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                       @PathVariable Long commentId,
-                       @RequestBody CommentUpdateRequestDto commentUpdateRequestDto) {
-        return commentService.update(userDetails.getUsername(), commentId, commentUpdateRequestDto);
+    @PreAuthorize("isAuthenticated() " +
+            "and ((#CUReqDto.writer == principal.username) " +
+            "or hasRole('ROLE_ADMIN'))")
+    public Long update(@PathVariable Long commentId,
+                       @RequestBody CommentUpdateRequestDto CUReqDto) {
+        return commentService.update(commentId, CUReqDto);
     }
 
     @DeleteMapping("/api/comment/{commentId}")
-    public Long delete(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                       @PathVariable Long commentId){
-        return commentService.delete(userDetails.getUsername(), commentId);
+    @PreAuthorize("isAuthenticated() " +
+            "and ((#CDReqDto.writer == principal.username) " +
+            "or hasRole('ROLE_ADMIN'))")
+    public Long delete(@PathVariable Long commentId,
+                       @RequestBody CommentDeleteRequestDto CDReqDto){
+        return commentService.delete(commentId);
     }
 
     @GetMapping("/api/post/{postId}/comment")

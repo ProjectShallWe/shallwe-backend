@@ -9,8 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.project.board.global.util.UserRoleChecker.isAdmin;
-
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -28,25 +26,17 @@ public class PostService {
     }
 
     @Transactional
-    public Long update(String email, Long id, PostUpdateRequestDto updateDto) {
-        User user = userReader.getUserBy(email);
+    public Long update(Long id, PostUpdateRequestDto updateDto) {
         Post post = postReader.getPostBy(id);
-        if (isPostWriter(user, post)) {
-           post.update(updateDto.getTitle(), updateDto.getContent());
-           return id;
-        }
-        return -1L;
+        post.update(updateDto.getTitle(), updateDto.getContent());
+        return id;
     }
 
     @Transactional
-    public Long delete(String email, Long id) {
-        User user = userReader.getUserBy(email);
+    public Long delete(Long id) {
         Post post = postReader.getPostBy(id);
-        if (isPostWriter(user, post) || isAdmin(user)) {
-            post.updateStatusToDisable();
-            return id;
-        }
-        return -1L;
+        post.updateStatusToDisable();
+        return id;
     }
 
     @Transactional(readOnly = true)
@@ -109,9 +99,5 @@ public class PostService {
         PostDetailsResponseDto postDetailsResponseDtos
                 = new PostDetailsResponseDto(postDetailsQueryDto);
         return postDetailsResponseDtos;
-    }
-
-    private Boolean isPostWriter(User user, Post post) {
-        return user.getEmail().equals(post.getUser().getEmail());
     }
 }

@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class CommentUpdateRequestDto {
+public class CommentDeleteRequestDto {
 
     private String writer;
-    private String content;
 }

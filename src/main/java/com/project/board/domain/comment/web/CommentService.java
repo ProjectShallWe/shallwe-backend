@@ -40,25 +40,17 @@ public class CommentService {
     }
 
     @Transactional
-    public Long update(String email, Long commentId, CommentUpdateRequestDto commentUpdateRequestDto) {
-        User user = userReader.getUserBy(email);
+    public Long update(Long commentId, CommentUpdateRequestDto commentUpdateRequestDto) {
         Comment comment = commentReader.getCommentBy(commentId);
-        if (isCommentWriter(user, comment)) {
-            comment.update(commentUpdateRequestDto.getContent());
-            return commentId;
-        }
-        return -1L;
+        comment.update(commentUpdateRequestDto.getContent());
+        return commentId;
     }
 
     @Transactional
-    public Long delete(String email, Long commentId) {
-        User user = userReader.getUserBy(email);
+    public Long delete(Long commentId) {
         Comment comment = commentReader.getCommentBy(commentId);
-        if (isCommentWriter(user, comment)) {
-            comment.updateStatusToDisable();
-            return commentId;
-        }
-        return -1L;
+        comment.updateStatusToDisable();
+        return commentId;
     }
 
     @Transactional(readOnly = true)
@@ -90,10 +82,6 @@ public class CommentService {
 
     private boolean isChildComment(Comment comment) {
         return comment.getParentCommentId() == null;
-    }
-
-    private boolean isCommentWriter(User user, Comment comment) {
-        return user.getEmail().equals(comment.getUser().getEmail());
     }
 
     private boolean isParentComment(List<CommentQueryDto> ETCResponseDtos, int i) {

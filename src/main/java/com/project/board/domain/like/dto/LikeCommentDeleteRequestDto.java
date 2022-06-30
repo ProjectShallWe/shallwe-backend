@@ -1,4 +1,4 @@
-package com.project.board.domain.comment.dto;
+package com.project.board.domain.like.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class CommentUpdateRequestDto {
+public class LikeCommentDeleteRequestDto {
 
     private String writer;
-    private String content;
 }
