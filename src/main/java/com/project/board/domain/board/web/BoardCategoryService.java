@@ -2,8 +2,6 @@ package com.project.board.domain.board.web;
 
 import com.project.board.domain.board.dto.BoardCategoryRequestDto;
 import com.project.board.domain.board.dto.BoardCategoryResponseDto;
-import com.project.board.domain.user.web.User;
-import com.project.board.domain.user.web.UserReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,45 +9,30 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.project.board.global.util.UserRoleChecker.isAdmin;
-
 @Service
 @RequiredArgsConstructor
 public class BoardCategoryService {
 
-    private final UserReader userReader;
     private final BoardCategoryReader boardCategoryReader;
     private final BoardCategoryStore boardCategoryStore;
 
     @Transactional
-    public Long create(String email, BoardCategoryRequestDto boardCategoryRequestDto) {
-        User user = userReader.getUserBy(email);
-        if (isAdmin(user)){
-            return boardCategoryStore.store(boardCategoryRequestDto.toEntity()).getId();
-        }
-        return -1L;
+    public Long create(BoardCategoryRequestDto boardCategoryRequestDto) {
+        return boardCategoryStore.store(boardCategoryRequestDto.toEntity()).getId();
     }
 
     @Transactional
-    public Long update(String email, Long id, BoardCategoryRequestDto boardCategoryRequestDto) {
-        User user = userReader.getUserBy(email);
+    public Long update(Long id, BoardCategoryRequestDto boardCategoryRequestDto) {
         BoardCategory boardCategory =  boardCategoryReader.getBoardCategoryBy(id);
-        if (isAdmin(user)) {
-            boardCategory.update(boardCategoryRequestDto.getTopic());
-            return boardCategory.getId();
-        }
-        return -1L;
+        boardCategory.update(boardCategoryRequestDto.getTopic());
+        return boardCategory.getId();
     }
 
     @Transactional
-    public Long delete(String email, Long id) {
-        User user = userReader.getUserBy(email);
+    public Long delete(Long id) {
         BoardCategory boardCategory = boardCategoryReader.getBoardCategoryBy(id);
-        if (isAdmin(user)) {
-            boardCategoryStore.delete(boardCategory);
-            return boardCategory.getId();
-        }
-        return -1L;
+        boardCategoryStore.delete(boardCategory);
+        return boardCategory.getId();
     }
 
     @Transactional(readOnly = true)

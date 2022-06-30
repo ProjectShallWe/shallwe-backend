@@ -1,17 +1,19 @@
 package com.project.board.global.security;
 
 import com.project.board.domain.user.web.User;
-import lombok.RequiredArgsConstructor;
+import org.springframework.data.annotation.Transient;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 
-@RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
     private final User user;
+
+    @Transient
+    private Collection<SimpleGrantedAuthority> authorities;
 
     @Override
     public String getPassword() {
@@ -45,10 +47,15 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return this.authorities;
     }
 
     public User getUser() {
         return user;
+    }
+
+    public UserDetailsImpl(User user, Collection<SimpleGrantedAuthority> authorities) {
+        this.user = user;
+        this.authorities = authorities;
     }
 }

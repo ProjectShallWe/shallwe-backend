@@ -87,13 +87,13 @@ public class User extends BaseEntity {
 
     @Builder
     public User(Long id, String email, String password,
-                String nickname, List<Post> posts, List<LikePost> likePosts,
+                String nickname, Role role, List<Post> posts, List<LikePost> likePosts,
                 List<Comment> comments, List<LikeComment> likeComments) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.role = Role.USER;
+        this.role = role;
         this.status = Status.ACTIVE;
         this.posts = posts;
         this.likePosts = likePosts;

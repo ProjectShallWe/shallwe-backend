@@ -3,9 +3,8 @@ package com.project.board.controller;
 import com.project.board.domain.board.dto.BoardCategoryRequestDto;
 import com.project.board.domain.board.dto.BoardCategoryResponseDto;
 import com.project.board.domain.board.web.BoardCategoryService;
-import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,22 +17,22 @@ public class BoardCategoryController {
     private final BoardCategoryService boardCategoryService;
 
     @PostMapping
-    public Long create(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                       @RequestBody BoardCategoryRequestDto boardCategoryRequestDto) {
-        return boardCategoryService.create(userDetails.getUsername(), boardCategoryRequestDto);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Long create(@RequestBody BoardCategoryRequestDto boardCategoryRequestDto) {
+        return boardCategoryService.create(boardCategoryRequestDto);
     }
 
     @PutMapping("/{id}")
-    public Long update(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                       @PathVariable Long id,
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Long update(@PathVariable Long id,
                        @RequestBody BoardCategoryRequestDto boardCategoryRequestDto) {
-        return boardCategoryService.update(userDetails.getUsername(), id, boardCategoryRequestDto);
+        return boardCategoryService.update(id, boardCategoryRequestDto);
     }
 
     @DeleteMapping("/{id}")
-    public Long delete(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                       @PathVariable Long id) {
-        return boardCategoryService.delete(userDetails.getUsername(), id);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Long delete(@PathVariable Long id) {
+        return boardCategoryService.delete(id);
     }
 
     @GetMapping("/board")

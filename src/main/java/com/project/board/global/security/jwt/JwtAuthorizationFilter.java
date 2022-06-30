@@ -3,6 +3,7 @@ package com.project.board.global.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.project.board.domain.user.web.User;
+import com.project.board.global.security.UserDetailsServiceImpl;
 import com.project.board.infrastructure.user.UserRepository;
 import com.project.board.global.security.UserDetailsImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -54,7 +55,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                     .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다."));
 
             // 시큐리티가 수행해주는 권한 처리를 위해 토큰을 만들어서 Authentication 객체를 강제로 만들고 그걸 세션에 저장!
-            UserDetailsImpl userDetails = new UserDetailsImpl(user);
+            UserDetailsImpl userDetails = new UserDetailsImpl(user, UserDetailsServiceImpl.getUserDetails(user));
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 

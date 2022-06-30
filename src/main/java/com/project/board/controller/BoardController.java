@@ -3,9 +3,8 @@ package com.project.board.controller;
 import com.project.board.domain.board.dto.BoardRequestDto;
 import com.project.board.domain.board.dto.BoardResponseDto;
 import com.project.board.domain.board.web.BoardService;
-import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,23 +17,23 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public Long create(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                     @RequestParam("category") Long boardCategoryId,
-                     @RequestBody BoardRequestDto boardRequestDto) {
-        return boardService.create(userDetails.getUsername(), boardCategoryId, boardRequestDto);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Long create(@RequestParam("category") Long boardCategoryId,
+                       @RequestBody BoardRequestDto boardRequestDto) {
+        return boardService.create(boardCategoryId, boardRequestDto);
     }
 
     @PutMapping("/{id}")
-    public Long update(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                       @PathVariable Long id,
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Long update(@PathVariable Long id,
                        @RequestBody BoardRequestDto boardRequestDto) {
-        return boardService.update(userDetails.getUsername(), id, boardRequestDto);
+        return boardService.update(id, boardRequestDto);
     }
 
     @DeleteMapping("/{id}")
-    public Long delete(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                       @PathVariable Long id) {
-        return boardService.delete(userDetails.getUsername(), id);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Long delete(@PathVariable Long id) {
+        return boardService.delete(id);
     }
 
     @GetMapping("/{id}")
