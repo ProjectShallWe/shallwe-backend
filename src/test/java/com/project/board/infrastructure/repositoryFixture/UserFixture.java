@@ -5,16 +5,18 @@ import com.project.board.domain.user.web.User;
 public class UserFixture {
     public static User createUser1() {
         return User.builder()
-                .email("google1234@gmail.com")
-                .password("1234")
-                .nickname("구글1234")
+                .email("google0001@gmail.com")
+                .password("0001")
+                .nickname("구글0001")
+                .role(User.Role.USER)
                 .build();
     }
     public static User createUser2() {
         return User.builder()
-                .email("google2345@gmail.com")
-                .password("2345")
-                .nickname("구글2345")
+                .email("google0002@gmail.com")
+                .password("0002")
+                .nickname("구글0002")
+                .role(User.Role.USER)
                 .build();
     }
 }
