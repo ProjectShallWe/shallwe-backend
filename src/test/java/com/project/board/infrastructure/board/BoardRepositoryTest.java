@@ -3,7 +3,6 @@ package com.project.board.infrastructure.board;
 import com.project.board.domain.board.web.Board;
 import com.project.board.domain.post.web.PostCategory;
 import com.project.board.infrastructure.post.PostCategoryRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -13,6 +12,7 @@ import java.util.List;
 import static com.project.board.infrastructure.repositoryFixture.BoardFixture.createBoard1;
 import static com.project.board.infrastructure.repositoryFixture.PostCategoryFixture.createPostCategory1;
 import static com.project.board.infrastructure.repositoryFixture.PostCategoryFixture.createPostCategory2;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 class BoardRepositoryTest {
@@ -26,23 +26,25 @@ class BoardRepositoryTest {
     @Test
     void findAllWithPostCategories() {
         //given
-        Board board = createBoard1();
-        PostCategory postCategory1 = createPostCategory1(board);
-        PostCategory postCategory2 = createPostCategory2(board);
+        Board board1 = createBoard1();
+        PostCategory postCategory1 = createPostCategory1(board1);
+        PostCategory postCategory2 = createPostCategory2(board1);
+        board1.getPostCategories().add(postCategory1);
+        board1.getPostCategories().add(postCategory2);
 
-        Board savedBoard = boardRepository.save(board);
-        PostCategory savedPostCategory1 = postCategoryRepository.save(postCategory1);
-        PostCategory savedPostCategory2 = postCategoryRepository.save(postCategory2);
+        Board savedBoard = boardRepository.save(board1);
+        postCategoryRepository.save(postCategory1);
+        postCategoryRepository.save(postCategory2);
 
         //when
-        List<Board> savedBoards = boardRepository.findAllWithPostCategories(1L);
+        List<Board> savedBoards = boardRepository.findAllWithPostCategories(savedBoard.getId());
 
         //then
-        Assertions.assertThat(savedBoards.get(0).getId()).isEqualTo(savedBoard.getId());
-        Assertions.assertThat(savedBoards.get(0).getTitle()).isEqualTo(savedBoard.getTitle());
-        Assertions.assertThat(savedPostCategory1.getBoard().getId()).isEqualTo(savedBoards.get(0).getId());
-        Assertions.assertThat(savedPostCategory1.getBoard().getTitle()).isEqualTo(savedBoards.get(0).getTitle());
-        Assertions.assertThat(savedPostCategory2.getBoard().getId()).isEqualTo(savedBoards.get(0).getId());
-        Assertions.assertThat(savedPostCategory2.getBoard().getTitle()).isEqualTo(savedBoards.get(0).getTitle());
+        assertThat(savedBoards.get(0).getTitle())
+                .isEqualTo("농구");
+        assertThat(savedBoards.get(0).getPostCategories().get(0).getTopic())
+                .isEqualTo("국내 농구");
+        assertThat(savedBoards.get(0).getPostCategories().get(1).getTopic())
+                .isEqualTo("해외 농구");
     }
 }
