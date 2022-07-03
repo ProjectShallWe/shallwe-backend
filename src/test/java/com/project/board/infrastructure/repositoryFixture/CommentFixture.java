@@ -22,4 +22,13 @@ public class CommentFixture {
                 .content("팔꿈치가 수직이어야 멀리 던질 수 있어요!")
                 .build();
     }
+
+    public static Comment createComment3(User user, Post post, Comment comment) {
+        return Comment.builder()
+                .user(user)
+                .post(post)
+                .parentCommentId(comment.getId())
+                .content("스테판 커리 영상을 참고해보세요!")
+                .build();
+    }
 }
