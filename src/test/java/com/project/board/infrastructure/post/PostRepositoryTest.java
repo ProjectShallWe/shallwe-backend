@@ -12,7 +12,6 @@ import com.project.board.global.audit.JpaAuditConfig;
 import com.project.board.infrastructure.board.BoardRepository;
 import com.project.board.infrastructure.like.LikePostRepository;
 import com.project.board.infrastructure.user.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -20,6 +19,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -31,6 +31,7 @@ import static com.project.board.infrastructure.repositoryFixture.PostFixture.cre
 import static com.project.board.infrastructure.repositoryFixture.PostFixture.createPost2;
 import static com.project.board.infrastructure.repositoryFixture.UserFixture.createUser1;
 import static com.project.board.infrastructure.repositoryFixture.UserFixture.createUser2;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(
         type = FilterType.ASSIGNABLE_TYPE,
@@ -53,6 +54,10 @@ class PostRepositoryTest {
     @Autowired
     private LikePostRepository likePostRepository;
 
+    private final Long likeRatios = 3L;
+    private final Long commentRatios = 7L;
+    private final Pageable pageable = PageRequest.of(0, 10);
+
     @Test
     void findAllInBoard() {
         //given
@@ -63,20 +68,22 @@ class PostRepositoryTest {
         Post post1 = createPost1(user1, postCategory);
         Post post2 = createPost2(user2, postCategory);
 
-        User savedUser1 = userRepository.save(user1);
-        User savedUser2 = userRepository.save(user2);
+        userRepository.save(user1);
+        userRepository.save(user2);
         Board savedBoard = boardRepository.save(board);
-        PostCategory savedPostCategory = postCategoryRepository.save(postCategory);
-        Post savedPost1 = postRepository.save(post1);
-        Post savedPost2 = postRepository.save(post2);
+        postCategoryRepository.save(postCategory);
+        postRepository.save(post1);
+        postRepository.save(post2);
 
         //when
         Page<PostsQueryDto> queryDtos
-                = postRepository.findAllInBoard(savedBoard.getId(), PageRequest.of(0, 10));
+                = postRepository.findAllInBoard(savedBoard.getId(), pageable);
 
         //then
-        Assertions.assertThat(queryDtos.getContent().get(0).getPostId()).isEqualTo(savedPost2.getId());
-        Assertions.assertThat(queryDtos.getContent().get(1).getPostId()).isEqualTo(savedPost1.getId());
+        assertThat(queryDtos.getContent().get(0).getTitle())
+                .isEqualTo("농구 잘하는 사람");
+        assertThat(queryDtos.getContent().get(1).getTitle())
+                .isEqualTo("농구 잘하는 법");
     }
 
     @Test
@@ -89,20 +96,22 @@ class PostRepositoryTest {
         Post post1 = createPost1(user1, postCategory);
         Post post2 = createPost2(user2, postCategory);
 
-        User savedUser1 = userRepository.save(user1);
-        User savedUser2 = userRepository.save(user2);
-        Board savedBoard = boardRepository.save(board);
+        userRepository.save(user1);
+        userRepository.save(user2);
+        boardRepository.save(board);
         PostCategory savedPostCategory = postCategoryRepository.save(postCategory);
-        Post savedPost1 = postRepository.save(post1);
-        Post savedPost2 = postRepository.save(post2);
+        postRepository.save(post1);
+        postRepository.save(post2);
 
         //when
         Page<PostsQueryDto> queryDtos
-                = postRepository.findAllInPostCategory(savedPostCategory.getId(), PageRequest.of(0, 10));
+                = postRepository.findAllInPostCategory(savedPostCategory.getId(), pageable);
 
         //then
-        Assertions.assertThat(queryDtos.getContent().get(0).getPostId()).isEqualTo(savedPost2.getId());
-        Assertions.assertThat(queryDtos.getContent().get(1).getPostId()).isEqualTo(savedPost1.getId());
+        assertThat(queryDtos.getContent().get(0).getTitle())
+                .isEqualTo("농구 잘하는 사람");
+        assertThat(queryDtos.getContent().get(1).getTitle())
+                .isEqualTo("농구 잘하는 법");
     }
 
     @Test
@@ -115,19 +124,20 @@ class PostRepositoryTest {
         Post post1 = createPost1(user1, postCategory);
         Post post2 = createPost2(user2, postCategory);
 
-        User savedUser1 = userRepository.save(user1);
-        User savedUser2 = userRepository.save(user2);
+        userRepository.save(user1);
+        userRepository.save(user2);
         Board savedBoard = boardRepository.save(board);
-        PostCategory savedPostCategory = postCategoryRepository.save(postCategory);
-        Post savedPost1 = postRepository.save(post1);
-        Post savedPost2 = postRepository.save(post2);
+        postCategoryRepository.save(postCategory);
+        postRepository.save(post1);
+        postRepository.save(post2);
 
         //when
         Page<PostsQueryDto> queryDtos
-                = postRepository.findPostsByPostTitleInBoard(savedBoard.getId(), "사람", PageRequest.of(0, 10));
+                = postRepository.findPostsByPostTitleInBoard(savedBoard.getId(), "사람", pageable);
 
         //then
-        Assertions.assertThat(queryDtos.getContent().get(0).getPostId()).isEqualTo(savedPost2.getId());
+        assertThat(queryDtos.getContent().get(0).getTitle())
+                .isEqualTo("농구 잘하는 사람");
     }
 
     @Test
@@ -140,19 +150,20 @@ class PostRepositoryTest {
         Post post1 = createPost1(user1, postCategory);
         Post post2 = createPost2(user2, postCategory);
 
-        User savedUser1 = userRepository.save(user1);
-        User savedUser2 = userRepository.save(user2);
+        userRepository.save(user1);
+        userRepository.save(user2);
         Board savedBoard = boardRepository.save(board);
-        PostCategory savedPostCategory = postCategoryRepository.save(postCategory);
-        Post savedPost1 = postRepository.save(post1);
-        Post savedPost2 = postRepository.save(post2);
+        postCategoryRepository.save(postCategory);
+        postRepository.save(post1);
+        postRepository.save(post2);
 
         //when
         Page<PostsQueryDto> queryDtos
-                = postRepository.findPostsByPostContentInBoard(savedBoard.getId(), "드리블", PageRequest.of(0, 10));
+                = postRepository.findPostsByPostContentInBoard(savedBoard.getId(), "드리블", pageable);
 
         //then
-        Assertions.assertThat(queryDtos.getContent().get(0).getPostId()).isEqualTo(savedPost2.getId());
+        assertThat(queryDtos.getContent().get(0).getTitle())
+                .isEqualTo("농구 잘하는 사람");
     }
 
     @Test
@@ -165,20 +176,22 @@ class PostRepositoryTest {
         Post post1 = createPost1(user1, postCategory);
         Post post2 = createPost2(user2, postCategory);
 
-        User savedUser1 = userRepository.save(user1);
-        User savedUser2 = userRepository.save(user2);
+        userRepository.save(user1);
+        userRepository.save(user2);
         Board savedBoard = boardRepository.save(board);
-        PostCategory savedPostCategory = postCategoryRepository.save(postCategory);
-        Post savedPost1 = postRepository.save(post1);
-        Post savedPost2 = postRepository.save(post2);
+        postCategoryRepository.save(postCategory);
+        postRepository.save(post1);
+        postRepository.save(post2);
 
         //when
         Page<PostsQueryDto> queryDtos
-                = postRepository.findPostsByPostTitleOrPostContentInBoard(savedBoard.getId(), "농구", PageRequest.of(0, 10));
+                = postRepository.findPostsByPostTitleOrPostContentInBoard(savedBoard.getId(), "농구", pageable);
 
         //then
-        Assertions.assertThat(queryDtos.getContent().get(0).getPostId()).isEqualTo(savedPost2.getId());
-        Assertions.assertThat(queryDtos.getContent().get(1).getPostId()).isEqualTo(savedPost1.getId());
+        assertThat(queryDtos.getContent().get(0).getTitle())
+                .isEqualTo("농구 잘하는 사람");
+        assertThat(queryDtos.getContent().get(1).getTitle())
+                .isEqualTo("농구 잘하는 법");
     }
 
     @Test
@@ -191,19 +204,20 @@ class PostRepositoryTest {
         Post post1 = createPost1(user1, postCategory);
         Post post2 = createPost2(user2, postCategory);
 
-        User savedUser1 = userRepository.save(user1);
-        User savedUser2 = userRepository.save(user2);
+        userRepository.save(user1);
+        userRepository.save(user2);
         Board savedBoard = boardRepository.save(board);
-        PostCategory savedPostCategory = postCategoryRepository.save(postCategory);
-        Post savedPost1 = postRepository.save(post1);
-        Post savedPost2 = postRepository.save(post2);
+        postCategoryRepository.save(postCategory);
+        postRepository.save(post1);
+        postRepository.save(post2);
 
         //when
         Page<PostsQueryDto> queryDtos
-                = postRepository.findPostsByUserNicknameInBoard(savedBoard.getId(), "1234", PageRequest.of(0, 10));
+                = postRepository.findPostsByUserNicknameInBoard(savedBoard.getId(), "0001", pageable);
 
         //then
-        Assertions.assertThat(queryDtos.getContent().get(0).getPostId()).isEqualTo(savedPost1.getId());
+        assertThat(queryDtos.getContent().get(0).getTitle())
+                .isEqualTo("농구 잘하는 법");
     }
 
     @Test
@@ -215,19 +229,19 @@ class PostRepositoryTest {
         Post post1 = createPost1(user1, postCategory);
         Post post2 = createPost2(user2, postCategory);
 
-        User savedUser1 = userRepository.save(user1);
-        User savedUser2 = userRepository.save(user2);
-        PostCategory savedPostCategory = postCategoryRepository.save(postCategory);
-        Post savedPost1 = postRepository.save(post1);
+        userRepository.save(user1);
+        userRepository.save(user2);
+        postCategoryRepository.save(postCategory);
+        postRepository.save(post1);
         Post savedPost2 = postRepository.save(post2);
 
         //when
         Optional<PostDetailsQueryDto> queryDtos
                 = postRepository.findPostDetailsBy(savedPost2.getId());
         //then
-        Assertions.assertThat(queryDtos.get().getPostId()).isEqualTo(savedPost2.getId());
-        Assertions.assertThat(queryDtos.get().getNickname()).isEqualTo(savedUser2.getNickname());
-        Assertions.assertThat(queryDtos.get().getPostCategory()).isEqualTo(savedPostCategory.getTopic());
+        assertThat(queryDtos.get().getTitle()).isEqualTo("농구 잘하는 사람");
+        assertThat(queryDtos.get().getNickname()).isEqualTo("구글0002");
+        assertThat(queryDtos.get().getPostCategory()).isEqualTo("국내 농구");
     }
 
     @Test
@@ -239,25 +253,27 @@ class PostRepositoryTest {
         PostCategory postCategory = createPostCategory1(board);
         Post post1 = createPost1(user1, postCategory);
         Post post2 = createPost2(user2, postCategory);
-        LikePost likePost = createLikePost(user1, post2);
+        LikePost likePost1 = createLikePost(user1, post2);
+        LikePost likePost2 = createLikePost(user2, post2);
 
-        User savedUser1 = userRepository.save(user1);
-        User savedUser2 = userRepository.save(user2);
+        userRepository.save(user1);
+        userRepository.save(user2);
         Board savedBoard = boardRepository.save(board);
-        PostCategory savedPostCategory = postCategoryRepository.save(postCategory);
-        Post savedPost1 = postRepository.save(post1);
-        Post savedPost2 = postRepository.save(post2);
-        LikePost savedLikePost = likePostRepository.save(likePost);
+        postCategoryRepository.save(postCategory);
+        postRepository.save(post1);
+        postRepository.save(post2);
+        likePostRepository.save(likePost1);
+        likePostRepository.save(likePost2);
 
         //when
         Page<RecommendPostsInBoardQueryDto> queryDtos
                 = postRepository.findRecommendPostsInBoard(savedBoard.getId(), LocalDateTime.now(), LocalDateTime.now().minusHours(12),
-                                                    3L, 7L, PageRequest.of(0, 10));
+                                                    likeRatios, commentRatios, pageable);
 
         //then
-        Assertions.assertThat(queryDtos.getContent().get(0).getPostId()).isEqualTo(savedPost2.getId());
-        Assertions.assertThat(queryDtos.getContent().get(0).getPostCategory()).isEqualTo(savedPostCategory.getTopic());
-        Assertions.assertThat(queryDtos.getContent().get(1).getPostId()).isEqualTo(savedPost1.getId());
-        Assertions.assertThat(queryDtos.getContent().get(1).getPostCategory()).isEqualTo(savedPostCategory.getTopic());
+        assertThat(queryDtos.getContent().get(0).getTitle()).isEqualTo("농구 잘하는 사람");
+        assertThat(queryDtos.getContent().get(0).getPostCategory()).isEqualTo("국내 농구");
+        assertThat(queryDtos.getContent().get(1).getTitle()).isEqualTo("농구 잘하는 법");
+        assertThat(queryDtos.getContent().get(1).getPostCategory()).isEqualTo("국내 농구");
     }
 }
