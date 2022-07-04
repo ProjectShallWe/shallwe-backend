@@ -1,4 +1,4 @@
-package com.project.board.infrastructure.repositoryFixture;
+package com.project.board.infrastructure.fixture;
 
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.post.web.PostCategory;

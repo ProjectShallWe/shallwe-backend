@@ -24,13 +24,13 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static com.project.board.infrastructure.repositoryFixture.BoardFixture.createBoard1;
-import static com.project.board.infrastructure.repositoryFixture.LikePostFixture.createLikePost;
-import static com.project.board.infrastructure.repositoryFixture.PostCategoryFixture.createPostCategory1;
-import static com.project.board.infrastructure.repositoryFixture.PostFixture.createPost1;
-import static com.project.board.infrastructure.repositoryFixture.PostFixture.createPost2;
-import static com.project.board.infrastructure.repositoryFixture.UserFixture.createUser1;
-import static com.project.board.infrastructure.repositoryFixture.UserFixture.createUser2;
+import static com.project.board.infrastructure.fixture.BoardFixture.createBoard1;
+import static com.project.board.infrastructure.fixture.LikePostFixture.createLikePost;
+import static com.project.board.infrastructure.fixture.PostCategoryFixture.createPostCategory1;
+import static com.project.board.infrastructure.fixture.PostFixture.createPost1;
+import static com.project.board.infrastructure.fixture.PostFixture.createPost2;
+import static com.project.board.infrastructure.fixture.UserFixture.createUser1;
+import static com.project.board.infrastructure.fixture.UserFixture.createUser2;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(
@@ -54,9 +54,9 @@ class PostRepositoryTest {
     @Autowired
     private LikePostRepository likePostRepository;
 
-    private final Long likeRatios = 3L;
-    private final Long commentRatios = 7L;
-    private final Pageable pageable = PageRequest.of(0, 10);
+    private static final Long likeRatios = 3L;
+    private static final Long commentRatios = 7L;
+    private static final Pageable pageable = PageRequest.of(0, 10);
 
     @Test
     void findAllInBoard() {

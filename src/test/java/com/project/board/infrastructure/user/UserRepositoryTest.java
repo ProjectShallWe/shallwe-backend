@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Optional;
 
-import static com.project.board.infrastructure.repositoryFixture.UserFixture.createUser1;
+import static com.project.board.infrastructure.fixture.UserFixture.createUser1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest

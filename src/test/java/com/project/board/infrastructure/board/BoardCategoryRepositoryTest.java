@@ -8,9 +8,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 
-import static com.project.board.infrastructure.repositoryFixture.BoardCategoryFixture.createBoardCategory1;
-import static com.project.board.infrastructure.repositoryFixture.BoardCategoryFixture.createBoardCategory2;
-import static com.project.board.infrastructure.repositoryFixture.BoardFixture.*;
+import static com.project.board.infrastructure.fixture.BoardCategoryFixture.createBoardCategory1;
+import static com.project.board.infrastructure.fixture.BoardCategoryFixture.createBoardCategory2;
+import static com.project.board.infrastructure.fixture.BoardFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest

@@ -12,10 +12,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 
-import static com.project.board.infrastructure.repositoryFixture.CommentFixture.*;
-import static com.project.board.infrastructure.repositoryFixture.PostFixture.createPost1;
-import static com.project.board.infrastructure.repositoryFixture.UserFixture.createUser1;
-import static com.project.board.infrastructure.repositoryFixture.UserFixture.createUser2;
+import static com.project.board.infrastructure.fixture.CommentFixture.*;
+import static com.project.board.infrastructure.fixture.PostFixture.createPost1;
+import static com.project.board.infrastructure.fixture.UserFixture.createUser1;
+import static com.project.board.infrastructure.fixture.UserFixture.createUser2;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
