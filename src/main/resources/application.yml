@@ -1,4 +1,19 @@
 spring:
+  profiles:
+    group:
+      local:
+        - local
+        - redis
+      dev:
+        - dev
+        - rds
+        - redis
+      test:
+        - test
+        - rds
+        - redis
+---
+spring:
   config:
     activate:
       on-profile: local
