@@ -18,8 +18,7 @@ public class UserService {
 
     @Transactional
     public Long join(UserJoinRequestDto joinDto) {
-        String encodedPassword = passwordEncoder.encode(joinDto.getPassword());
-        return userStore.store(joinDto.toEntity(encodedPassword)).getId();
+        return userStore.store(joinDto.toEntity(passwordEncoder.encode(joinDto.getPassword()))).getId();
     }
 
     @Transactional
@@ -48,5 +47,4 @@ public class UserService {
 
         return email;
     }
-
 }

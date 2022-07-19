@@ -13,6 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,29 +26,30 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
 
     // 사용자 아이디
+    @Column(unique = true)
     @Email
-    @Column(name = "user_email", unique = true)
+    @NotNull
     private String email;
 
     // 사용자 비밀번호
-    @Column(name = "user_password")
+    @NotNull
     private String password;
 
     // 사용자 닉네임
-    @Column(name = "user_nickname")
+    @Column(unique = true)
+    @NotNull
     private String nickname;
 
     // 사용자 역할 (관리자, 사용자)
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_role")
+    @NotNull
     private Role role;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_status")
+    @NotNull
     private Status status;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -79,7 +81,6 @@ public class User extends BaseEntity {
     @RequiredArgsConstructor
     public enum Status {
         ACTIVE("계정 활성화"),
-        SUSPENDED("계정 정지"),
         WITHDRAWAL("계정 탈퇴");
 
         private final String description;
@@ -101,8 +102,6 @@ public class User extends BaseEntity {
         this.likeComments = likeComments;
     }
 
-
-
     public void updateNickname(String nickname) {
         if (StringUtils.isEmpty(nickname)) throw new InvalidParamException("User.nickname");
         this.nickname = nickname;
@@ -111,14 +110,6 @@ public class User extends BaseEntity {
     public void updatePassword(String password) {
         if (StringUtils.isEmpty(password)) throw new InvalidParamException("User.password");
         this.password = password;
-    }
-
-    public void updateStatusToActive() {
-        this.status = Status.ACTIVE;
-    }
-
-    public void updateStatusToSuspended() {
-        this.status = Status.SUSPENDED;
     }
 
     public void updateStatusToWithdrawal() {
