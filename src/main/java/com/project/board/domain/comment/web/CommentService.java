@@ -52,38 +52,34 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public List<ParentCommentsResponseDto> getCommentsInPost(Long postId) {
-        List<CommentQueryDto> ETCResponseDtos = commentReader.getCommentsInPostByPostId(postId);
-        List<ParentCommentsResponseDto> PCResponseDtos = new ArrayList<>();
-        List<ChildCommentsResponseDto> CCResponseDtos = new ArrayList<>();
+        List<CommentQueryDto> cResDtos = commentReader.getCommentsInPostByPostId(postId);
+        List<ParentCommentsResponseDto> pcResDtos = new ArrayList<>();
+        List<ChildCommentsResponseDto> ccResDtos = new ArrayList<>();
 
-        for (int i = 0; i < ETCResponseDtos.size(); i++) {
-            if (isParentComment(ETCResponseDtos, i)) {
-                PCResponseDtos.add(
-                        new ParentCommentsResponseDto(ETCResponseDtos.get(i)));
+        for (CommentQueryDto cQueryDto : cResDtos) {
+            if (isParentComment(cQueryDto)) {
+                pcResDtos.add(new ParentCommentsResponseDto(cQueryDto));
             } else {
-                CCResponseDtos.add(
-                        new ChildCommentsResponseDto(ETCResponseDtos.get(i)));
+                ccResDtos.add(new ChildCommentsResponseDto(cQueryDto));
             }
         }
 
-        for (int i = 0; i < PCResponseDtos.size(); i++) {
-            for (int j = 0; j < CCResponseDtos.size(); j++) {
-                if (isThisCommentChildren(PCResponseDtos, CCResponseDtos, i, j)) {
-                    PCResponseDtos.get(i).getChildComments().add(CCResponseDtos.get(j));
+        for (ParentCommentsResponseDto pcResDto : pcResDtos) {
+            for (ChildCommentsResponseDto ccResDto : ccResDtos) {
+                if (isThisCommentChildren(pcResDto, ccResDto)) {
+                      pcResDto.getChildComments().add(ccResDto);
                 }
             }
         }
 
-        return PCResponseDtos;
+        return pcResDtos;
     }
 
-    private boolean isParentComment(List<CommentQueryDto> ETCResponseDtos, int i) {
-        return ETCResponseDtos.get(i).getParentId() == null;
+    private boolean isParentComment(CommentQueryDto cQueryDto) {
+        return cQueryDto.getParentId() == null;
     }
 
-    private boolean isThisCommentChildren(List<ParentCommentsResponseDto> PCResponseDtos,
-                                    List<ChildCommentsResponseDto> CCResponseDtos,
-                                    int i, int j) {
-        return PCResponseDtos.get(i).getCommentId().equals(CCResponseDtos.get(j).getParentId());
+    private boolean isThisCommentChildren(ParentCommentsResponseDto pcResDto, ChildCommentsResponseDto ccResDto) {
+        return pcResDto.getCommentId().equals(ccResDto.getParentId());
     }
 }
