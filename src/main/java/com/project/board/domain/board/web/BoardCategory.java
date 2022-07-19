@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +26,10 @@ public class BoardCategory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_category_id")
     private Long id;
 
     // 게시판 카테고리 제목
-    @Column(name = "board_category_topic")
+    @NotNull
     private String topic;
 
     @OneToMany(mappedBy = "boardCategory", fetch = FetchType.LAZY)
