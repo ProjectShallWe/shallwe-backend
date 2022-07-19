@@ -18,8 +18,7 @@ public interface PostReader {
     Page<PostsQueryDto> getPostsByPostTitleOrPostContentInBoard(Long id, String keyword, PageRequest pageRequest);
     Page<PostsQueryDto> getPostsByUserNicknameInBoard(Long id, String keyword, PageRequest pageRequest);
     PostDetailsQueryDto getPostDetails(Long id);
-    Page<RecommendPostsInBoardQueryDto> getRecommendPostsInBoard(Long id,
-                                                                 LocalDateTime now, LocalDateTime twelveHoursAgo,
-                                                                 Long likeRatio, Long commentRatio,
+    Page<RecommendPostsInBoardQueryDto> getRecommendPostsInBoard(Long id, LocalDateTime now,
+                                                                 LocalDateTime twelveHoursAgo,
                                                                  PageRequest pageRequest);
 }

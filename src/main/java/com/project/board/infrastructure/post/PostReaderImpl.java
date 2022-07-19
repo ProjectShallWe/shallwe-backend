@@ -54,11 +54,10 @@ public class PostReaderImpl implements PostReader {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public Page<RecommendPostsInBoardQueryDto> getRecommendPostsInBoard(Long id,
-                                                                        LocalDateTime now, LocalDateTime twelveHoursAgo,
-                                                                        Long likeRatio, Long commentRatio,
+    public Page<RecommendPostsInBoardQueryDto> getRecommendPostsInBoard(Long id, LocalDateTime now,
+                                                                        LocalDateTime twelveHoursAgo,
                                                                         PageRequest pageRequest) {
-        return postRepository.findRecommendPostsInBoard(id, now, twelveHoursAgo, likeRatio, commentRatio, pageRequest);
+        return postRepository.findRecommendPostsInBoard(id, now, twelveHoursAgo, pageRequest);
     }
 
 

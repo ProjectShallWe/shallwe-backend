@@ -267,8 +267,8 @@ class PostRepositoryTest {
 
         //when
         Page<RecommendPostsInBoardQueryDto> queryDtos
-                = postRepository.findRecommendPostsInBoard(savedBoard.getId(), LocalDateTime.now(), LocalDateTime.now().minusHours(12),
-                                                    likeRatios, commentRatios, pageable);
+                = postRepository.findRecommendPostsInBoard(savedBoard.getId(), LocalDateTime.now(),
+                                                           LocalDateTime.now().minusHours(12), pageable);
 
         //then
         assertThat(queryDtos.getContent().get(0).getTitle()).isEqualTo("농구 잘하는 사람");

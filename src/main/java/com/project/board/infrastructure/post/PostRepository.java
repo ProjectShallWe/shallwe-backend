@@ -107,11 +107,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "where b.id = :id " +
             "and p.createdDate < :now " +
             "and p.createdDate > :twelveHoursAgo " +
-            "order by (p.likeCount * :likeRatios + p.commentCount * :commentRatios) desc ")
+            "order by (p.likeCount + p.commentCount) desc ")
     Page<RecommendPostsInBoardQueryDto> findRecommendPostsInBoard(@Param("id") Long id,
                                                                   @Param("now") LocalDateTime now,
                                                                   @Param("twelveHoursAgo") LocalDateTime twelveHoursAgo,
-                                                                  @Param("likeRatios") Long likeRatios,
-                                                                  @Param("commentRatios") Long commentRatios,
                                                                   Pageable pageable);
 }

@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,21 +26,18 @@ public class PostRecommendScheduledService {
     private final BoardReader boardReader;
 
     public final static String REDIS_KEY_PREFIX_RECOMMEND_POSTS = "recommendPostList:board#";
-    public final static Long LIKE_WEIGHTED_VALUE = 3L;
-    public final static Long COMMENT_WEIGHTED_VALUE = 7L;
 
-    @Scheduled(cron = "10 * * * * *")
+    // 매일 8시, 20시에 실행
+    @Scheduled(cron = "* * 8,20 * * *")
     @Transactional
     public Long saveRecommendPostsInBoardToRedis() {
-        System.out.println("-----Start save recommend posts to redis-----");
-
         List<Board> boards = boardReader.getAll();
 
-        for (int i = 0; i < boards.size(); i++) {
+        for (Board board : boards) {
             Page<RecommendPostsInBoardQueryDto> queryDtos
-                    = postReader.getRecommendPostsInBoard(boards.get(i).getId(),
+                    = postReader.getRecommendPostsInBoard(board.getId(),
                     LocalDateTime.now(), LocalDateTime.now().minusHours(12),
-                    LIKE_WEIGHTED_VALUE, COMMENT_WEIGHTED_VALUE, PageRequest.of(0, 5));
+                    PageRequest.of(0, 5));
 
             List<RecommendPostsInBoardResponseDto> responseDtos = queryDtos.stream()
                     .map(RecommendPostsInBoardResponseDto::new)
@@ -50,12 +45,10 @@ public class PostRecommendScheduledService {
 
             // Redis에 List<Dto>형태로 저장
             ValueOperations<String, List<RecommendPostsInBoardResponseDto>> vop = redisTemplate.opsForValue();
-            String key = REDIS_KEY_PREFIX_RECOMMEND_POSTS + Long.toString(boards.get(i).getId());
+            String key = REDIS_KEY_PREFIX_RECOMMEND_POSTS + Long.toString(board.getId());
             vop.set(key, responseDtos);
-            redisTemplate.expireAt(key, Date.from(ZonedDateTime.now().plusHours(12).toInstant()));
         }
 
-        System.out.println("-----End save recommend posts to redis-----");
         return 1L;
     }
 
