@@ -25,6 +25,7 @@ public class CommentService {
     public Long writeParentComment(String email, Long postId, CommentWriteRequestDto commentWriteRequestDto) {
         User user = userReader.getUserBy(email);
         Post post = postReader.getPostBy(postId);
+        post.addCommentCount();
         return commentStore.store(commentWriteRequestDto.toEntity(user, post, null)).getId();
     }
 
@@ -33,6 +34,7 @@ public class CommentService {
         User user = userReader.getUserBy(email);
         Post post = postReader.getPostBy(postId);
         Comment comment = commentReader.getCommentBy(commentId);
+        post.addCommentCount();
         return commentStore.store(commentWriteRequestDto.toEntity(user, post, comment.getId())).getId();
     }
 

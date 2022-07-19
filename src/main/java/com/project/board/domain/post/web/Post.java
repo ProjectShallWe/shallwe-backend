@@ -118,4 +118,8 @@ public class Post extends BaseEntity {
     public void minusLikeCount() {
         likeCount -= 1;
     }
+
+    public void addCommentCount() {
+        commentCount += 1;
+    }
 }
