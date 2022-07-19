@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +26,10 @@ public class PostCategory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_category_id")
     private Long id;
 
     // 글 카테고리 제목
-    @Column(name = "post_category_topic")
+    @NotNull
     private String topic;
 
     @ManyToOne(fetch = FetchType.LAZY)
