@@ -21,7 +21,6 @@ public class PostFile extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_file_id")
     private Long id;
 
     // 전송 받은 파일 이름
