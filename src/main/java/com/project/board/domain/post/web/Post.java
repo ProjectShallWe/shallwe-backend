@@ -3,7 +3,7 @@ package com.project.board.domain.post.web;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.board.domain.comment.web.Comment;
-import com.project.board.domain.file.PostFile;
+import com.project.board.domain.file.web.PostFile;
 import com.project.board.domain.like.web.LikePost;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.audit.BaseEntity;
@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,26 +26,25 @@ public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
     private Long id;
 
-    @Column(name = "post_title")
+    @NotNull
     private String title;
 
-    @Column(name = "post_content")
+    @NotNull
     private String content;
 
     // 글 활성화 여부
     @Enumerated(EnumType.STRING)
-    @Column(name = "post_status")
+    @NotNull
     private Status status;
 
     // 글의 좋아요 수 저장
-    @Column(name = "post_like_count")
+    @NotNull
     private Long likeCount;
 
     // 댓글 갯수 저장
-    @Column(name = "post_comment_count")
+    @NotNull
     private Long commentCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
