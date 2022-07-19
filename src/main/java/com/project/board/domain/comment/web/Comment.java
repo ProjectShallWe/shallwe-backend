@@ -2,7 +2,7 @@ package com.project.board.domain.comment.web;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.project.board.domain.file.CommentFile;
+import com.project.board.domain.file.web.CommentFile;
 import com.project.board.domain.like.web.LikeComment;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.user.web.User;
@@ -11,6 +11,7 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,23 +24,21 @@ public class Comment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
     private Long id;
 
-    @Column(name = "comment_content")
+    @NotNull
     private String content;
 
     // 댓글의 좋아요 수 저장
-    @Column(name = "comment_like_count")
+    @NotNull
     private Long likeCount;
 
     // 댓글 활성화 여부
     @Enumerated(EnumType.STRING)
-    @Column(name = "comment_status")
+    @NotNull
     private Status status;
 
     // 자식댓글일 경우 부모댓글의 comment_id값을 저장한다. 없다면 null
-    @Column(name = "comment_parent_comment_id")
     private Long parentCommentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
