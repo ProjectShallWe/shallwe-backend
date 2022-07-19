@@ -21,7 +21,6 @@ public class LikeComment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "like_comment_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

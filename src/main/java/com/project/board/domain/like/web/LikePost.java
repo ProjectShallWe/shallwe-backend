@@ -18,7 +18,6 @@ public class LikePost extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "like_post_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
