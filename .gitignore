@@ -8,6 +8,9 @@ build/
 ### DataSource ###
 application-rds.yml
 
+### Amazon S3 Bucket ###
+application-s3.yml
+
 ### STS ###
 .apt_generated
 .classpath
