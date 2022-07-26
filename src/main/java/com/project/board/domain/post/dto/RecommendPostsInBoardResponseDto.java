@@ -6,10 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
 
+import java.io.Serializable;
+
 @RedisHash("postId")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecommendPostsInBoardResponseDto {
+public class RecommendPostsInBoardResponseDto implements Serializable {
 
     private Long postId;
     private String postCategory;

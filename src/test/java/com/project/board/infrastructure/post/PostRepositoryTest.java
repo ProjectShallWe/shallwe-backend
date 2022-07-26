@@ -35,8 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(
         type = FilterType.ASSIGNABLE_TYPE,
-        classes = JpaAuditConfig.class
-))
+        classes = JpaAuditConfig.class))
 class PostRepositoryTest {
 
     @Autowired
@@ -54,8 +53,7 @@ class PostRepositoryTest {
     @Autowired
     private LikePostRepository likePostRepository;
 
-    private static final Long likeRatios = 3L;
-    private static final Long commentRatios = 7L;
+
     private static final Pageable pageable = PageRequest.of(0, 10);
 
     @Test

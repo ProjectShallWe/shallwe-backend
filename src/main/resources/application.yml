@@ -3,17 +3,14 @@ spring:
     group:
       local:
         - local
-        - redis
         - s3
       dev:
         - dev
         - rds
-        - redis
         - s3
       test:
         - test
         - rds
-        - redis
         - s3
 ---
 spring:
