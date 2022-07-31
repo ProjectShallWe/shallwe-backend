@@ -15,26 +15,27 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/comment")
 public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/api/post/{postId}/comment")
+    @PostMapping
     public Long writeParentComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                   @PathVariable Long postId,
+                                   @RequestParam("post") Long postId,
                                    @RequestBody CommentWriteRequestDto commentWriteRequestDto) {
         return commentService.writeParentComment(userDetails.getUsername(), postId, commentWriteRequestDto);
     }
 
-    @PostMapping("/api/post/{postId}/comment/{commentId}")
+    @PostMapping("/{commentId}")
     public Long writeChildComment(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                  @PathVariable Long postId,
+                                  @RequestParam("post") Long postId,
                                   @PathVariable Long commentId,
                                   @RequestBody CommentWriteRequestDto commentWriteRequestDto) {
         return commentService.writeChildComment(userDetails.getUsername(), postId, commentId, commentWriteRequestDto);
     }
 
-    @PutMapping("/api/comment/{commentId}")
+    @PutMapping("/{commentId}")
     @PreAuthorize("isAuthenticated() " +
             "and ((#CUReqDto.writer == principal.username) " +
             "or hasRole('ROLE_ADMIN'))")
@@ -43,7 +44,7 @@ public class CommentController {
         return commentService.update(commentId, CUReqDto);
     }
 
-    @DeleteMapping("/api/comment/{commentId}")
+    @DeleteMapping("/{commentId}")
     @PreAuthorize("isAuthenticated() " +
             "and ((#CDReqDto.writer == principal.username) " +
             "or hasRole('ROLE_ADMIN'))")
@@ -52,8 +53,8 @@ public class CommentController {
         return commentService.delete(commentId);
     }
 
-    @GetMapping("/api/post/{postId}/comment")
-    public List<ParentCommentsResponseDto> getCommentsInPost(@PathVariable Long postId) {
+    @GetMapping
+    public List<ParentCommentsResponseDto> getCommentsInPost(@RequestParam("post") Long postId) {
         return commentService.getCommentsInPost(postId);
     }
 }
