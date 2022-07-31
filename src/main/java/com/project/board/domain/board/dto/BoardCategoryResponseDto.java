@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardCategoryResponseDto {
 
-    private Long postCategoryId;
+    private Long boardCategoryId;
     private String topic;
     private List<BoardInBoardCategoryResponseDto> boards;
 
     @Builder
     public BoardCategoryResponseDto(BoardCategory boardCategory) {
-        this.postCategoryId = boardCategory.getId();
+        this.boardCategoryId = boardCategory.getId();
         this.topic = boardCategory.getTopic();
         this.boards = boardCategory.getBoards().stream()
                 .map(BoardInBoardCategoryResponseDto::new)
