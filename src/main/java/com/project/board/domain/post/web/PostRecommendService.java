@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostRecommendService {
 
-    private final RedisTemplate<String, List<RecommendPostsInBoardResponseDto>> redisTemplate;
     private final PostReader postReader;
 
     @Cacheable(value = CacheKey.RECOMMEND_POST, key = "#boardId", unless = "#result == null")
