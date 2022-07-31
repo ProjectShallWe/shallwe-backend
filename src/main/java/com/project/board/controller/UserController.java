@@ -23,7 +23,6 @@ public class UserController {
 
     @PutMapping("/nickname")
     public String updateNickname(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                               @PathVariable Long id,
                                @RequestBody UserUpdateNicknameRequestDto userUpdateNicknameRequestDto) {
         return userService.updateNickname(userDetails.getUsername(), userUpdateNicknameRequestDto);
     }
@@ -35,8 +34,7 @@ public class UserController {
     }
 
     @DeleteMapping
-    public String delete(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                         @PathVariable Long id) {
+    public String delete(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.delete(userDetails.getUsername());
     }
 }
