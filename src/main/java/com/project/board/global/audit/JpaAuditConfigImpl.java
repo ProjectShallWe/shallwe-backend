@@ -10,7 +10,7 @@ public class JpaAuditConfigImpl implements AuditorAware<String> {
 
     public Optional<String> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(null == authentication || !authentication.isAuthenticated()) {
+        if (null == authentication || !authentication.isAuthenticated()) {
             return null;
         }
         return Optional.of(authentication.getName());

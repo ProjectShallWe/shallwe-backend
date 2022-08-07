@@ -30,12 +30,12 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain chain) throws IOException, ServletException {
 
-        System.out.println("-----Start check Authorization in JWT token-----");
         // 클라이언트가 요청한 헤더에 Authorization이 있는지 검증/ 없으면 다시 필터 타도록
         String header = request.getHeader(JwtProperties.HEADER_STRING);
-        if(header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
+        if (header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
@@ -50,19 +50,19 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 .getClaim("email").asString();
 
         // 서명이 정상적으로 됐다면
-        if(email != null) {
+        if (email != null) {
             User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다."));
 
             // 시큐리티가 수행해주는 권한 처리를 위해 토큰을 만들어서 Authentication 객체를 강제로 만들고 그걸 세션에 저장!
-            UserDetailsImpl userDetails = new UserDetailsImpl(user, UserDetailsServiceImpl.getUserDetails(user));
+            UserDetailsImpl userDetails =
+                    new UserDetailsImpl(user, UserDetailsServiceImpl.getUserDetails(user));
             Authentication authentication =
                     new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
             // 강제로 시큐리티의 세션에 접근하여 값 저장
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        System.out.println("-----Finish check Authorization in JWT token-----");
         chain.doFilter(request, response);
     }
 }
