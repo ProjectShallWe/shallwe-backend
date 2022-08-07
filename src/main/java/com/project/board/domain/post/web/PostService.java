@@ -58,46 +58,18 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PostsResponseDto> getPostsByPostTitleInBoard(Long id, String title, Integer page) {
-        PageRequest pageRequest = PageRequest.of(page, 10);
-        Page<PostsQueryDto> postsQueryDtos = postReader.getPostsByPostTitleInBoard(id, title, pageRequest);
-        Page<PostsResponseDto> postsResponseDtos = postsQueryDtos.map(
-                PostsResponseDto::new);
-        return postsResponseDtos;
-    }
-
-    @Transactional(readOnly = true)
-    public Page<PostsResponseDto> getPostsByPostContentInBoard(Long id, String content, Integer page) {
-        PageRequest pageRequest = PageRequest.of(page, 10);
-        Page<PostsQueryDto> postsQueryDtos = postReader.getPostsByPostContentInBoard(id, content, pageRequest);
-        Page<PostsResponseDto> postsResponseDtos = postsQueryDtos.map(
-                PostsResponseDto::new);
-        return postsResponseDtos;
-    }
-
-    @Transactional(readOnly = true)
-    public Page<PostsResponseDto> getPostsByPostTitleOrPostContentInBoard(Long id, String keyword, Integer page) {
-        PageRequest pageRequest = PageRequest.of(page, 10);
-        Page<PostsQueryDto> postsQueryDtos = postReader.getPostsByPostTitleOrPostContentInBoard(id, keyword, pageRequest);
-        Page<PostsResponseDto> postsResponseDtos = postsQueryDtos.map(
-                PostsResponseDto::new);
-        return postsResponseDtos;
-    }
-
-    @Transactional(readOnly = true)
-    public Page<PostsResponseDto> getPostsByUserNicknameInBoard(Long id, String keyword, Integer page) {
-        PageRequest pageRequest = PageRequest.of(page, 10);
-        Page<PostsQueryDto> postsQueryDtos = postReader.getPostsByUserNicknameInBoard(id, keyword, pageRequest);
-        Page<PostsResponseDto> postsResponseDtos = postsQueryDtos.map(
-                PostsResponseDto::new);
-        return postsResponseDtos;
-    }
-
-    @Transactional(readOnly = true)
     public PostDetailsResponseDto getPostDetails(Long id) {
         PostDetailsQueryDto postDetailsQueryDto = postReader.getPostDetails(id);
         PostDetailsResponseDto postDetailsResponseDtos
                 = new PostDetailsResponseDto(postDetailsQueryDto);
         return postDetailsResponseDtos;
+    }
+
+    public Page<PostsResponseDto> getPostsBySearchWordInBoard(Long boardId, String type, String keyword, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<PostsQueryDto> postsQueryDtos = postReader.getPostsBySearchWordInBoard(boardId, type, keyword, pageRequest);
+        Page<PostsResponseDto> postsResponseDtos = postsQueryDtos.map(
+                PostsResponseDto::new);
+        return postsResponseDtos;
     }
 }

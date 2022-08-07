@@ -131,7 +131,7 @@ class PostRepositoryTest {
 
         //when
         Page<PostsQueryDto> queryDtos
-                = postRepository.findPostsByPostTitleInBoard(savedBoard.getId(), "사람", pageable);
+                = postRepository.findPostsBySearchWordInBoard(savedBoard.getId(), "title", "사람", pageable);
 
         //then
         assertThat(queryDtos.getContent().get(0).getTitle())
@@ -157,7 +157,7 @@ class PostRepositoryTest {
 
         //when
         Page<PostsQueryDto> queryDtos
-                = postRepository.findPostsByPostContentInBoard(savedBoard.getId(), "드리블", pageable);
+                = postRepository.findPostsBySearchWordInBoard(savedBoard.getId(), "content", "드리블", pageable);
 
         //then
         assertThat(queryDtos.getContent().get(0).getTitle())
@@ -183,7 +183,7 @@ class PostRepositoryTest {
 
         //when
         Page<PostsQueryDto> queryDtos
-                = postRepository.findPostsByPostTitleOrPostContentInBoard(savedBoard.getId(), "농구", pageable);
+                = postRepository.findPostsBySearchWordInBoard(savedBoard.getId(), "ticon", "농구", pageable);
 
         //then
         assertThat(queryDtos.getContent().get(0).getTitle())
@@ -211,7 +211,7 @@ class PostRepositoryTest {
 
         //when
         Page<PostsQueryDto> queryDtos
-                = postRepository.findPostsByUserNicknameInBoard(savedBoard.getId(), "0001", pageable);
+                = postRepository.findPostsBySearchWordInBoard(savedBoard.getId(), "nickname", "0001", pageable);
 
         //then
         assertThat(queryDtos.getContent().get(0).getTitle())

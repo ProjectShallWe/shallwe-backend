@@ -1,9 +1,11 @@
 package com.project.board.infrastructure.user;
 
 import com.project.board.domain.user.web.User;
+import com.project.board.global.querydsl.QuerydslConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.Optional;
 
@@ -11,6 +13,7 @@ import static com.project.board.infrastructure.fixture.UserFixture.createUser1;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@Import(QuerydslConfig.class)
 class UserRepositoryTest {
 
     @Autowired

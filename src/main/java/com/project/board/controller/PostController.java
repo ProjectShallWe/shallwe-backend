@@ -4,7 +4,6 @@ import com.project.board.domain.post.dto.*;
 import com.project.board.domain.post.web.PostService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -55,25 +54,7 @@ public class PostController {
             @RequestParam Integer page,
             @RequestParam(required = false) String type,
             @RequestParam(required = false) String keyword) {
-        // type이 null로 들어올 경우 빈 값으로 변환
-        if (StringUtils.isEmpty(type)) {
-            type = "";
-        }
-
-        if (type.equals(PostSearchType.TICON.stringValue)) {
-            return postService.getPostsByPostTitleOrPostContentInBoard(boardId, keyword, page);
-        }
-        if (type.equals(PostSearchType.TITLE.stringValue)) {
-            return postService.getPostsByPostTitleInBoard(boardId, keyword, page);
-        }
-        if (type.equals(PostSearchType.CONTENT.stringValue)) {
-            return postService.getPostsByPostContentInBoard(boardId, keyword, page);
-        }
-        if (type.equals(PostSearchType.NICKNAME.stringValue)) {
-            return postService.getPostsByUserNicknameInBoard(boardId, keyword, page);
-        }
-
-        return postService.getPostsInBoard(boardId, page);
+        return postService.getPostsBySearchWordInBoard(boardId, type, keyword, page);
     }
 
     @GetMapping("/{id}")

@@ -2,9 +2,11 @@ package com.project.board.infrastructure.board;
 
 import com.project.board.domain.board.web.Board;
 import com.project.board.domain.board.web.BoardCategory;
+import com.project.board.global.querydsl.QuerydslConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import static com.project.board.infrastructure.fixture.BoardFixture.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@Import(QuerydslConfig.class)
 class BoardCategoryRepositoryTest {
 
     @Autowired

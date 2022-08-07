@@ -32,32 +32,19 @@ public class PostReaderImpl implements PostReader {
         return postRepository.findAllInPostCategory(id, pageRequest);
     }
 
-    public Page<PostsQueryDto> getPostsByPostTitleInBoard(Long id, String title, PageRequest pageRequest) {
-        return postRepository.findPostsByPostTitleInBoard(id, title, pageRequest);
-    }
-
-    public Page<PostsQueryDto> getPostsByPostContentInBoard(Long id, String content, PageRequest pageRequest) {
-        return postRepository.findPostsByPostContentInBoard(id, content, pageRequest);
-    }
-
-    public Page<PostsQueryDto> getPostsByPostTitleOrPostContentInBoard(Long id, String keyword, PageRequest pageRequest) {
-        return postRepository.findPostsByPostTitleOrPostContentInBoard(id, keyword, pageRequest);
-    }
-
-    public Page<PostsQueryDto> getPostsByUserNicknameInBoard(Long id, String keyword, PageRequest pageRequest) {
-        return postRepository.findPostsByUserNicknameInBoard(id, keyword, pageRequest);
-    }
-
     @Override
     public PostDetailsQueryDto getPostDetails(Long id) {
         return postRepository.findPostDetailsBy(id)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public Page<RecommendPostsInBoardQueryDto> getRecommendPostsInBoard(Long id, LocalDateTime now,
-                                                                        LocalDateTime twelveHoursAgo,
-                                                                        PageRequest pageRequest) {
+    public Page<RecommendPostsInBoardQueryDto> getRecommendPostsInBoard(Long id, LocalDateTime now, LocalDateTime twelveHoursAgo, PageRequest pageRequest) {
         return postRepository.findRecommendPostsInBoard(id, now, twelveHoursAgo, pageRequest);
+    }
+
+    @Override
+    public Page<PostsQueryDto> getPostsBySearchWordInBoard(Long boardId, String type, String keyword, PageRequest pageRequest) {
+        return postRepository.findPostsBySearchWordInBoard(boardId, type, keyword, pageRequest);
     }
 
 

@@ -4,11 +4,13 @@ import com.project.board.domain.comment.dto.CommentQueryDto;
 import com.project.board.domain.comment.web.Comment;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.user.web.User;
+import com.project.board.global.querydsl.QuerydslConfig;
 import com.project.board.infrastructure.post.PostRepository;
 import com.project.board.infrastructure.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ import static com.project.board.infrastructure.fixture.UserFixture.createUser2;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@Import(QuerydslConfig.class)
 class CommentRepositoryTest {
 
     @Autowired
