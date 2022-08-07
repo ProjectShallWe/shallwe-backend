@@ -1,7 +1,6 @@
 package com.project.board.infrastructure.post;
 
 import com.project.board.domain.board.web.Board;
-import com.project.board.domain.like.web.LikePost;
 import com.project.board.domain.post.dto.PostDetailsQueryDto;
 import com.project.board.domain.post.dto.PostsQueryDto;
 import com.project.board.domain.post.dto.RecommendPostsInBoardQueryDto;
@@ -9,6 +8,7 @@ import com.project.board.domain.post.web.Post;
 import com.project.board.domain.post.web.PostCategory;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.audit.JpaAuditConfig;
+import com.project.board.global.querydsl.QuerydslConfig;
 import com.project.board.infrastructure.board.BoardRepository;
 import com.project.board.infrastructure.like.LikePostRepository;
 import com.project.board.infrastructure.user.UserRepository;
@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,10 +26,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.project.board.infrastructure.fixture.BoardFixture.createBoard1;
-import static com.project.board.infrastructure.fixture.LikePostFixture.createLikePost;
 import static com.project.board.infrastructure.fixture.PostCategoryFixture.createPostCategory1;
-import static com.project.board.infrastructure.fixture.PostFixture.createPost1;
-import static com.project.board.infrastructure.fixture.PostFixture.createPost2;
+import static com.project.board.infrastructure.fixture.PostFixture.*;
 import static com.project.board.infrastructure.fixture.UserFixture.createUser1;
 import static com.project.board.infrastructure.fixture.UserFixture.createUser2;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,6 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest(includeFilters = @ComponentScan.Filter(
         type = FilterType.ASSIGNABLE_TYPE,
         classes = JpaAuditConfig.class))
+@Import(QuerydslConfig.class)
 class PostRepositoryTest {
 
     @Autowired
@@ -251,8 +251,7 @@ class PostRepositoryTest {
         PostCategory postCategory = createPostCategory1(board);
         Post post1 = createPost1(user1, postCategory);
         Post post2 = createPost2(user2, postCategory);
-        LikePost likePost1 = createLikePost(user1, post2);
-        LikePost likePost2 = createLikePost(user2, post2);
+        Post post3 = createPost3(user1, postCategory);
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -260,8 +259,14 @@ class PostRepositoryTest {
         postCategoryRepository.save(postCategory);
         postRepository.save(post1);
         postRepository.save(post2);
-        likePostRepository.save(likePost1);
-        likePostRepository.save(likePost2);
+        postRepository.save(post3);
+
+        post2.addLikeCount();
+        post2.addLikeCount();
+        post1.addLikeCount();
+        post3.addCommentCount();
+        post3.addCommentCount();
+        post3.addCommentCount();
 
         //when
         Page<RecommendPostsInBoardQueryDto> queryDtos
@@ -269,9 +274,9 @@ class PostRepositoryTest {
                                                            LocalDateTime.now().minusHours(12), pageable);
 
         //then
-        assertThat(queryDtos.getContent().get(0).getTitle()).isEqualTo("농구 잘하는 사람");
-        assertThat(queryDtos.getContent().get(0).getPostCategory()).isEqualTo("국내 농구");
-        assertThat(queryDtos.getContent().get(1).getTitle()).isEqualTo("농구 잘하는 법");
-        assertThat(queryDtos.getContent().get(1).getPostCategory()).isEqualTo("국내 농구");
+        assertThat(queryDtos.getContent().get(0).getTitle()).isEqualTo("농구의 신은 누구일까?");
+        assertThat(queryDtos.getContent().get(1).getTitle()).isEqualTo("농구 잘하는 사람");
+        assertThat(queryDtos.getContent().get(2).getTitle()).isEqualTo("농구 잘하는 법");
+
     }
 }
