@@ -1,4 +1,4 @@
-package com.project.board.global.AmazonS3;
+package com.project.board.global.amazonS3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;

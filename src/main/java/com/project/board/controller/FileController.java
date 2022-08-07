@@ -1,6 +1,6 @@
 package com.project.board.controller;
 
-import com.project.board.global.AmazonS3.AwsS3Uploader;
+import com.project.board.global.amazonS3.AwsS3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
