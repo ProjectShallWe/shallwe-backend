@@ -1,7 +1,5 @@
 package com.project.board.domain.post.web;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.board.domain.comment.web.Comment;
 import com.project.board.domain.file.web.PostFile;
 import com.project.board.domain.like.web.LikePost;
@@ -10,7 +8,6 @@ import com.project.board.global.audit.BaseEntity;
 import com.project.board.global.exception.InvalidParamException;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,7 +18,6 @@ import java.util.List;
 @Table(name = "post_table")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
 public class Post extends BaseEntity {
 
     @Id
@@ -48,25 +44,20 @@ public class Post extends BaseEntity {
     private Long commentCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference("user-post")
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference("postcategory-post")
     @JoinColumn(name = "post_category_id")
     private PostCategory postCategory;
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-    @JsonBackReference("postfile-post")
+    @OneToMany(mappedBy = "post")
     private List<PostFile> postFiles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-    @JsonManagedReference("post-comment")
+    @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-    @JsonManagedReference("post-likepost")
+    @OneToMany(mappedBy = "post")
     private List<LikePost> likePosts = new ArrayList<>();
 
     @Getter

@@ -1,6 +1,5 @@
 package com.project.board.domain.board.web;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.board.global.audit.BaseEntity;
 import com.project.board.global.exception.InvalidParamException;
 import lombok.AccessLevel;
@@ -8,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,7 +17,6 @@ import java.util.List;
 @Table(name = "board_category_table")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
 public class BoardCategory extends BaseEntity {
 
     @Id
@@ -30,8 +27,7 @@ public class BoardCategory extends BaseEntity {
     @NotNull
     private String topic;
 
-    @OneToMany(mappedBy = "boardCategory", fetch = FetchType.LAZY)
-    @JsonManagedReference("boardcategory-board")
+    @OneToMany(mappedBy = "boardCategory")
     private List<Board> boards = new ArrayList<>();
 
     @Builder

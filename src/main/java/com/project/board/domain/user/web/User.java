@@ -1,6 +1,5 @@
 package com.project.board.domain.user.web;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.project.board.domain.comment.web.Comment;
 import com.project.board.domain.like.web.LikeComment;
 import com.project.board.domain.like.web.LikePost;
@@ -9,7 +8,6 @@ import com.project.board.global.audit.BaseEntity;
 import com.project.board.global.exception.InvalidParamException;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -21,7 +19,6 @@ import java.util.List;
 @Table(name = "user_table")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
 public class User extends BaseEntity {
 
     @Id
@@ -52,20 +49,16 @@ public class User extends BaseEntity {
     @NotNull
     private Status status;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonManagedReference("user-post")
+    @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonManagedReference("user-likepost")
+    @OneToMany(mappedBy = "user")
     private List<LikePost> likePosts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonManagedReference("user-comment")
+    @OneToMany(mappedBy = "user")
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonManagedReference("user-likecomment")
+    @OneToMany(mappedBy = "user")
     private List<LikeComment> likeComments = new ArrayList<>();
 
     @Getter
