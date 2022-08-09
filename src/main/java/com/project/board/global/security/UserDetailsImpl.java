@@ -1,19 +1,17 @@
 package com.project.board.global.security;
 
 import com.project.board.domain.user.web.User;
-import org.springframework.data.annotation.Transient;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class UserDetailsImpl implements UserDetails {
 
     private final User user;
-
-    @Transient
-    private Collection<SimpleGrantedAuthority> authorities;
 
     @Override
     public String getPassword() {
@@ -47,15 +45,22 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+
+        if(user.getRole().equals(User.Role.USER)) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        } else if(user.getRole().equals(User.Role.ADMIN)) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
+
+        return authorities;
     }
 
     public User getUser() {
         return user;
     }
 
-    public UserDetailsImpl(User user, Collection<SimpleGrantedAuthority> authorities) {
+    public UserDetailsImpl(User user) {
         this.user = user;
-        this.authorities = authorities;
     }
 }
