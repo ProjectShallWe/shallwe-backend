@@ -41,6 +41,13 @@ public class PostController {
         return postService.delete(id);
     }
 
+    @GetMapping("/all")
+    public Page<PostsResponseDto> getPostsInBoard(
+            @RequestParam("board") Long boardId,
+            @RequestParam Integer page) {
+        return postService.getPostsInBoard(boardId, page);
+    }
+
     @GetMapping
     public Page<PostsResponseDto> getPostsInPostCategory(
             @RequestParam("category") Long postCategoryId,

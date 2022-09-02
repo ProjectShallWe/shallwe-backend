@@ -45,6 +45,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .join(postCategory.board, board)
                 .where(board.id.eq(boardId))
                 .orderBy(post.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetchResults();
 
         List<PostsQueryDto> content = results.getResults();
@@ -69,6 +71,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .join(post.postCategory, postCategory)
                 .where(postCategory.id.eq(postCategoryId))
                 .orderBy(post.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetchResults();
 
         List<PostsQueryDto> content = results.getResults();
@@ -114,6 +118,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         post.createdDate.loe(now),
                         post.createdDate.gt(twelveHoursAgo))
                 .orderBy(post.likeCount.add(post.commentCount).desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetchResults();
 
         List<RecommendPostsInBoardQueryDto> content = results.getResults();
@@ -140,6 +146,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .where(board.id.eq(boardId),
                         postSearchTypeEq(postSearchType, searchWord))
                 .orderBy(post.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetchResults();
 
         List<PostsQueryDto> content = results.getResults();
