@@ -1,5 +1,6 @@
 package com.project.board.global.security;
 
+import com.project.board.global.security.jwt.JwtProperties;
 import com.project.board.infrastructure.user.UserRepository;
 import com.project.board.global.security.jwt.JwtAuthenticationFilter;
 import com.project.board.global.security.jwt.JwtAuthorizationFilter;
@@ -37,6 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
+
+        configuration.addExposedHeader(JwtProperties.HEADER_STRING);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
