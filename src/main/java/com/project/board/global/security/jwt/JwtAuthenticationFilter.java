@@ -54,9 +54,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // 토큰 생성
         String jwtToken = JWT.create()
-                .withIssuer("cjsrhd94") // 발행자
+                .withIssuer("ShallWe") // 발행자
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME)) // 토큰 유효기간
-                .withClaim("email", userDetails.getUser().getEmail()) // 토큰에 담은 정보(번호)
+                .withClaim("email", userDetails.getUser().getEmail())
+                .withClaim("nickname", userDetails.getUser().getNickname()) // 토큰에 담은 정보(번호)
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
