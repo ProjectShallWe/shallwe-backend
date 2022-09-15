@@ -1,6 +1,7 @@
 package com.project.board.controller;
 
-import com.project.board.domain.post.dto.RecommendPostsInBoardResponseDto;
+import com.project.board.domain.post.dto.RecommendPostsResponseDto;
+import com.project.board.domain.post.dto.RecommendPostsWithBoardResDto;
 import com.project.board.domain.post.web.PostRecommendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,12 @@ public class PostRecommendScheduledController {
 
     private final PostRecommendService postRecommendService;
 
+    @GetMapping("/recommend/all")
+    public RecommendPostsWithBoardResDto getRecommendPostsFromRedis() {
+        return postRecommendService.getRecommendPostsFromRedis();
+    }
     @GetMapping("/recommend")
-    public List<RecommendPostsInBoardResponseDto> getRecommendPostsInBoardFromRedis(@RequestParam("board") Long boardId) {
+    public RecommendPostsWithBoardResDto getRecommendPostsInBoardFromRedis(@RequestParam("board") Long boardId) {
         return postRecommendService.getRecommendPostsInBoardFromRedis(boardId);
     }
 }

@@ -7,19 +7,22 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecommendPostsInBoardQueryDto {
+public class RecommendPostsQueryDto {
 
     private Long postId;
+    private Long boardId;
     private String postCategory;
     private String title;
     private Long commentCount;
 
     @Builder
-    public RecommendPostsInBoardQueryDto(Long postId,
-                                         String postCategory,
-                                         String title,
-                                         Long commentCount) {
+    public RecommendPostsQueryDto(Long postId,
+                                  Long boardId,
+                                  String postCategory,
+                                  String title,
+                                  Long commentCount) {
         this.postId = postId;
+        this.boardId = boardId;
         this.postCategory = postCategory;
         this.title = title;
         this.commentCount = commentCount;

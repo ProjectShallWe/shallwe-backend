@@ -3,7 +3,7 @@ package com.project.board.infrastructure.post;
 import com.project.board.controller.PostSearchType;
 import com.project.board.domain.post.dto.PostDetailsQueryDto;
 import com.project.board.domain.post.dto.PostsQueryDto;
-import com.project.board.domain.post.dto.RecommendPostsInBoardQueryDto;
+import com.project.board.domain.post.dto.RecommendPostsQueryDto;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -11,6 +11,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
@@ -102,11 +103,12 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     }
 
     @Override
-    public Page<RecommendPostsInBoardQueryDto> findRecommendPostsInBoard(Long boardId, LocalDateTime now, LocalDateTime twelveHoursAgo, Pageable pageable) {
+    public Page<RecommendPostsQueryDto> findRecommendPostsInBoard(Long boardId, LocalDateTime now, LocalDateTime twelveHoursAgo, Pageable pageable) {
 
-        QueryResults<RecommendPostsInBoardQueryDto> results = queryFactory
-                .select(Projections.constructor(RecommendPostsInBoardQueryDto.class,
+        QueryResults<RecommendPostsQueryDto> results = queryFactory
+                .select(Projections.constructor(RecommendPostsQueryDto.class,
                         post.id,
+                        board.id,
                         postCategory.topic,
                         post.title,
                         post.commentCount
@@ -122,7 +124,33 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetchResults();
 
-        List<RecommendPostsInBoardQueryDto> content = results.getResults();
+        List<RecommendPostsQueryDto> content = results.getResults();
+        long total = results.getTotal();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public Page<RecommendPostsQueryDto> findRecommendPosts(LocalDateTime now, LocalDateTime twelveHoursAgo, Pageable pageable) {
+        QueryResults<RecommendPostsQueryDto> results = queryFactory
+                .select(Projections.constructor(RecommendPostsQueryDto.class,
+                        post.id,
+                        board.id,
+                        postCategory.topic,
+                        post.title,
+                        post.commentCount
+                ))
+                .from(post)
+                .join(post.postCategory, postCategory)
+                .join(postCategory.board, board)
+                .where(post.createdDate.loe(now),
+                       post.createdDate.gt(twelveHoursAgo))
+                .orderBy(post.likeCount.add(post.commentCount).desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<RecommendPostsQueryDto> content = results.getResults();
         long total = results.getTotal();
 
         return new PageImpl<>(content, pageable, total);

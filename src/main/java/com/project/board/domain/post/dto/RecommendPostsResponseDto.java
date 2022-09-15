@@ -9,16 +9,18 @@ import java.io.Serializable;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RecommendPostsInBoardResponseDto implements Serializable {
+public class RecommendPostsResponseDto implements Serializable {
 
     private Long postId;
+    private Long boardId;
     private String postCategory;
     private String title;
     private Long commentCount;
 
     @Builder
-    public RecommendPostsInBoardResponseDto(RecommendPostsInBoardQueryDto queryDto) {
+    public RecommendPostsResponseDto(RecommendPostsQueryDto queryDto) {
         this.postId = queryDto.getPostId();
+        this.boardId = queryDto.getBoardId();
         this.postCategory = queryDto.getPostCategory();
         this.title = queryDto.getTitle();
         this.commentCount = queryDto.getCommentCount();

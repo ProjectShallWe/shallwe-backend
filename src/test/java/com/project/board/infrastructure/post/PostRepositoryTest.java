@@ -3,7 +3,7 @@ package com.project.board.infrastructure.post;
 import com.project.board.domain.board.web.Board;
 import com.project.board.domain.post.dto.PostDetailsQueryDto;
 import com.project.board.domain.post.dto.PostsQueryDto;
-import com.project.board.domain.post.dto.RecommendPostsInBoardQueryDto;
+import com.project.board.domain.post.dto.RecommendPostsQueryDto;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.post.web.PostCategory;
 import com.project.board.domain.user.web.User;
@@ -269,7 +269,7 @@ class PostRepositoryTest {
         post3.addCommentCount();
 
         //when
-        Page<RecommendPostsInBoardQueryDto> queryDtos
+        Page<RecommendPostsQueryDto> queryDtos
                 = postRepository.findRecommendPostsInBoard(savedBoard.getId(), LocalDateTime.now(),
                                                            LocalDateTime.now().minusHours(12), pageable);
 

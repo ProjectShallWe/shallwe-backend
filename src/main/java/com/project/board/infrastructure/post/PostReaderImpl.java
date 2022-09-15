@@ -2,7 +2,7 @@ package com.project.board.infrastructure.post;
 
 import com.project.board.domain.post.dto.PostDetailsQueryDto;
 import com.project.board.domain.post.dto.PostsQueryDto;
-import com.project.board.domain.post.dto.RecommendPostsInBoardQueryDto;
+import com.project.board.domain.post.dto.RecommendPostsQueryDto;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.post.web.PostReader;
 import com.project.board.global.exception.EntityNotFoundException;
@@ -38,8 +38,13 @@ public class PostReaderImpl implements PostReader {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public Page<RecommendPostsInBoardQueryDto> getRecommendPostsInBoard(Long id, LocalDateTime now, LocalDateTime twelveHoursAgo, PageRequest pageRequest) {
+    public Page<RecommendPostsQueryDto> getRecommendPostsInBoard(Long id, LocalDateTime now, LocalDateTime twelveHoursAgo, PageRequest pageRequest) {
         return postRepository.findRecommendPostsInBoard(id, now, twelveHoursAgo, pageRequest);
+    }
+
+    @Override
+    public Page<RecommendPostsQueryDto> getRecommendPosts(LocalDateTime now, LocalDateTime twelveHoursAgo, PageRequest pageRequest) {
+        return postRepository.findRecommendPosts(now, twelveHoursAgo, pageRequest);
     }
 
     @Override

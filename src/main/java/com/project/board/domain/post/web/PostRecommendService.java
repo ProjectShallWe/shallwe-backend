@@ -1,7 +1,10 @@
 package com.project.board.domain.post.web;
 
-import com.project.board.domain.post.dto.RecommendPostsInBoardQueryDto;
-import com.project.board.domain.post.dto.RecommendPostsInBoardResponseDto;
+import com.project.board.domain.board.web.Board;
+import com.project.board.domain.board.web.BoardReader;
+import com.project.board.domain.post.dto.RecommendPostsQueryDto;
+import com.project.board.domain.post.dto.RecommendPostsResponseDto;
+import com.project.board.domain.post.dto.RecommendPostsWithBoardResDto;
 import com.project.board.global.redis.CacheKey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -19,17 +22,32 @@ import java.util.stream.Collectors;
 public class PostRecommendService {
 
     private final PostReader postReader;
+    private final BoardReader boardReader;
+
+    @Cacheable(value = CacheKey.RECOMMEND_POST, unless = "#result == null")
+    @Transactional(readOnly = true)
+    public RecommendPostsWithBoardResDto getRecommendPostsFromRedis() {
+        Page<RecommendPostsQueryDto> queryDtos
+                = postReader.getRecommendPosts(
+                LocalDateTime.now(), LocalDateTime.now().minusHours(12),
+                PageRequest.of(0, 10));
+        List<RecommendPostsResponseDto> resDtos = queryDtos.stream()
+                .map(RecommendPostsResponseDto::new)
+                .collect(Collectors.toList());
+        return new RecommendPostsWithBoardResDto(resDtos);
+    }
 
     @Cacheable(value = CacheKey.RECOMMEND_POST, key = "#boardId", unless = "#result == null")
     @Transactional(readOnly = true)
-    public List<RecommendPostsInBoardResponseDto> getRecommendPostsInBoardFromRedis(Long boardId) {
-        Page<RecommendPostsInBoardQueryDto> queryDtos
+    public RecommendPostsWithBoardResDto getRecommendPostsInBoardFromRedis(Long boardId) {
+        Board board = boardReader.getBoardBy(boardId);
+        Page<RecommendPostsQueryDto> queryDtos
                 = postReader.getRecommendPostsInBoard(boardId,
                 LocalDateTime.now(), LocalDateTime.now().minusHours(12),
-                PageRequest.of(0, 5));
-        List<RecommendPostsInBoardResponseDto> resDtos = queryDtos.stream()
-                .map(RecommendPostsInBoardResponseDto::new)
+                PageRequest.of(0, 10));
+        List<RecommendPostsResponseDto> resDtos = queryDtos.stream()
+                .map(RecommendPostsResponseDto::new)
                 .collect(Collectors.toList());
-        return resDtos;
+        return new RecommendPostsWithBoardResDto(board,resDtos);
     }
 }
