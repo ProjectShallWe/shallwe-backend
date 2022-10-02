@@ -16,6 +16,6 @@ public interface PostReader {
     PostDetailsQueryDto getPostDetails(Long id);
     Page<RecommendPostsQueryDto> getRecommendPostsInBoard(Long id, LocalDateTime now, LocalDateTime twelveHoursAgo, PageRequest pageRequest);
     Page<RecommendPostsQueryDto> getRecommendPosts(LocalDateTime now, LocalDateTime twelveHoursAgo, PageRequest pageRequest);
-    Page<PostsQueryDto> getPostsBySearchWordInBoard(Long boardId, String type, String keyword, PageRequest pageRequest);
+    Page<PostsQueryDto> getPostsBySearchWordInBoard(Long boardId, Long postCategoryId, String type, String keyword, PageRequest pageRequest);
 
 }

@@ -1,6 +1,7 @@
 package com.project.board.infrastructure.post;
 
 import com.project.board.controller.PostSearchType;
+import com.project.board.domain.board.web.Board;
 import com.project.board.domain.post.dto.PostDetailsQueryDto;
 import com.project.board.domain.post.dto.PostsQueryDto;
 import com.project.board.domain.post.dto.RecommendPostsQueryDto;
@@ -33,8 +34,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         QueryResults<PostsQueryDto> results = queryFactory
                 .select(Projections.constructor(PostsQueryDto.class,
                         post.id,
+                        postCategory.id,
                         postCategory.topic,
                         post.title,
+                        post.commentCount,
                         user.nickname,
                         post.createdDate,
                         post.likeCount
@@ -61,8 +64,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         QueryResults<PostsQueryDto> results = queryFactory
                 .select(Projections.constructor(PostsQueryDto.class,
                         post.id,
+                        postCategory.id,
                         postCategory.topic,
                         post.title,
+                        post.commentCount,
                         user.nickname,
                         post.createdDate,
                         post.likeCount
@@ -157,12 +162,14 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     }
 
     @Override
-    public Page<PostsQueryDto> findPostsBySearchWordInBoard(Long boardId, String postSearchType, String searchWord, Pageable pageable) {
+    public Page<PostsQueryDto> findPostsBySearchWordInBoard(Long boardId, Long postCategoryId, String postSearchType, String searchWord, Pageable pageable) {
         QueryResults<PostsQueryDto> results = queryFactory
                 .select(Projections.constructor(PostsQueryDto.class,
                         post.id,
+                        postCategory.id,
                         postCategory.topic,
                         post.title,
+                        post.commentCount,
                         user.nickname,
                         post.createdDate,
                         post.likeCount
@@ -172,6 +179,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .join(post.postCategory, postCategory)
                 .join(postCategory.board, board)
                 .where(board.id.eq(boardId),
+                        isPostCategoryExist(postCategoryId),
                         postSearchTypeEq(postSearchType, searchWord))
                 .orderBy(post.id.desc())
                 .offset(pageable.getOffset())
@@ -182,6 +190,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         long total = results.getTotal();
 
         return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression isPostCategoryExist(Long postCategoryId) {
+        return postCategoryId != null ? postCategory.id.eq(postCategoryId) : null;
     }
 
     private BooleanExpression postSearchTypeEq(String postSearchType, String searchWord) {

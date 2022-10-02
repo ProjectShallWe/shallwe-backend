@@ -12,22 +12,28 @@ import java.time.LocalDateTime;
 public class PostsQueryDto {
 
     private Long postId;
+    private Long postCategoryId;
     private String postCategory;
     private String title;
+    private Long commentCount;
     private String nickname;
     private LocalDateTime createdDate;
     private Long likeCount;
 
     @Builder
     public PostsQueryDto(Long postId,
+                         Long postCategoryId,
                          String postCategory,
                          String title,
+                         Long commentCount,
                          String nickname,
                          LocalDateTime createdDate,
                          Long likeCount) {
         this.postId = postId;
+        this.postCategoryId = postCategoryId;
         this.postCategory = postCategory;
         this.title = title;
+        this.commentCount = commentCount;
         this.nickname = nickname;
         this.createdDate = createdDate;
         this.likeCount = likeCount;

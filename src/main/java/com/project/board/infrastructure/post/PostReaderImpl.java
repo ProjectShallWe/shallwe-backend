@@ -48,8 +48,8 @@ public class PostReaderImpl implements PostReader {
     }
 
     @Override
-    public Page<PostsQueryDto> getPostsBySearchWordInBoard(Long boardId, String type, String keyword, PageRequest pageRequest) {
-        return postRepository.findPostsBySearchWordInBoard(boardId, type, keyword, pageRequest);
+    public Page<PostsQueryDto> getPostsBySearchWordInBoard(Long boardId, Long postCategoryId, String type, String keyword, PageRequest pageRequest) {
+        return postRepository.findPostsBySearchWordInBoard(boardId, postCategoryId, type, keyword, pageRequest);
     }
 
 

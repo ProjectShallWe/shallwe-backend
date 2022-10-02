@@ -65,9 +65,9 @@ public class PostService {
         return postDetailsResponseDtos;
     }
 
-    public Page<PostsResponseDto> getPostsBySearchWordInBoard(Long boardId, String type, String keyword, Integer page) {
+    public Page<PostsResponseDto> getPostsBySearchWordInBoard(Long boardId, Long postCategoryId, String type, String keyword, Integer page) {
         PageRequest pageRequest = PageRequest.of(page, 10);
-        Page<PostsQueryDto> postsQueryDtos = postReader.getPostsBySearchWordInBoard(boardId, type, keyword, pageRequest);
+        Page<PostsQueryDto> postsQueryDtos = postReader.getPostsBySearchWordInBoard(boardId, postCategoryId, type, keyword, pageRequest);
         Page<PostsResponseDto> postsResponseDtos = postsQueryDtos.map(
                 PostsResponseDto::new);
         return postsResponseDtos;

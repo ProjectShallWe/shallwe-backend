@@ -1,6 +1,7 @@
 package com.project.board.domain.post.web;
 
 import com.project.board.domain.board.web.Board;
+import com.project.board.domain.board.web.BoardCategory;
 import com.project.board.domain.board.web.BoardReader;
 import com.project.board.domain.post.dto.RecommendPostsQueryDto;
 import com.project.board.domain.post.dto.RecommendPostsResponseDto;

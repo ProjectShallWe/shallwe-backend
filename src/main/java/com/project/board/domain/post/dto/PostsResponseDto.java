@@ -12,8 +12,10 @@ import static com.project.board.global.util.DateConverter.convertLocalDateTimeTo
 public class PostsResponseDto {
 
     private Long postId;
+    private Long postCategoryId;
     private String postCategory;
     private String title;
+    private Long commentCount;
     private String nickname;
     private String createdDate;
     private Long likeCount;
@@ -21,8 +23,10 @@ public class PostsResponseDto {
     @Builder
     public PostsResponseDto (PostsQueryDto postsQueryDto) {
         this.postId = postsQueryDto.getPostId();
+        this.postCategoryId = postsQueryDto.getPostCategoryId();
         this.postCategory = postsQueryDto.getPostCategory();
         this.title = postsQueryDto.getTitle();
+        this.commentCount = postsQueryDto.getCommentCount();
         this.nickname = postsQueryDto.getNickname();
         this.createdDate = convertLocalDateTimeToMMdd(postsQueryDto.getCreatedDate());
         this.likeCount = postsQueryDto.getLikeCount();

@@ -59,9 +59,10 @@ public class PostController {
     public Page<PostsResponseDto> getPostsBySearchKeywordInBoard(
             @RequestParam("board") Long boardId,
             @RequestParam Integer page,
+            @RequestParam(name = "category", required = false) Long postCategoryId,
             @RequestParam(required = false) String type,
             @RequestParam(required = false) String keyword) {
-        return postService.getPostsBySearchWordInBoard(boardId, type, keyword, page);
+        return postService.getPostsBySearchWordInBoard(boardId, postCategoryId, type, keyword, page);
     }
 
     @GetMapping("/{id}")
