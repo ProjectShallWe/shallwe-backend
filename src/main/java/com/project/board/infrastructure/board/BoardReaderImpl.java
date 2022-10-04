@@ -19,11 +19,11 @@ public class BoardReaderImpl implements BoardReader {
                 .orElseThrow(EntityNotFoundException::new);
     }
 
-    public List<Board> getAll() {
-        return boardRepository.findAll();
-    }
-
     public List<Board> getBoardWithPostCategories(Long id) {
         return boardRepository.findAllWithPostCategories(id);
+    }
+
+    public List<Board> getBoardsBySearchWord(String keyword) {
+        return boardRepository.findBoardsBySearchWord(keyword);
     }
 }

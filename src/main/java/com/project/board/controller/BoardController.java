@@ -1,5 +1,6 @@
 package com.project.board.controller;
 
+import com.project.board.domain.board.dto.BoardInfoResDto;
 import com.project.board.domain.board.dto.BoardRequestDto;
 import com.project.board.domain.board.dto.BoardResponseDto;
 import com.project.board.domain.board.web.BoardService;
@@ -40,5 +41,11 @@ public class BoardController {
     public List<BoardResponseDto> getBoardWithPostCategories (
                        @PathVariable Long id) {
         return boardService.getBoardWithPostCategories(id);
+    }
+
+    @GetMapping
+    public List<BoardInfoResDto> getBoardsBySearchWord (
+            @RequestParam("keyword") String keyword) {
+        return boardService.getBoardsBySearchWord(keyword);
     }
 }

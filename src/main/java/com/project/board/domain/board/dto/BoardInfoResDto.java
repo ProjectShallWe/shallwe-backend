@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BoardInBoardCategoryResponseDto {
+public class BoardInfoResDto {
 
     private Long boardId;
     private String title;
 
     @Builder
-    public BoardInBoardCategoryResponseDto(Board board) {
+    public BoardInfoResDto(Board board) {
         this.boardId = board.getId();
         this.title = board.getTitle();
     }

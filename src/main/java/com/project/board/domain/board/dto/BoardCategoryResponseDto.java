@@ -15,14 +15,14 @@ public class BoardCategoryResponseDto {
 
     private Long boardCategoryId;
     private String topic;
-    private List<BoardInBoardCategoryResponseDto> boards;
+    private List<BoardInfoResDto> boards;
 
     @Builder
     public BoardCategoryResponseDto(BoardCategory boardCategory) {
         this.boardCategoryId = boardCategory.getId();
         this.topic = boardCategory.getTopic();
         this.boards = boardCategory.getBoards().stream()
-                .map(BoardInBoardCategoryResponseDto::new)
+                .map(BoardInfoResDto::new)
                 .collect(Collectors.toList());
     }
 }

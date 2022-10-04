@@ -1,5 +1,6 @@
 package com.project.board.domain.board.web;
 
+import com.project.board.domain.board.dto.BoardInfoResDto;
 import com.project.board.domain.board.dto.BoardRequestDto;
 import com.project.board.domain.board.dto.BoardResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -45,5 +46,14 @@ public class BoardService {
                 .map(BoardResponseDto::new)
                 .collect(Collectors.toList());
         return boardResponseDtos;
+    }
+
+    @Transactional(readOnly = true)
+    public List<BoardInfoResDto> getBoardsBySearchWord(String keyword) {
+        List<Board> boards = boardReader.getBoardsBySearchWord(keyword);
+        List<BoardInfoResDto> boardInfoResDtos = boards.stream()
+                .map(BoardInfoResDto::new)
+                .collect(Collectors.toList());
+        return boardInfoResDtos;
     }
 }

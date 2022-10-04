@@ -24,4 +24,14 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
                 .orderBy(board.id.asc(), postCategory.id.asc())
                 .fetch();
     }
+
+    @Override
+    public List<Board> findBoardsBySearchWord(String keyword) {
+        return queryFactory
+                .selectFrom(board)
+                .distinct()
+                .where(board.title.contains(keyword))
+                .orderBy(board.id.asc())
+                .fetch();
+    }
 }
