@@ -1,12 +1,10 @@
 package com.project.board.controller;
 
-import com.project.board.domain.comment.dto.CommentDeleteRequestDto;
-import com.project.board.domain.comment.dto.CommentUpdateRequestDto;
-import com.project.board.domain.comment.dto.CommentWriteRequestDto;
-import com.project.board.domain.comment.dto.ParentCommentsResponseDto;
+import com.project.board.domain.comment.dto.*;
 import com.project.board.domain.comment.web.CommentService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -49,12 +47,19 @@ public class CommentController {
             "and ((#CDReqDto.writer == principal.username) " +
             "or hasRole('ROLE_ADMIN'))")
     public Long delete(@PathVariable Long commentId,
-                       @RequestBody CommentDeleteRequestDto CDReqDto){
+                       @RequestBody CommentDeleteRequestDto CDReqDto) {
         return commentService.delete(commentId);
     }
 
     @GetMapping
     public List<ParentCommentsResponseDto> getCommentsInPost(@RequestParam("post") Long postId) {
         return commentService.getCommentsInPost(postId);
+    }
+
+    @GetMapping("/nickname")
+    public Page<CommentsUserResDto> getCommentsByNickname(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestParam Integer page) {
+        return commentService.getCommentsByNickname(userDetails.getUsername(), page);
     }
 }

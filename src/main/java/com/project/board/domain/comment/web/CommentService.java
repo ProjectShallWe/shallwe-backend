@@ -1,11 +1,15 @@
 package com.project.board.domain.comment.web;
 
 import com.project.board.domain.comment.dto.*;
+import com.project.board.domain.post.dto.PostsUserQueryDto;
+import com.project.board.domain.post.dto.PostsUserResDto;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.post.web.PostReader;
 import com.project.board.domain.user.web.User;
 import com.project.board.domain.user.web.UserReader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,5 +87,16 @@ public class CommentService {
 
     private boolean isThisCommentChildren(ParentCommentsResponseDto pcResDto, ChildCommentsResponseDto ccResDto) {
         return pcResDto.getCommentId().equals(ccResDto.getParentId());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<CommentsUserResDto> getCommentsByNickname(String email, Integer page) {
+        User user = userReader.getUserBy(email);
+
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<CommentsUserQueryDto> commentsUserQueryDtos = commentReader.getCommentsByNickname(user.getNickname(), pageRequest);
+        Page<CommentsUserResDto> commentsUserResDtos = commentsUserQueryDtos.map(
+                CommentsUserResDto::new);
+        return commentsUserResDtos;
     }
 }
