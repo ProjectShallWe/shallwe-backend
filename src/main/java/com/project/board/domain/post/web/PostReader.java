@@ -1,8 +1,6 @@
 package com.project.board.domain.post.web;
 
-import com.project.board.domain.post.dto.PostDetailsQueryDto;
-import com.project.board.domain.post.dto.PostsQueryDto;
-import com.project.board.domain.post.dto.RecommendPostsQueryDto;
+import com.project.board.domain.post.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -17,5 +15,6 @@ public interface PostReader {
     Page<RecommendPostsQueryDto> getRecommendPostsInBoard(Long id, LocalDateTime now, LocalDateTime twelveHoursAgo, PageRequest pageRequest);
     Page<RecommendPostsQueryDto> getRecommendPosts(LocalDateTime now, LocalDateTime twelveHoursAgo, PageRequest pageRequest);
     Page<PostsQueryDto> getPostsBySearchWordInBoard(Long boardId, Long postCategoryId, String type, String keyword, PageRequest pageRequest);
-
+    Page<PostsCommonSearchQueryDto> getPostsByKeyword(String keyword, PageRequest pageRequest);
+    Page<PostsUserQueryDto> getPostsByNickname(String nickname, PageRequest pageRequest);
 }

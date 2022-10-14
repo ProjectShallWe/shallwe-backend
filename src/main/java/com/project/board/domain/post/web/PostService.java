@@ -3,6 +3,7 @@ package com.project.board.domain.post.web;
 import com.project.board.domain.post.dto.*;
 import com.project.board.domain.user.web.User;
 import com.project.board.domain.user.web.UserReader;
+import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -72,4 +73,24 @@ public class PostService {
                 PostsResponseDto::new);
         return postsResponseDtos;
     }
+
+    public Page<PostsCommonSearchResDto> getPostsByKeyword(String keyword, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<PostsCommonSearchQueryDto> postsCommonSearchQueryDtos = postReader.getPostsByKeyword(keyword, pageRequest);
+        Page<PostsCommonSearchResDto> postsCommonSearchResDtos = postsCommonSearchQueryDtos.map(
+                PostsCommonSearchResDto::new);
+        return postsCommonSearchResDtos;
+    }
+
+    public Page<PostsUserResDto> getPostsByNickname(String email, Integer page) {
+        User user = userReader.getUserBy(email);
+
+        PageRequest pageRequest = PageRequest.of(page, 10);
+        Page<PostsUserQueryDto> postsUserQueryDtos = postReader.getPostsByNickname(user.getNickname(), pageRequest);
+        Page<PostsUserResDto> postsUserResDtos = postsUserQueryDtos.map(
+                PostsUserResDto::new);
+        return postsUserResDtos;
+    }
+
+
 }

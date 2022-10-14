@@ -1,8 +1,6 @@
 package com.project.board.infrastructure.post;
 
-import com.project.board.domain.post.dto.PostDetailsQueryDto;
-import com.project.board.domain.post.dto.PostsQueryDto;
-import com.project.board.domain.post.dto.RecommendPostsQueryDto;
+import com.project.board.domain.post.dto.*;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.post.web.PostReader;
 import com.project.board.global.exception.EntityNotFoundException;
@@ -51,6 +49,17 @@ public class PostReaderImpl implements PostReader {
     public Page<PostsQueryDto> getPostsBySearchWordInBoard(Long boardId, Long postCategoryId, String type, String keyword, PageRequest pageRequest) {
         return postRepository.findPostsBySearchWordInBoard(boardId, postCategoryId, type, keyword, pageRequest);
     }
+
+    @Override
+    public Page<PostsCommonSearchQueryDto> getPostsByKeyword(String keyword, PageRequest pageRequest) {
+        return postRepository.findPostsByKeyword(keyword, pageRequest);
+    }
+
+    @Override
+    public Page<PostsUserQueryDto> getPostsByNickname(String nickname, PageRequest pageRequest) {
+        return postRepository.findPostsByNickname(nickname, pageRequest);
+    }
+
 
 
 }

@@ -2,9 +2,7 @@ package com.project.board.infrastructure.post;
 
 import com.project.board.controller.PostSearchType;
 import com.project.board.domain.board.web.Board;
-import com.project.board.domain.post.dto.PostDetailsQueryDto;
-import com.project.board.domain.post.dto.PostsQueryDto;
-import com.project.board.domain.post.dto.RecommendPostsQueryDto;
+import com.project.board.domain.post.dto.*;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -232,4 +230,58 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         return searchWord != null ? user.nickname.contains(searchWord) : null;
     }
 
+    @Override
+    public Page<PostsCommonSearchQueryDto> findPostsByKeyword(String keyword, Pageable pageable) {
+        QueryResults<PostsCommonSearchQueryDto> results = queryFactory
+                .select(Projections.constructor(PostsCommonSearchQueryDto.class,
+                        post.id,
+                        board.id,
+                        board.title,
+                        post.title,
+                        post.content,
+                        post.createdDate
+                ))
+                .from(post)
+                .join(post.user, user)
+                .join(post.postCategory, postCategory)
+                .join(postCategory.board, board)
+                .where(ticonEq(keyword))
+                .orderBy(post.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<PostsCommonSearchQueryDto> content = results.getResults();
+        long total = results.getTotal();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public Page<PostsUserQueryDto> findPostsByNickname(String nickname, Pageable pageable) {
+        QueryResults<PostsUserQueryDto> results = queryFactory
+                .select(Projections.constructor(PostsUserQueryDto.class,
+                        post.id,
+                        board.id,
+                        board.title,
+                        post.title,
+                        post.commentCount,
+                        post.createdDate,
+                        post.likeCount
+                ))
+                .from(post)
+                .join(post.user, user)
+                .join(post.postCategory, postCategory)
+                .join(postCategory.board, board)
+                .where(user.nickname.eq(nickname))
+                .orderBy(post.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<PostsUserQueryDto> content = results.getResults();
+        long total = results.getTotal();
+
+        return new PageImpl<>(content, pageable, total);
+    }
 }

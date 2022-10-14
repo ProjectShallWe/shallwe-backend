@@ -65,8 +65,23 @@ public class PostController {
         return postService.getPostsBySearchWordInBoard(boardId, postCategoryId, type, keyword, page);
     }
 
+    @GetMapping("/search/common")
+    public Page<PostsCommonSearchResDto> getPostsBySearchKeyword(
+            @RequestParam("keyword") String keyword,
+            @RequestParam Integer page) {
+        return postService.getPostsByKeyword(keyword, page);
+
+    }
+
     @GetMapping("/{id}")
     public PostDetailsResponseDto getPostDetails(@PathVariable Long id) {
         return postService.getPostDetails(id);
+    }
+
+    @GetMapping("/nickname")
+    public Page<PostsUserResDto> getPostsByNickname(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestParam Integer page) {
+        return postService.getPostsByNickname(userDetails.getUsername(), page);
     }
 }
