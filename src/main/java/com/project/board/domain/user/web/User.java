@@ -8,6 +8,7 @@ import com.project.board.global.audit.BaseEntity;
 import com.project.board.global.exception.InvalidParamException;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -98,6 +99,11 @@ public class User extends BaseEntity {
     public void updateNickname(String nickname) {
         if (StringUtils.isEmpty(nickname)) throw new InvalidParamException("User.nickname");
         this.nickname = nickname;
+    }
+
+    public boolean checkPassword(String nowPassword, String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.matches(nowPassword, password);
     }
 
     public void updatePassword(String password) {

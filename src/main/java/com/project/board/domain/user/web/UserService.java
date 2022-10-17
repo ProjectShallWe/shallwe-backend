@@ -34,10 +34,12 @@ public class UserService {
     public String updatePassword(String email,
                                UserUpdatePasswordRequestDto passwordUpdateDto) {
         User user = userReader.getUserBy(email);
-        String encodedPassword = passwordEncoder.encode(passwordUpdateDto.getPassword());
-        user.updatePassword(encodedPassword);
-
-        return email;
+        if (user.checkPassword(passwordUpdateDto.getNowPassword(), user.getPassword())){
+            user.updatePassword(passwordEncoder.encode(passwordUpdateDto.getNewPassword()));
+            return email;
+        } else {
+            return "-1";
+        }
     }
 
     @Transactional
