@@ -21,6 +21,11 @@ public class UserController {
         return userService.join(userJoinRequestDto);
     }
 
+    @PostMapping("/check")
+    public Boolean checkNicknameDuplication(@RequestBody UserUpdateNicknameRequestDto userUpdateNicknameRequestDto) {
+        return userService.checkNicknameDuplication(userUpdateNicknameRequestDto);
+    }
+
     @PutMapping("/nickname")
     public String updateNickname(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                @RequestBody UserUpdateNicknameRequestDto userUpdateNicknameRequestDto) {

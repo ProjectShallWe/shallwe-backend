@@ -16,4 +16,9 @@ public class UserReaderImpl implements UserReader {
         return userRepository.findByEmail(email)
                 .orElseThrow(EntityNotFoundException::new);
     }
+
+    @Override
+    public Boolean existsByNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
 }

@@ -21,6 +21,11 @@ public class UserService {
         return userStore.store(joinDto.toEntity(passwordEncoder.encode(joinDto.getPassword()))).getId();
     }
 
+    @Transactional(readOnly = true)
+    public Boolean checkNicknameDuplication(UserUpdateNicknameRequestDto nicknameUpdateDto) {
+        return userReader.existsByNickname(nicknameUpdateDto.getNickname());
+    }
+
     @Transactional
     public String updateNickname(String email,
                                UserUpdateNicknameRequestDto nicknameUpdateDto) {
