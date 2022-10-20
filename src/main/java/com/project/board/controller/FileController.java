@@ -1,23 +1,23 @@
 package com.project.board.controller;
 
+import com.project.board.domain.file.web.FileService;
 import com.project.board.global.amazonS3.AwsS3Uploader;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/file")
 public class FileController {
-    private final AwsS3Uploader awsS3Uploader;
+
+    private final FileService fileService;
 
     @PostMapping("/upload")
     @ResponseBody
     public String upload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
-        return awsS3Uploader.upload(multipartFile, "static");
+        return fileService.uploadPostImage(multipartFile);
     }
 }

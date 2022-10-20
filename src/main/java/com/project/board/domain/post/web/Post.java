@@ -28,6 +28,7 @@ public class Post extends BaseEntity {
     private String title;
 
     @NotNull
+    @Column(length = 3000)
     private String content;
 
     // 글 활성화 여부
@@ -50,9 +51,6 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_category_id")
     private PostCategory postCategory;
-
-    @OneToMany(mappedBy = "post")
-    private List<PostFile> postFiles = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
@@ -81,7 +79,6 @@ public class Post extends BaseEntity {
         this.commentCount = 0L;
         this.user = user;
         this.postCategory = postCategory;
-        this.postFiles = postFiles;
         this.comments = comments;
         this.likePosts = likePosts;
     }

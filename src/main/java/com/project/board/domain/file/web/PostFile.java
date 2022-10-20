@@ -35,17 +35,11 @@ public class PostFile extends BaseEntity {
     @NotNull
     private String fileUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference("postfile-post")
-    @JoinColumn(name = "post_id")
-    private Post post;
-
     @Builder
-    public PostFile(Long id, String uploadFileName, String storeFileName, String fileUrl, Post post) {
+    public PostFile(Long id, String uploadFileName, String storeFileName, String fileUrl) {
         this.id = id;
         this.uploadFileName = uploadFileName;
         this.storeFileName = storeFileName;
         this.fileUrl = fileUrl;
-        this.post = post;
     }
 }

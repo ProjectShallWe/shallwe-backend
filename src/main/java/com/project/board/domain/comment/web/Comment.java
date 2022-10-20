@@ -1,6 +1,5 @@
 package com.project.board.domain.comment.web;
 
-import com.project.board.domain.file.web.CommentFile;
 import com.project.board.domain.like.web.LikeComment;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.user.web.User;
@@ -46,9 +45,6 @@ public class Comment extends BaseEntity {
     private Post post;
 
     @OneToMany(mappedBy = "comment")
-    private List<CommentFile> commentFiles = new ArrayList<>();
-
-    @OneToMany(mappedBy = "comment")
     private List<LikeComment> likeComments = new ArrayList<>();
 
     @Getter
@@ -63,7 +59,6 @@ public class Comment extends BaseEntity {
     @Builder
     public Comment(Long id, String content,
                    Long parentCommentId, User user, Post post,
-                   List<CommentFile> commentsFiles,
                    List<LikeComment> likeComments) {
         this.id = id;
         this.content = content;
@@ -72,7 +67,6 @@ public class Comment extends BaseEntity {
         this.parentCommentId = parentCommentId;
         this.user = user;
         this.post = post;
-        this.commentFiles = commentsFiles;
         this.likeComments = likeComments;
     }
 
