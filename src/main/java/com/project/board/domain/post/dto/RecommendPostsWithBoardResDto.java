@@ -24,7 +24,7 @@ public class RecommendPostsWithBoardResDto implements Serializable {
 
     @Builder
     public RecommendPostsWithBoardResDto(List<RecommendPostsResponseDto> recommendPosts) {
-        this.boardId = null;
+        this.boardId = 0L;
         this.boardTitle = todayHitPosts;
         this.recommendPosts = recommendPosts;
     }
