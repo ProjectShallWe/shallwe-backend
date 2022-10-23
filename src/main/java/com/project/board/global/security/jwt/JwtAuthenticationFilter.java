@@ -20,30 +20,29 @@ import java.util.Date;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
     private final AuthenticationManager authenticationManager;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
 
-        // request에 있는 username과 password를 파싱해서 자바 Object로 받기
-        ObjectMapper om = new ObjectMapper();
-
-        UserLoginRequestDto userLoginRequestDto = null;
         try {
-            userLoginRequestDto = om.readValue(request.getInputStream(), UserLoginRequestDto.class);
+            /*
+                request에서 username과 password를 파싱해서 Object로 받는다.
+            */
+            UserLoginRequestDto userLoginRequestDto = new ObjectMapper()
+                    .readValue(request.getInputStream(), UserLoginRequestDto.class);
+            /*
+                AuthenticationManager는 사용자 아이디 / 비밀번호가 유효한 인증인지 확인한다.
+                .authenticate()메서드 내의 Authentication이 유효한지 확인하고, Authentication 객체를 리턴한다.
+            */
+            return authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            userLoginRequestDto.getEmail(),
+                            userLoginRequestDto.getPassword()
+                    ));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(userLoginRequestDto.getEmail(), userLoginRequestDto.getPassword());
-
-        // PrincipalDetailsService의 loadUserByUsername() 함수가 실행됨
-        Authentication authentication =
-                authenticationManager.authenticate(authenticationToken);
-
-        return authentication;
     }
 
     @Override
