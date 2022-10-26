@@ -25,8 +25,11 @@ public class AuthService {
 
     @Transactional
     public TokenResDto reissue(String refreshToken) {
-        User user = userRepository.findByRefreshToken(
-                refreshToken.replace(JwtProperties.TOKEN_PREFIX, ""))
+        String tokenValue = refreshToken.replace(JwtProperties.TOKEN_PREFIX, "");
+
+        tokenProvider.validateToken(tokenValue);
+
+        User user = userRepository.findByRefreshToken(tokenValue)
                 .orElseThrow(() -> new CustomRefreshNotValidException(ErrorCode.JWT_REFRESH_NOT_VALID.getErrorMsg()));
 
         String accessToken = tokenProvider.createAccessToken(user.getEmail(), user.getNickname());
