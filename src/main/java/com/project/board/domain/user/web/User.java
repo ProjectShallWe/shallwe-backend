@@ -50,6 +50,8 @@ public class User extends BaseEntity {
     @NotNull
     private Status status;
 
+    private String refreshToken;
+
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
 
@@ -82,7 +84,8 @@ public class User extends BaseEntity {
 
     @Builder
     public User(Long id, String email, String password,
-                String nickname, Role role, List<Post> posts, List<LikePost> likePosts,
+                String nickname, Role role, String refreshToken,
+                List<Post> posts, List<LikePost> likePosts,
                 List<Comment> comments, List<LikeComment> likeComments) {
         this.id = id;
         this.email = email;
@@ -90,6 +93,7 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         this.role = role;
         this.status = Status.ACTIVE;
+        this.refreshToken = refreshToken;
         this.posts = posts;
         this.likePosts = likePosts;
         this.comments = comments;
@@ -113,5 +117,9 @@ public class User extends BaseEntity {
 
     public void updateStatusToWithdrawal() {
         this.status = Status.WITHDRAWAL;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

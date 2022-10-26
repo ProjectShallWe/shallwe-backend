@@ -1,8 +1,8 @@
 package com.project.board.global.security.jwt;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
+
 import com.project.board.domain.user.web.User;
+import com.project.board.global.exception.*;
 import com.project.board.global.security.UserDetailsImpl;
 import com.project.board.infrastructure.user.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,12 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
-
+    private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager,
+                                  TokenProvider tokenProvider,
                                   UserRepository userRepository) {
         super(authenticationManager);
+        this.tokenProvider = tokenProvider;
         this.userRepository = userRepository;
     }
 
@@ -32,36 +34,49 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
 
-        // 클라이언트가 요청한 헤더에 Authorization이 있는지 검증/ 없으면 다시 필터 타도록
-        String header = request.getHeader(JwtProperties.HEADER_STRING);
+        /*
+        * 1. header에 'Authorization'이 있는지,
+        * 2. value가 'TOKEN_PREFIX'로 시작하는지 검증한다.
+        *
+        * 없으면 다시 필터에 태운다.
+        * */
+
+        String header = request.getHeader(JwtProperties.ACCESS_HEADER_PREFIX);
         if (header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
 
-        // JWT 토큰을 검증해서 정상적인 사용자인지 확인
-        // 헤더에 키가 Authorization이면 값에 Bearer 뒤에 " "를 없앰(토큰 값만 추출하기 위해)
-        String token = request.getHeader(JwtProperties.HEADER_STRING)
-                .replace(JwtProperties.TOKEN_PREFIX, "");
+        // 'TOKEN_PREFIX'를 제거한다.
+        String accessToken = tokenProvider.extractToken(request);
 
-        // 토큰을 서명하고 검증해서 통과하면 email을 가져옴
-        String email = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token)
-                .getClaim("email").asString();
+        // 유효한 JWT 토큰인지 확인한다.
+        if (tokenProvider.validateToken(accessToken)) {
+            try {
+                String email = tokenProvider.getEmailFrom(accessToken);
+                User user = userRepository.findByEmail(email)
+                        .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다."));
 
-        // 서명이 정상적으로 됐다면
-        if (email != null) {
-            User user = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new UsernameNotFoundException("이메일을 찾을 수 없습니다."));
+                /*
+                * 1. 시큐리티 내 권한 처리를 위해 'UsernamePasswordAuthenticationToken'을 만들고,
+                * 2. 이를 통해 Authentication 객체를 만든다.
+                * */
+                UserDetailsImpl userDetails =
+                        new UserDetailsImpl(user);
+                Authentication auth =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
 
-            // 시큐리티가 수행해주는 권한 처리를 위해 토큰을 만들어서 Authentication 객체를 강제로 만들고 그걸 세션에 저장!
-            UserDetailsImpl userDetails =
-                    new UserDetailsImpl(user);
-            Authentication authentication =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-            // 강제로 시큐리티의 세션에 접근하여 값 저장
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                // Authentication 객체를 시큐리티 세션에 저장한다.
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            } catch (UsernameNotFoundException e) {
+                throw new CustomAccessNotValidException();
+            }
         }
+
         chain.doFilter(request, response);
     }
 }

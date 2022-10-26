@@ -1,9 +1,8 @@
 package com.project.board.global.security;
 
-import com.project.board.global.security.jwt.JwtProperties;
+import com.project.board.domain.auth.AuthService;
+import com.project.board.global.security.jwt.*;
 import com.project.board.infrastructure.user.UserRepository;
-import com.project.board.global.security.jwt.JwtAuthenticationFilter;
-import com.project.board.global.security.jwt.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,9 +21,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+    private final TokenProvider tokenProvider;
+    private final AuthService authService;
     private final UserRepository userRepository;
-
+    private final JwtExceptionHandlerFilter jwtExceptionHandlerFilter;
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -39,12 +39,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
 
-        configuration.addExposedHeader(JwtProperties.HEADER_STRING);
+        configuration.addExposedHeader(JwtProperties.ACCESS_HEADER_PREFIX);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-    };
+    }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -57,8 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .httpBasic().disable()
 
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(),authService, tokenProvider))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), tokenProvider, userRepository))
+                .addFilterBefore(jwtExceptionHandlerFilter, JwtAuthenticationFilter.class)
 
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
