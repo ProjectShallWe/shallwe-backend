@@ -1,13 +1,15 @@
 package com.project.board.domain.comment.web;
 
 import com.project.board.domain.comment.dto.*;
-import com.project.board.domain.post.dto.PostsUserQueryDto;
-import com.project.board.domain.post.dto.PostsUserResDto;
 import com.project.board.domain.post.web.Post;
-import com.project.board.domain.post.web.PostReader;
 import com.project.board.domain.user.web.User;
-import com.project.board.domain.user.web.UserReader;
+import com.project.board.global.exception.EntityNotFoundException;
+import com.project.board.global.exception.InvalidParamException;
+import com.project.board.infrastructure.comment.CommentRepository;
+import com.project.board.infrastructure.post.PostRepository;
+import com.project.board.infrastructure.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -20,45 +22,65 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentService {
 
-    private final UserReader userReader;
-    private final PostReader postReader;
-    private final CommentReader commentReader;
-    private final CommentStore commentStore;
+    private final UserRepository userRepository;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public Long writeParentComment(String email, Long postId, CommentWriteRequestDto commentWriteRequestDto) {
-        User user = userReader.getUserBy(email);
-        Post post = postReader.getPostBy(postId);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(EntityNotFoundException::new);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(EntityNotFoundException::new);
         post.addCommentCount();
-        return commentStore.store(commentWriteRequestDto.toEntity(user, post, null)).getId();
+        Comment comment = commentWriteRequestDto.toEntity(user, post, null);
+
+        validCheck(comment);
+        return commentRepository.save(comment).getId();
+    }
+
+    private void validCheck(Comment comment) {
+        if (comment.getUser() == null) throw new InvalidParamException("Comment.user");
+        if (comment.getPost() == null) throw new InvalidParamException("Comment.post");
+        if (StringUtils.isEmpty(comment.getContent())) throw new InvalidParamException("Comment.content");
+        if (comment.getLikeCount() == null) throw new InvalidParamException("Comment.likeCount");
+        if (comment.getStatus() == null) throw new InvalidParamException("Comment.status");
     }
 
     @Transactional
     public Long writeChildComment(String email, Long postId, Long commentId, CommentWriteRequestDto commentWriteRequestDto) {
-        User user = userReader.getUserBy(email);
-        Post post = postReader.getPostBy(postId);
-        Comment comment = commentReader.getCommentBy(commentId);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(EntityNotFoundException::new);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(EntityNotFoundException::new);
+        Comment parentComment = commentRepository.findById(commentId)
+                .orElseThrow(EntityNotFoundException::new);
         post.addCommentCount();
-        return commentStore.store(commentWriteRequestDto.toEntity(user, post, comment.getId())).getId();
+        Comment childComment = commentWriteRequestDto.toEntity(user, post, parentComment.getId());
+
+        validCheck(childComment);
+        return commentRepository.save(childComment).getId();
     }
 
     @Transactional
     public Long update(Long commentId, CommentUpdateRequestDto commentUpdateRequestDto) {
-        Comment comment = commentReader.getCommentBy(commentId);
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(EntityNotFoundException::new);
         comment.update(commentUpdateRequestDto.getContent());
         return commentId;
     }
 
     @Transactional
     public Long delete(Long commentId) {
-        Comment comment = commentReader.getCommentBy(commentId);
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(EntityNotFoundException::new);
         comment.updateStatusToDisable();
         return commentId;
     }
 
     @Transactional(readOnly = true)
     public List<ParentCommentsResponseDto> getCommentsInPost(Long postId) {
-        List<CommentQueryDto> cResDtos = commentReader.getCommentsInPostByPostId(postId);
+        List<CommentQueryDto> cResDtos = commentRepository.getCommentsInPostByPostId(postId);
         List<ParentCommentsResponseDto> pcResDtos = new ArrayList<>();
         List<ChildCommentsResponseDto> ccResDtos = new ArrayList<>();
 
@@ -73,7 +95,7 @@ public class CommentService {
         for (ParentCommentsResponseDto pcResDto : pcResDtos) {
             for (ChildCommentsResponseDto ccResDto : ccResDtos) {
                 if (isThisCommentChildren(pcResDto, ccResDto)) {
-                      pcResDto.getChildComments().add(ccResDto);
+                    pcResDto.getChildComments().add(ccResDto);
                 }
             }
         }
@@ -91,10 +113,11 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public Page<CommentsUserResDto> getCommentsByNickname(String email, Integer page) {
-        User user = userReader.getUserBy(email);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(EntityNotFoundException::new);
 
         PageRequest pageRequest = PageRequest.of(page, 10);
-        Page<CommentsUserQueryDto> commentsUserQueryDtos = commentReader.getCommentsByNickname(user.getNickname(), pageRequest);
+        Page<CommentsUserQueryDto> commentsUserQueryDtos = commentRepository.findCommentsByNickname(user.getNickname(), pageRequest);
         Page<CommentsUserResDto> commentsUserResDtos = commentsUserQueryDtos.map(
                 CommentsUserResDto::new);
         return commentsUserResDtos;

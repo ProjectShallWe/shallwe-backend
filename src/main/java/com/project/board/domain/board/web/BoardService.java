@@ -3,7 +3,12 @@ package com.project.board.domain.board.web;
 import com.project.board.domain.board.dto.BoardInfoResDto;
 import com.project.board.domain.board.dto.BoardRequestDto;
 import com.project.board.domain.board.dto.BoardResponseDto;
+import com.project.board.global.exception.EntityNotFoundException;
+import com.project.board.global.exception.InvalidParamException;
+import com.project.board.infrastructure.board.BoardCategoryRepository;
+import com.project.board.infrastructure.board.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,19 +19,28 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BoardService {
 
-    private final BoardCategoryReader boardCategoryReader;
-    private final BoardReader boardReader;
-    private final BoardStore boardStore;
+    private final BoardCategoryRepository boardCategoryRepository;
+    private final BoardRepository boardRepository;
 
     @Transactional
     public Long create(Long boardCategoryId, BoardRequestDto boardRequestDto) {
-        BoardCategory boardCategory = boardCategoryReader.getBoardCategoryBy(boardCategoryId);
-        return boardStore.store(boardRequestDto.toEntity(boardCategory)).getId();
+        BoardCategory boardCategory = boardCategoryRepository.findById(boardCategoryId)
+                .orElseThrow(EntityNotFoundException::new);
+        Board board = boardRequestDto.toEntity(boardCategory);
+
+        validCheck(board);
+        return boardRepository.save(board).getId();
+    }
+
+    private void validCheck(Board board) {
+        if (board.getBoardCategory() == null) throw new InvalidParamException("Board.boardCategory");
+        if (StringUtils.isEmpty(board.getTitle())) throw new InvalidParamException("Board.title");
     }
 
     @Transactional
     public Long update(Long boardId, BoardRequestDto boardRequestDto) {
-        Board board = boardReader.getBoardBy(boardId);
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(EntityNotFoundException::new);
         board.update(boardRequestDto.getTitle());
         return boardId;
 
@@ -34,14 +48,15 @@ public class BoardService {
 
     @Transactional
     public Long delete(Long boardId) {
-        Board board = boardReader.getBoardBy(boardId);
-        boardStore.delete(board);
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(EntityNotFoundException::new);
+        boardRepository.delete(board);
         return boardId;
     }
 
     @Transactional(readOnly = true)
     public List<BoardResponseDto> getBoardWithPostCategories(Long boardId) {
-        List<Board> boards = boardReader.getBoardWithPostCategories(boardId);
+        List<Board> boards = boardRepository.findAllWithPostCategories(boardId);
         List<BoardResponseDto> boardResponseDtos = boards.stream()
                 .map(BoardResponseDto::new)
                 .collect(Collectors.toList());
@@ -50,7 +65,7 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public List<BoardInfoResDto> getBoardsBySearchWord(String keyword) {
-        List<Board> boards = boardReader.getBoardsBySearchWord(keyword);
+        List<Board> boards = boardRepository.findBoardsBySearchWord(keyword);
         List<BoardInfoResDto> boardInfoResDtos = boards.stream()
                 .map(BoardInfoResDto::new)
                 .collect(Collectors.toList());

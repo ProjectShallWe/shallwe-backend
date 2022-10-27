@@ -1,9 +1,13 @@
 package com.project.board.domain.post.web;
 
 import com.project.board.domain.board.web.Board;
-import com.project.board.domain.board.web.BoardReader;
 import com.project.board.domain.post.dto.PostCategoryRequestDto;
+import com.project.board.global.exception.EntityNotFoundException;
+import com.project.board.global.exception.InvalidParamException;
+import com.project.board.infrastructure.board.BoardRepository;
+import com.project.board.infrastructure.post.PostCategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,28 +16,38 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PostCategoryService {
 
-    private final BoardReader boardReader;
-    private final PostCategoryReader postCategoryReader;
-    private final PostCategoryStore postCategoryStore;
+    private final BoardRepository boardRepository;
+    private final PostCategoryRepository postCategoryRepository;
 
 
     @Transactional
     public Long create(Long boardId, PostCategoryRequestDto postCategoryDto) {
-        Board board = boardReader.getBoardBy(boardId);
-        return postCategoryStore.store(postCategoryDto.toEntity(board)).getId();
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(EntityNotFoundException::new);
+        PostCategory postCategory = postCategoryDto.toEntity(board);
+
+        validCheck(postCategory);
+        return postCategoryRepository.save(postCategory).getId();
+    }
+
+    private void validCheck(PostCategory postCategory) {
+        if (postCategory.getBoard() == null) throw new InvalidParamException("PostCategory.board");
+        if (StringUtils.isEmpty(postCategory.getTopic())) throw new InvalidParamException("PostCategory.topic");
     }
 
     @Transactional
     public Long update(Long postCategoryId, PostCategoryRequestDto postCategoryDto) {
-        PostCategory postCategory = postCategoryReader.getPostCategoryBy(postCategoryId);
+        PostCategory postCategory = postCategoryRepository.findById(postCategoryId)
+                .orElseThrow(EntityNotFoundException::new);
         postCategory.update(postCategoryDto.getTopic());
         return postCategoryId;
     }
 
     @Transactional
     public Long delete(Long postCategoryId) {
-        PostCategory postCategory = postCategoryReader.getPostCategoryBy(postCategoryId);
-        postCategoryStore.delete(postCategory);
+        PostCategory postCategory = postCategoryRepository.findById(postCategoryId)
+                .orElseThrow(EntityNotFoundException::new);
+        postCategoryRepository.delete(postCategory);
         return postCategoryId;
     }
 }

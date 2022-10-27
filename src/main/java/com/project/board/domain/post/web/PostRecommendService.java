@@ -1,12 +1,13 @@
 package com.project.board.domain.post.web;
 
 import com.project.board.domain.board.web.Board;
-import com.project.board.domain.board.web.BoardCategory;
-import com.project.board.domain.board.web.BoardReader;
 import com.project.board.domain.post.dto.RecommendPostsQueryDto;
 import com.project.board.domain.post.dto.RecommendPostsResponseDto;
 import com.project.board.domain.post.dto.RecommendPostsWithBoardResDto;
+import com.project.board.global.exception.EntityNotFoundException;
 import com.project.board.global.redis.CacheKey;
+import com.project.board.infrastructure.board.BoardRepository;
+import com.project.board.infrastructure.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -22,14 +23,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostRecommendService {
 
-    private final PostReader postReader;
-    private final BoardReader boardReader;
+    private final PostRepository postRepository;
+    private final BoardRepository boardRepository;
 
     @Cacheable(value = CacheKey.RECOMMEND_POST, unless = "#result == null")
     @Transactional(readOnly = true)
     public RecommendPostsWithBoardResDto getRecommendPostsFromRedis() {
         Page<RecommendPostsQueryDto> queryDtos
-                = postReader.getRecommendPosts(
+                = postRepository.findRecommendPosts(
                 LocalDateTime.now(), LocalDateTime.now().minusHours(12),
                 PageRequest.of(0, 10));
         List<RecommendPostsResponseDto> resDtos = queryDtos.stream()
@@ -41,9 +42,10 @@ public class PostRecommendService {
     @Cacheable(value = CacheKey.RECOMMEND_POST, key = "#boardId", unless = "#result == null")
     @Transactional(readOnly = true)
     public RecommendPostsWithBoardResDto getRecommendPostsInBoardFromRedis(Long boardId) {
-        Board board = boardReader.getBoardBy(boardId);
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(EntityNotFoundException::new);
         Page<RecommendPostsQueryDto> queryDtos
-                = postReader.getRecommendPostsInBoard(boardId,
+                = postRepository.findRecommendPostsInBoard(boardId,
                 LocalDateTime.now(), LocalDateTime.now().minusHours(12),
                 PageRequest.of(0, 10));
         List<RecommendPostsResponseDto> resDtos = queryDtos.stream()
