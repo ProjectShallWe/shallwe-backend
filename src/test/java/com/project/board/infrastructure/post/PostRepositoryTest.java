@@ -125,13 +125,13 @@ class PostRepositoryTest {
         userRepository.save(user1);
         userRepository.save(user2);
         Board savedBoard = boardRepository.save(board);
-        postCategoryRepository.save(postCategory);
+        PostCategory savedPostCategory = postCategoryRepository.save(postCategory);
         postRepository.save(post1);
         postRepository.save(post2);
 
         //when
         Page<PostsQueryDto> queryDtos
-                = postRepository.findPostsBySearchWordInBoard(savedBoard.getId(), "title", "사람", pageable);
+                = postRepository.findPostsBySearchWordInBoard(savedBoard.getId(), savedPostCategory.getId(), "title", "사람", pageable);
 
         //then
         assertThat(queryDtos.getContent().get(0).getTitle())
@@ -151,13 +151,13 @@ class PostRepositoryTest {
         userRepository.save(user1);
         userRepository.save(user2);
         Board savedBoard = boardRepository.save(board);
-        postCategoryRepository.save(postCategory);
+        PostCategory savedPostCategory = postCategoryRepository.save(postCategory);
         postRepository.save(post1);
         postRepository.save(post2);
 
         //when
         Page<PostsQueryDto> queryDtos
-                = postRepository.findPostsBySearchWordInBoard(savedBoard.getId(), "content", "드리블", pageable);
+                = postRepository.findPostsBySearchWordInBoard(savedBoard.getId(), savedPostCategory.getId(), "content", "드리블", pageable);
 
         //then
         assertThat(queryDtos.getContent().get(0).getTitle())
@@ -177,13 +177,13 @@ class PostRepositoryTest {
         userRepository.save(user1);
         userRepository.save(user2);
         Board savedBoard = boardRepository.save(board);
-        postCategoryRepository.save(postCategory);
+        PostCategory savedPostCategory = postCategoryRepository.save(postCategory);
         postRepository.save(post1);
         postRepository.save(post2);
 
         //when
         Page<PostsQueryDto> queryDtos
-                = postRepository.findPostsBySearchWordInBoard(savedBoard.getId(), "ticon", "농구", pageable);
+                = postRepository.findPostsBySearchWordInBoard(savedBoard.getId(), savedPostCategory.getId(), "ticon", "농구", pageable);
 
         //then
         assertThat(queryDtos.getContent().get(0).getTitle())
@@ -205,13 +205,13 @@ class PostRepositoryTest {
         userRepository.save(user1);
         userRepository.save(user2);
         Board savedBoard = boardRepository.save(board);
-        postCategoryRepository.save(postCategory);
+        PostCategory savedPostCategory = postCategoryRepository.save(postCategory);
         postRepository.save(post1);
         postRepository.save(post2);
 
         //when
         Page<PostsQueryDto> queryDtos
-                = postRepository.findPostsBySearchWordInBoard(savedBoard.getId(), "nickname", "0001", pageable);
+                = postRepository.findPostsBySearchWordInBoard(savedBoard.getId(), savedPostCategory.getId(), "nickname", "0001", pageable);
 
         //then
         assertThat(queryDtos.getContent().get(0).getTitle())
