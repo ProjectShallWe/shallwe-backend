@@ -3,16 +3,20 @@ package com.project.board.domain.auth;
 import com.project.board.domain.auth.dto.TokenResDto;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.exception.CustomRefreshNotValidException;
-import com.project.board.global.exception.EntityNotFoundException;
-import com.project.board.global.response.ErrorCode;
+import com.project.board.global.redis.CacheKey;
 import com.project.board.global.security.jwt.JwtProperties;
 import com.project.board.global.security.jwt.TokenProvider;
 import com.project.board.infrastructure.user.UserRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Slf4j
 @Service
@@ -22,20 +26,29 @@ public class AuthService {
 
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Transactional
     public TokenResDto reissue(String refreshToken) {
         String tokenValue = refreshToken.replace(JwtProperties.TOKEN_PREFIX, "");
 
-        tokenProvider.validateToken(tokenValue);
+        if (!tokenProvider.validateToken(tokenValue)) {
+            throw new RuntimeException();
+        }
 
-        User user = userRepository.findByRefreshToken(tokenValue)
-                .orElseThrow(() -> new CustomRefreshNotValidException(ErrorCode.JWT_REFRESH_NOT_VALID.getErrorMsg()));
+        String email = tokenProvider.getEmailFrom(tokenValue);
+
+        if (!getRefreshTokenByEmail(email).equals(tokenValue)) {
+            throw new CustomRefreshNotValidException();
+        }
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(CustomRefreshNotValidException::new);
 
         String accessToken = tokenProvider.createAccessToken(user.getEmail(), user.getNickname());
-        String resRefreshToken = tokenProvider.createRefreshToken();
+        String resRefreshToken = tokenProvider.createRefreshToken(user.getEmail());
 
-        user.setRefreshToken(resRefreshToken);
+        setRefreshTokenToRedis(user.getEmail(), resRefreshToken);
 
         return TokenResDto.builder()
                 .grantType(JwtProperties.TOKEN_PREFIX)
@@ -45,20 +58,38 @@ public class AuthService {
     }
 
     @Transactional
-    public Long logOut(String refreshToken) {
-        String tokenValue = refreshToken
-                .replace(JwtProperties.TOKEN_PREFIX, "");
-        User user = userRepository.findByRefreshToken(tokenValue)
-                .orElseThrow(CustomRefreshNotValidException::new);
-        user.setRefreshToken(null);
-
-        return user.getId();
+    public void setRefreshTokenToRedis(String email, String refreshToken) {
+        ValueOperations<String, String> vop = redisTemplate.opsForValue();
+        String key = CacheKey.REFRESH_TOKEN + email;
+        vop.set(key, refreshToken);
+        redisTemplate.expireAt(key, Date.from(ZonedDateTime.now()
+                .plusHours(CacheKey.REFRESH_TOKEN_EXPIRE_SEC).toInstant()));
     }
 
     @Transactional
-    public void setRefreshToken(String email, String refreshToken) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(EntityNotFoundException::new);
-        user.setRefreshToken(refreshToken);
+    public String logOut(String refreshToken) {
+        String tokenValue = refreshToken
+                .replace(JwtProperties.TOKEN_PREFIX, "");
+
+        String email = tokenProvider.getEmailFrom(tokenValue);
+
+        if (!getRefreshTokenByEmail(email).equals(tokenValue)) {
+            throw new CustomRefreshNotValidException();
+        }
+
+        deleteRefreshTokenToRedis(email);
+
+        return email;
+    }
+
+    @Transactional
+    public void deleteRefreshTokenToRedis(String email) {
+        redisTemplate.delete(CacheKey.REFRESH_TOKEN + email);
+    }
+
+    @Transactional
+    public String getRefreshTokenByEmail(String email) {
+        return redisTemplate.opsForValue()
+                .get(CacheKey.REFRESH_TOKEN + email);
     }
 }

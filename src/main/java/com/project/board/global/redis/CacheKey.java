@@ -14,4 +14,7 @@ public class CacheKey {
 
     public static final String RECOMMEND_POST = "recommendPost";
     public static final int RECOMMEND_POST_EXPIRE_SEC = 60;
+    public static final String REFRESH_TOKEN = "refreshToken::";
+    public static final int REFRESH_TOKEN_EXPIRE_SEC = 60*60*24*14;
+
 }

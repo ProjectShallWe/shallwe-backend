@@ -19,8 +19,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public Long logOut(@RequestBody TokenReqDto tokenReqDto) {
-        System.out.println(tokenReqDto.getRefreshToken());
+    public String logOut(@RequestBody TokenReqDto tokenReqDto) {
         return authService.logOut(tokenReqDto.getRefreshToken());
     }
 }

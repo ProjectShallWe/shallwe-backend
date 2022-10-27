@@ -15,21 +15,22 @@ import java.util.Date;
 @Component
 public class TokenProvider {
 
-    public String createAccessToken(String id, String username) {
+    public String createAccessToken(String email, String username) {
         return JWT.create()
                 .withIssuer(JwtProperties.ISSUER)
                 .withSubject(JwtProperties.ACCESS_TOKEN)
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.ACCESS_EXPIRATION_TIME))
-                .withClaim(JwtProperties.EMAIL, id)
+                .withClaim(JwtProperties.EMAIL, email)
                 .withClaim(JwtProperties.NICKNAME, username)
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
     }
 
-    public String createRefreshToken() {
+    public String createRefreshToken(String email) {
         return JWT.create()
                 .withIssuer(JwtProperties.ISSUER)
                 .withSubject(JwtProperties.REFRESH_TOKEN)
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.REFRESH_EXPIRATION_TIME))
+                .withClaim(JwtProperties.EMAIL, email)
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
     }
 

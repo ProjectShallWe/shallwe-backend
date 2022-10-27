@@ -53,9 +53,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserDetailsImpl userDetails = (UserDetailsImpl) authResult.getPrincipal();
 
         String accessToken = tokenProvider.createAccessToken(userDetails.getUser().getEmail(), userDetails.getUser().getNickname());
-        String refreshToken = tokenProvider.createRefreshToken();
+        String refreshToken = tokenProvider.createRefreshToken(userDetails.getUser().getEmail());
 
-        authService.setRefreshToken(userDetails.getUser().getEmail(), refreshToken);
+        authService.setRefreshTokenToRedis(userDetails.getUser().getEmail(), refreshToken);
 
         setResponse(response, accessToken, refreshToken);
 
