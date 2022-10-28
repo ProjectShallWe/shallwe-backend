@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.project.board.global.exception.CustomAccessNotValidException;
 import com.project.board.global.exception.CustomRefreshTokenExpiredException;
 import com.project.board.global.exception.CustomSignatureVerificationException;
 import org.springframework.stereotype.Component;
@@ -15,21 +16,21 @@ import java.util.Date;
 @Component
 public class TokenProvider {
 
-    public String createAccessToken(String email, String username) {
+    public String createAccessToken(String email, String username, Date accessTokenExpiresIn) {
         return JWT.create()
                 .withIssuer(JwtProperties.ISSUER)
                 .withSubject(JwtProperties.ACCESS_TOKEN)
-                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.ACCESS_EXPIRATION_TIME))
+                .withExpiresAt(accessTokenExpiresIn)
                 .withClaim(JwtProperties.EMAIL, email)
                 .withClaim(JwtProperties.NICKNAME, username)
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
     }
 
-    public String createRefreshToken(String email) {
+    public String createRefreshToken(String email, Date refreshTokenExpiresIn) {
         return JWT.create()
                 .withIssuer(JwtProperties.ISSUER)
                 .withSubject(JwtProperties.REFRESH_TOKEN)
-                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.REFRESH_EXPIRATION_TIME))
+                .withExpiresAt(refreshTokenExpiresIn)
                 .withClaim(JwtProperties.EMAIL, email)
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
     }
@@ -40,7 +41,7 @@ public class TokenProvider {
                     .build().verify(token);
             return true;
         } catch (TokenExpiredException e) {
-            throw new CustomRefreshTokenExpiredException();
+            throw new CustomAccessNotValidException();
         } catch (SignatureVerificationException | JWTDecodeException e) {
             throw new CustomSignatureVerificationException();
         } catch (Exception e) {

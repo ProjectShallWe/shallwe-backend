@@ -2,6 +2,7 @@ package com.project.board.global.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.board.domain.auth.AuthService;
+import com.project.board.domain.auth.dto.TokenResDto;
 import com.project.board.domain.user.dto.UserLoginRequestDto;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -52,23 +54,40 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authResult.getPrincipal();
 
-        String accessToken = tokenProvider.createAccessToken(userDetails.getUser().getEmail(), userDetails.getUser().getNickname());
-        String refreshToken = tokenProvider.createRefreshToken(userDetails.getUser().getEmail());
+        Date accessTokenExpiresIn = new Date(System.currentTimeMillis() + JwtProperties.ACCESS_EXPIRATION_TIME);
+        Date refreshTokenExpiresIn = new Date(System.currentTimeMillis() + JwtProperties.REFRESH_EXPIRATION_TIME);
+        String accessToken = tokenProvider.createAccessToken(
+                userDetails.getUser().getEmail(),
+                userDetails.getUser().getNickname(),
+                accessTokenExpiresIn);
+        String refreshToken = tokenProvider.createRefreshToken(
+                userDetails.getUser().getEmail(),
+                refreshTokenExpiresIn);
 
         authService.setRefreshTokenToRedis(userDetails.getUser().getEmail(), refreshToken);
 
-        setResponse(response, accessToken, refreshToken);
+        setResponse(response, accessToken, refreshToken, accessTokenExpiresIn, refreshTokenExpiresIn);
 
     }
 
-    private void setResponse(HttpServletResponse res, String accessToken, String refreshToken) throws IOException {
+    private void setResponse(HttpServletResponse res,
+                             String accessToken,
+                             String refreshToken,
+                             Date accessTokenExpiresIn,
+                             Date refreshTokenExpiresIn
+    ) throws IOException {
         res.setStatus(HttpServletResponse.SC_OK);
         res.setContentType("application/json;charset=UTF-8");
 
-        JSONObject jo = new JSONObject();
-        jo.put("grantType", JwtProperties.TOKEN_PREFIX);
-        jo.put("accessToken", accessToken);
-        jo.put("refreshToken", refreshToken);
+        TokenResDto resDto = TokenResDto.builder()
+                .grantType(JwtProperties.TOKEN_PREFIX)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
+                .refreshTokenExpiresIn(refreshTokenExpiresIn.getTime())
+                .build();
+
+        JSONObject jo = new JSONObject(resDto);
 
         res.getWriter().print(jo);
     }

@@ -45,8 +45,10 @@ public class AuthService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(CustomRefreshNotValidException::new);
 
-        String accessToken = tokenProvider.createAccessToken(user.getEmail(), user.getNickname());
-        String resRefreshToken = tokenProvider.createRefreshToken(user.getEmail());
+        Date accessTokenExpiresIn = new Date(System.currentTimeMillis() + JwtProperties.ACCESS_EXPIRATION_TIME);
+        Date refreshTokenExpiresIn = new Date(System.currentTimeMillis() + JwtProperties.REFRESH_EXPIRATION_TIME);
+        String accessToken = tokenProvider.createAccessToken(user.getEmail(), user.getNickname(), accessTokenExpiresIn);
+        String resRefreshToken = tokenProvider.createRefreshToken(user.getEmail(), refreshTokenExpiresIn);
 
         setRefreshTokenToRedis(user.getEmail(), resRefreshToken);
 
@@ -54,6 +56,8 @@ public class AuthService {
                 .grantType(JwtProperties.TOKEN_PREFIX)
                 .accessToken(accessToken)
                 .refreshToken(resRefreshToken)
+                .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
+                .refreshTokenExpiresIn(refreshTokenExpiresIn.getTime())
                 .build();
     }
 
