@@ -1,6 +1,7 @@
 package com.project.board.global.security.jwt;
 
 import com.project.board.global.exception.CustomAccessNotValidException;
+import com.project.board.global.exception.CustomAccessTokenExpiredException;
 import com.project.board.global.exception.CustomSignatureVerificationException;
 import com.project.board.global.response.ErrorCode;
 import org.json.JSONObject;
@@ -20,6 +21,8 @@ public class JwtExceptionHandlerFilter extends OncePerRequestFilter {
 
         try {
             filterChain.doFilter(req, res);
+        } catch (CustomAccessTokenExpiredException e) {
+            setResponse(res, ErrorCode.JWT_ACCESS_TOKEN_EXPIRED);
         } catch (CustomAccessNotValidException e) {
             setResponse(res, ErrorCode.JWT_ACCESS_NOT_VALID);
         } catch (CustomSignatureVerificationException e) {

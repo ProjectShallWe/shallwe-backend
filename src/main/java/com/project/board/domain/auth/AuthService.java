@@ -30,9 +30,10 @@ public class AuthService {
 
     @Transactional
     public TokenResDto reissue(String refreshToken) {
-        String tokenValue = refreshToken.replace(JwtProperties.TOKEN_PREFIX, "");
+        String tokenValue = refreshToken
+                .replace(JwtProperties.TOKEN_PREFIX, "");
 
-        if (!tokenProvider.validateToken(tokenValue)) {
+        if (!tokenProvider.validateRefreshToken(tokenValue)) {
             throw new RuntimeException();
         }
 
@@ -74,6 +75,10 @@ public class AuthService {
     public String logOut(String refreshToken) {
         String tokenValue = refreshToken
                 .replace(JwtProperties.TOKEN_PREFIX, "");
+
+        if (!tokenProvider.validateRefreshToken(tokenValue)) {
+            throw new RuntimeException();
+        }
 
         String email = tokenProvider.getEmailFrom(tokenValue);
 

@@ -51,7 +51,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         String accessToken = tokenProvider.extractToken(request);
 
         // 유효한 JWT 토큰인지 확인한다.
-        if (tokenProvider.validateToken(accessToken)) {
+        if (tokenProvider.validateAccessToken(accessToken)) {
             try {
                 String email = tokenProvider.getEmailFrom(accessToken);
                 User user = userRepository.findByEmail(email)

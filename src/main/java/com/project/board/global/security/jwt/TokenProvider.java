@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.project.board.global.exception.CustomAccessNotValidException;
+import com.project.board.global.exception.CustomAccessTokenExpiredException;
 import com.project.board.global.exception.CustomRefreshTokenExpiredException;
 import com.project.board.global.exception.CustomSignatureVerificationException;
 import org.springframework.stereotype.Component;
@@ -35,13 +36,28 @@ public class TokenProvider {
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateAccessToken(String token) {
         try {
             JWT.require(Algorithm.HMAC512(JwtProperties.SECRET))
                     .build().verify(token);
             return true;
         } catch (TokenExpiredException e) {
-            throw new CustomAccessNotValidException();
+            throw new CustomAccessTokenExpiredException();
+        } catch (SignatureVerificationException | JWTDecodeException e) {
+            throw new CustomSignatureVerificationException();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean validateRefreshToken(String token) {
+        try {
+            JWT.require(Algorithm.HMAC512(JwtProperties.SECRET))
+                    .build().verify(token);
+            return true;
+        } catch (TokenExpiredException e) {
+            throw new CustomRefreshTokenExpiredException();
         } catch (SignatureVerificationException | JWTDecodeException e) {
             throw new CustomSignatureVerificationException();
         } catch (Exception e) {
@@ -55,10 +71,10 @@ public class TokenProvider {
                 .replace(JwtProperties.TOKEN_PREFIX, "");
     }
 
-    public String getEmailFrom(String accessToken) {
+    public String getEmailFrom(String token) {
         return JWT.require(Algorithm.HMAC512(JwtProperties.SECRET))
                 .build()
-                .verify(accessToken)
+                .verify(token)
                 .getClaim(JwtProperties.EMAIL)
                 .asString();
     }
