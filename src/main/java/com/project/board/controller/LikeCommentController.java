@@ -22,14 +22,4 @@ public class LikeCommentController {
                      @RequestBody LikeCommentRequestDto likeCommentRequestDto) {
         return likeCommentService.like(userDetails.getUsername(), commentId, likeCommentRequestDto);
     }
-
-    @DeleteMapping
-    @PreAuthorize("isAuthenticated() " +
-            "and ((#LCDReqDto.writer == principal.username) " +
-            "or hasRole('ROLE_ADMIN'))")
-    public Long cancel(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                       @RequestParam("comment") Long commentId,
-                       @RequestBody LikeCommentDeleteRequestDto LCDReqDto) {
-        return likeCommentService.cancel(userDetails.getUsername(), commentId);
-    }
 }

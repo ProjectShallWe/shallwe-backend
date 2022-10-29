@@ -27,34 +27,29 @@ public class LikeCommentService {
                 .orElseThrow(EntityNotFoundException::new);
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(EntityNotFoundException::new);
-        try {
-            likeCommentRepository.findByUserIdAndCommentId(user.getId(), comment.getId());
-            return -1L;
-        } catch (Exception e) {
+        Boolean isClicked = likeCommentRepository.existsByUserIdAndCommentId(user.getId(), comment.getId());
+
+        if (!isClicked) {
             comment.addLikeCount();
+
             LikeComment likeComment = likeCommentRequestDto.toEntity(user, comment);
 
             validCheck(likeComment);
             return likeCommentRepository.save(likeComment).getId();
         }
+        comment.minusLikeCount();
+        LikeComment likeComment = likeCommentRepository.findByUserIdAndCommentId(user.getId(), comment.getId())
+                .orElseThrow(EntityNotFoundException::new);
+
+        likeCommentRepository.delete(likeComment);
+        return likeComment.getId();
+
+
     }
+
 
     private void validCheck(LikeComment likeComment) {
         if (likeComment.getUser() == null) throw new InvalidParamException("LikeComment.user");
         if (likeComment.getComment() == null) throw new InvalidParamException("LikeComment.comment");
-    }
-
-    @Transactional
-    public Long cancel(String email, Long commentId) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(EntityNotFoundException::new);
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(EntityNotFoundException::new);
-        LikeComment likeComment = likeCommentRepository.findByUserIdAndCommentId(user.getId(), comment.getId())
-                        .orElseThrow(EntityNotFoundException::new);
-
-        comment.minusLikeCount();
-        likeCommentRepository.delete(likeComment);
-        return likeComment.getId();
     }
 }

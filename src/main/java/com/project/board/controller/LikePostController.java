@@ -22,14 +22,4 @@ public class LikePostController {
                      @RequestBody LikePostRequestDto likePostRequestDto) {
         return likePostService.like(userDetails.getUsername(), postId, likePostRequestDto);
     }
-
-    @DeleteMapping
-    @PreAuthorize("isAuthenticated() " +
-            "and ((#LPDReqDto.writer == principal.username) " +
-            "or hasRole('ROLE_ADMIN'))")
-    public Long cancel(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                       @RequestParam("post") Long postId,
-                       @RequestBody LikePostDeleteReqestDto LPDReqDto) {
-        return likePostService.cancel(userDetails.getUsername(), postId);
-    }
 }
