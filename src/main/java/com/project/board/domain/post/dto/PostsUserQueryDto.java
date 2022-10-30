@@ -17,6 +17,7 @@ public class PostsUserQueryDto {
     private String title;
     private Long commentCount;
     private LocalDateTime createdDate;
+    private Long hits;
     private Long likeCount;
 
     @Builder
@@ -26,6 +27,7 @@ public class PostsUserQueryDto {
                          String title,
                          Long commentCount,
                          LocalDateTime createdDate,
+                         Long hits,
                          Long likeCount) {
         this.postId = postId;
         this.boardId = boardId;
@@ -33,6 +35,7 @@ public class PostsUserQueryDto {
         this.title = title;
         this.commentCount = commentCount;
         this.createdDate = createdDate;
+        this.hits = hits;
         this.likeCount = likeCount;
     }
 }

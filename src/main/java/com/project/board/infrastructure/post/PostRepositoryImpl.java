@@ -38,6 +38,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         post.commentCount,
                         user.nickname,
                         post.createdDate,
+                        post.hits,
                         post.likeCount
                 ))
                 .distinct()
@@ -68,6 +69,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         post.commentCount,
                         user.nickname,
                         post.createdDate,
+                        post.hits,
                         post.likeCount
                 ))
                 .from(post)
@@ -171,6 +173,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         post.commentCount,
                         user.nickname,
                         post.createdDate,
+                        post.hits,
                         post.likeCount
                 ))
                 .from(post)
@@ -268,6 +271,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         post.title,
                         post.commentCount,
                         post.createdDate,
+                        post.hits,
                         post.likeCount
                 ))
                 .from(post)

@@ -18,6 +18,7 @@ public class PostsResponseDto {
     private Long commentCount;
     private String nickname;
     private String createdDate;
+    private Long hits;
     private Long likeCount;
 
     @Builder
@@ -29,6 +30,7 @@ public class PostsResponseDto {
         this.commentCount = postsQueryDto.getCommentCount();
         this.nickname = postsQueryDto.getNickname();
         this.createdDate = convertLocalDateTimeToMMdd(postsQueryDto.getCreatedDate());
+        this.hits = postsQueryDto.getHits();
         this.likeCount = postsQueryDto.getLikeCount();
     }
 }

@@ -17,6 +17,7 @@ public class PostsUserResDto {
     private String title;
     private Long commentCount;
     private String createdDate;
+    private Long hits;
     private Long likeCount;
 
     @Builder
@@ -27,6 +28,7 @@ public class PostsUserResDto {
         this.title = postsUserQueryDto.getTitle();
         this.commentCount = postsUserQueryDto.getCommentCount();
         this.createdDate = convertLocalDateTimeToMMdd(postsUserQueryDto.getCreatedDate());
+        this.hits = postsUserQueryDto.getHits();
         this.likeCount = postsUserQueryDto.getLikeCount();
     }
 }

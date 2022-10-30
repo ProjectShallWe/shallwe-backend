@@ -18,6 +18,7 @@ public class PostsQueryDto {
     private Long commentCount;
     private String nickname;
     private LocalDateTime createdDate;
+    private Long hits;
     private Long likeCount;
 
     @Builder
@@ -28,6 +29,7 @@ public class PostsQueryDto {
                          Long commentCount,
                          String nickname,
                          LocalDateTime createdDate,
+                         Long hits,
                          Long likeCount) {
         this.postId = postId;
         this.postCategoryId = postCategoryId;
@@ -36,6 +38,7 @@ public class PostsQueryDto {
         this.commentCount = commentCount;
         this.nickname = nickname;
         this.createdDate = createdDate;
+        this.hits = hits;
         this.likeCount = likeCount;
     }
 }
