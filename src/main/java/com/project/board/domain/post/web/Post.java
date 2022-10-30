@@ -44,6 +44,9 @@ public class Post extends BaseEntity {
     @NotNull
     private Long commentCount;
 
+    @NotNull
+    private Long hits;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -77,6 +80,7 @@ public class Post extends BaseEntity {
         this.status = Status.ENABLE;
         this.likeCount = 0L;
         this.commentCount = 0L;
+        this.hits = 0L;
         this.user = user;
         this.postCategory = postCategory;
         this.comments = comments;
@@ -109,5 +113,9 @@ public class Post extends BaseEntity {
 
     public void addCommentCount() {
         commentCount += 1;
+    }
+
+    public void addHits() {
+        hits += 1;
     }
 }

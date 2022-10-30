@@ -9,6 +9,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/post")
@@ -74,8 +77,10 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public PostDetailsResponseDto getPostDetails(@PathVariable Long id) {
-        return postService.getPostDetails(id);
+    public PostDetailsResponseDto getPostDetails(@PathVariable Long id,
+                                                 HttpServletRequest req,
+                                                 HttpServletResponse res) {
+        return postService.getPostDetails(id, req, res);
     }
 
     @GetMapping("/nickname")

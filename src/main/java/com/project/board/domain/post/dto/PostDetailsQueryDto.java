@@ -17,13 +17,14 @@ public class PostDetailsQueryDto {
     private String postCategory;
     private Long likeCount;
     private Long commentCount;
+    private Long hits;
     private String title;
     private String content;
 
     @Builder
     public PostDetailsQueryDto(Long postId, String nickname,
                                  LocalDateTime createdDate, String postCategory,
-                                 Long likeCount, Long commentCount,
+                                 Long likeCount, Long commentCount, Long hits,
                                  String title, String content) {
         this.postId = postId;
         this.nickname = nickname;
@@ -31,6 +32,7 @@ public class PostDetailsQueryDto {
         this.postCategory = postCategory;
         this.likeCount = likeCount;
         this.commentCount = commentCount;
+        this.hits = hits;
         this.title = title;
         this.content = content;
     }

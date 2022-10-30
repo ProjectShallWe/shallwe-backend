@@ -16,6 +16,7 @@ public class PostDetailsResponseDto {
     private String postCategory;
     private Long likeCount;
     private Long commentCount;
+    private Long hits;
     private String title;
     private String content;
 
@@ -27,6 +28,7 @@ public class PostDetailsResponseDto {
         this.postCategory = postDetailsQueryDto.getPostCategory();
         this.likeCount = postDetailsQueryDto.getLikeCount();
         this.commentCount = postDetailsQueryDto.getCommentCount();
+        this.hits = postDetailsQueryDto.getHits();
         this.title = postDetailsQueryDto.getTitle();
         this.content = postDetailsQueryDto.getContent();
     }

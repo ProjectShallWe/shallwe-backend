@@ -95,6 +95,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         postCategory.topic,
                         post.likeCount,
                         post.commentCount,
+                        post.hits,
                         post.title,
                         post.content))
                 .from(post)
