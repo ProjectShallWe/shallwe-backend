@@ -82,11 +82,6 @@ public class PostService {
 
     @Transactional
     public PostDetailsResponseDto getPostDetails(Long postId, HttpServletRequest req, HttpServletResponse res) {
-        PostDetailsQueryDto postDetailsQueryDto = postRepository.findPostDetailsBy(postId)
-                .orElseThrow(EntityNotFoundException::new);
-        PostDetailsResponseDto postDetailsResponseDtos
-                = new PostDetailsResponseDto(postDetailsQueryDto);
-
         Post post = postRepository.findById(postId)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -117,6 +112,11 @@ public class PostService {
             newCookie.setMaxAge(60 * 60 * 24);
             res.addCookie(newCookie);
         }
+
+        PostDetailsQueryDto postDetailsQueryDto = postRepository.findPostDetailsBy(postId)
+                .orElseThrow(EntityNotFoundException::new);
+        PostDetailsResponseDto postDetailsResponseDtos
+                = new PostDetailsResponseDto(postDetailsQueryDto);
 
         return postDetailsResponseDtos;
     }
