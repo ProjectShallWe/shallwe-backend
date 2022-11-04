@@ -33,22 +33,17 @@ public class CommentController {
         return commentService.writeChildComment(userDetails.getUsername(), postId, commentId, commentWriteRequestDto);
     }
 
-    @PutMapping("/{commentId}")
-    @PreAuthorize("isAuthenticated() " +
-            "and ((#CUReqDto.writer == principal.username) " +
-            "or hasRole('ROLE_ADMIN'))")
-    public Long update(@PathVariable Long commentId,
+    @PutMapping("/{id}")
+    public Long update(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                       @PathVariable Long id,
                        @RequestBody CommentUpdateRequestDto CUReqDto) {
-        return commentService.update(commentId, CUReqDto);
+        return commentService.update(userDetails.getUsername(), id, CUReqDto);
     }
 
-    @DeleteMapping("/{commentId}")
-    @PreAuthorize("isAuthenticated() " +
-            "and ((#CDReqDto.writer == principal.username) " +
-            "or hasRole('ROLE_ADMIN'))")
-    public Long delete(@PathVariable Long commentId,
-                       @RequestBody CommentDeleteRequestDto CDReqDto) {
-        return commentService.delete(commentId);
+    @DeleteMapping("/{id}")
+    public Long delete(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                       @PathVariable Long id) {
+        return commentService.delete(userDetails.getUsername(), id);
     }
 
     @GetMapping

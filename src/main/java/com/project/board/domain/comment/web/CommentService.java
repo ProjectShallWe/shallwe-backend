@@ -63,18 +63,22 @@ public class CommentService {
     }
 
     @Transactional
-    public Long update(Long commentId, CommentUpdateRequestDto commentUpdateRequestDto) {
+    public Long update(String email, Long commentId, CommentUpdateRequestDto commentUpdateRequestDto) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(EntityNotFoundException::new);
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(EntityNotFoundException::new);
-        comment.update(commentUpdateRequestDto.getContent());
+        comment.update(commentUpdateRequestDto.getContent(), user);
         return commentId;
     }
 
     @Transactional
-    public Long delete(Long commentId) {
+    public Long delete(String email, Long commentId) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(EntityNotFoundException::new);
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(EntityNotFoundException::new);
-        comment.updateStatusToDisable();
+        comment.updateStatusToDisable(user);
         return commentId;
     }
 

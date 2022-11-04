@@ -13,6 +13,7 @@ public class PostDetailsResponseDto {
     private Long postId;
     private String nickname;
     private String createdDate;
+    private Long postCategoryId;
     private String postCategory;
     private Long likeCount;
     private Long commentCount;
@@ -25,6 +26,7 @@ public class PostDetailsResponseDto {
         this.postId = postDetailsQueryDto.getPostId();
         this.nickname = postDetailsQueryDto.getNickname();
         this.createdDate = convertLocalDateTimeFromYearToMinute(postDetailsQueryDto.getCreatedDate());
+        this.postCategoryId = postDetailsQueryDto.getPostCategoryId();
         this.postCategory = postDetailsQueryDto.getPostCategory();
         this.likeCount = postDetailsQueryDto.getLikeCount();
         this.commentCount = postDetailsQueryDto.getCommentCount();

@@ -4,6 +4,8 @@ import com.project.board.domain.like.web.LikeComment;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.audit.BaseEntity;
+import com.project.board.global.exception.CannotDeleteCommentException;
+import com.project.board.global.exception.CannotUpdateCommentException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -70,15 +72,17 @@ public class Comment extends BaseEntity {
         this.likeComments = likeComments;
     }
 
-    public void update(String content) {
+    public void update(String content, User user) {
+        if (!this.user.equals(user) && !user.getRole().equals(User.Role.ADMIN)) {
+            throw new CannotUpdateCommentException();
+        }
         this.content = content;
     }
 
-    public void updateStatusToEnable() {
-        this.status = Status.ENABLE;
-    }
-
-    public void updateStatusToDisable() {
+    public void updateStatusToDisable(User user) {
+        if (!this.user.equals(user) && !user.getRole().equals(User.Role.ADMIN)) {
+            throw new CannotDeleteCommentException();
+        }
         this.status = Status.DISABLE;
     }
 

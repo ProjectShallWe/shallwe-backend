@@ -5,6 +5,9 @@ import com.project.board.domain.file.web.PostFile;
 import com.project.board.domain.like.web.LikePost;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.audit.BaseEntity;
+import com.project.board.global.exception.CannotDeletePostException;
+import com.project.board.global.exception.CannotUpdateCommentException;
+import com.project.board.global.exception.CannotUpdatePostException;
 import com.project.board.global.exception.InvalidParamException;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
@@ -87,19 +90,24 @@ public class Post extends BaseEntity {
         this.likePosts = likePosts;
     }
 
-    public void update(String title, String content) {
+    public void update(String title, String content, User user, PostCategory postCategory) {
         if (StringUtils.isEmpty(title)) throw new InvalidParamException("Post.title");
         if (StringUtils.isEmpty(content)) throw new InvalidParamException("Post.content");
 
+        if (!this.user.equals(user) && !user.getRole().equals(User.Role.ADMIN)) {
+            throw new CannotUpdatePostException();
+        }
+
         this.title = title;
         this.content = content;
+        this.postCategory = postCategory;
     }
 
-    public void updateStatusToEnable() {
-        this.status = Status.ENABLE;
-    }
+    public void updateStatusToDisable(User user) {
+        if (!this.user.equals(user) && !user.getRole().equals(User.Role.ADMIN)) {
+            throw new CannotDeletePostException();
+        }
 
-    public void updateStatusToDisable() {
         this.status = Status.DISABLE;
     }
 

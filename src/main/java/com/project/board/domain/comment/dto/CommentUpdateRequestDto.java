@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CommentUpdateRequestDto {
 
-    private String writer;
     private String content;
 }

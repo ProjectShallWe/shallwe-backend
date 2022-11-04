@@ -94,6 +94,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         post.id,
                         user.nickname,
                         post.createdDate,
+                        postCategory.id,
                         postCategory.topic,
                         post.likeCount,
                         post.commentCount,

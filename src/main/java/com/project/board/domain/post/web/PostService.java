@@ -47,18 +47,24 @@ public class PostService {
     }
 
     @Transactional
-    public Long update(Long id, PostUpdateRequestDto updateDto) {
-        Post post = postRepository.findById(id)
+    public Long update(String email, Long postId, Long postCategoryId, PostUpdateRequestDto updateDto) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(EntityNotFoundException::new);
-        post.update(updateDto.getTitle(), updateDto.getContent());
-        return id;
+        Post post = postRepository.findById(postId)
+                .orElseThrow(EntityNotFoundException::new);
+        PostCategory postCategory = postCategoryRepository.findById(postCategoryId)
+                        .orElseThrow(EntityNotFoundException::new);
+        post.update(updateDto.getTitle(), updateDto.getContent(), user, postCategory);
+        return postId;
     }
 
     @Transactional
-    public Long delete(Long id) {
+    public Long delete(String email, Long id) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(EntityNotFoundException::new);
         Post post = postRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        post.updateStatusToDisable();
+        post.updateStatusToDisable(user);
         return id;
     }
 

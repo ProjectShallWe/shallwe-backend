@@ -10,6 +10,12 @@ public enum ErrorCode {
     COMMON_INVALID_PARAMETER("요청한 값이 올바르지 않습니다."),
     COMMON_ENTITY_NOT_FOUND("존재하지 않는 엔티티입니다."),
     COMMON_ILLEGAL_STATUS("잘못된 상태값입니다."),
+
+    CANNOT_UPDATE_POST("글을 수정할 수 없습니다."),
+    CANNOT_DELETE_POST("글을 삭제할 수 없습니다."),
+    CANNOT_UPDATE_COMMENT("댓글을 수정할 수 없습니다."),
+    CANNOT_DELETE_COMMENT("댓글을 삭제할 수 없습니다."),
+
     JWT_ACCESS_NOT_VALID("유효하지 않은 JWT 토큰입니다."),
     JWT_REFRESH_NOT_VALID("유효하지 않은 JWT 토큰입니다."),
     JWT_ACCESS_TOKEN_EXPIRED("만료된 access 토큰입니다."),

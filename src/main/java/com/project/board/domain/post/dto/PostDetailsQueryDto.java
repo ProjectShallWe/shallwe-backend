@@ -14,6 +14,7 @@ public class PostDetailsQueryDto {
     private Long postId;
     private String nickname;
     private LocalDateTime createdDate;
+    private Long postCategoryId;
     private String postCategory;
     private Long likeCount;
     private Long commentCount;
@@ -23,12 +24,15 @@ public class PostDetailsQueryDto {
 
     @Builder
     public PostDetailsQueryDto(Long postId, String nickname,
-                                 LocalDateTime createdDate, String postCategory,
-                                 Long likeCount, Long commentCount, Long hits,
-                                 String title, String content) {
+                               LocalDateTime createdDate,
+                               Long postCategoryId,
+                               String postCategory,
+                               Long likeCount, Long commentCount, Long hits,
+                               String title, String content) {
         this.postId = postId;
         this.nickname = nickname;
         this.createdDate = createdDate;
+        this.postCategoryId = postCategoryId;
         this.postCategory = postCategory;
         this.likeCount = likeCount;
         this.commentCount = commentCount;

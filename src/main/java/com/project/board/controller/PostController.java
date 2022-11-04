@@ -5,7 +5,6 @@ import com.project.board.domain.post.web.PostService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,22 +25,18 @@ public class PostController {
         return postService.write(userDetails.getUsername(), postCategoryId, postWriteRequestDto);
     }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("isAuthenticated() " +
-            "and ((#PUReqDto.writer == principal.username) " +
-            "or hasRole('ROLE_ADMIN'))")
-    public Long update(@PathVariable Long id,
+    @PutMapping("/{postId}")
+    public Long update(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                       @PathVariable Long postId,
+                       @RequestParam("category") Long postCategoryId,
                        @RequestBody PostUpdateRequestDto PUReqDto) {
-        return postService.update(id, PUReqDto);
+        return postService.update(userDetails.getUsername(), postId, postCategoryId, PUReqDto);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("isAuthenticated() " +
-            "and ((#PDReqDto.writer == principal.username) " +
-            "or hasRole('ROLE_ADMIN'))")
-    public Long delete(@PathVariable Long id,
-                       @RequestBody PostDeleteRequestDto PDReqDto) {
-        return postService.delete(id);
+    public Long delete(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                       @PathVariable Long id) {
+        return postService.delete(userDetails.getUsername(), id);
     }
 
     @GetMapping("/all")
