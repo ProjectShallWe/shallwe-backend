@@ -32,7 +32,8 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom{
                         user.nickname,
                         comment.createdDate,
                         comment.likeCount,
-                        comment.content))
+                        comment.content,
+                        comment.status))
                 .from(comment)
                 .join(comment.user, user)
                 .join(comment.post, post)

@@ -1,10 +1,12 @@
 package com.project.board.domain.comment.dto;
 
+import com.project.board.domain.comment.web.Comment;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static com.project.board.domain.comment.web.Comment.*;
 import static com.project.board.global.util.DateConverter.convertLocalDateTimeFromYearToSecond;
 
 @Getter
@@ -17,7 +19,7 @@ public class ChildCommentsResponseDto {
     String createdDate;
     Long likeCommentCount;
     String content;
-
+    Status status;
     @Builder
     public ChildCommentsResponseDto(CommentQueryDto ETCResponseDto) {
         this.commentId = ETCResponseDto.getCommentId();
@@ -26,5 +28,6 @@ public class ChildCommentsResponseDto {
         this.createdDate = convertLocalDateTimeFromYearToSecond(ETCResponseDto.getCreatedDate());
         this.likeCommentCount = ETCResponseDto.getLikeCommentCount();
         this.content = ETCResponseDto.getContent();
+        this.status = ETCResponseDto.getStatus();
     }
 }

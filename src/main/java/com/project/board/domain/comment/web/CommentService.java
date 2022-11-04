@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.project.board.domain.comment.web.Comment.*;
 
 @Service
 @RequiredArgsConstructor
@@ -85,10 +88,32 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<ParentCommentsResponseDto> getCommentsInPost(Long postId) {
         List<CommentQueryDto> cResDtos = commentRepository.getCommentsInPostByPostId(postId);
+
+        List<CommentQueryDto> checkDisable = cResDtos.stream()
+                .filter(m -> m.getStatus().equals(Status.DISABLE))
+                .map(m -> CommentQueryDto.builder()
+                        .commentId(m.getCommentId())
+                        .parentId(m.getParentId())
+                        .nickname("")
+                        .createdDate(m.getCreatedDate())
+                        .likeCommentCount(0L)
+                        .content("삭제된 댓글입니다.")
+                        .status(m.getStatus())
+                        .build())
+                .collect(Collectors.toList());
+
+        List<CommentQueryDto> others = cResDtos.stream()
+                .filter(m -> m.getStatus().equals(Status.ENABLE))
+                .collect(Collectors.toList());
+
+        List<CommentQueryDto> addList = new ArrayList<>();
+        addList.addAll(checkDisable);
+        addList.addAll(others);
+
         List<ParentCommentsResponseDto> pcResDtos = new ArrayList<>();
         List<ChildCommentsResponseDto> ccResDtos = new ArrayList<>();
 
-        for (CommentQueryDto cQueryDto : cResDtos) {
+        for (CommentQueryDto cQueryDto : addList) {
             if (isParentComment(cQueryDto)) {
                 pcResDtos.add(new ParentCommentsResponseDto(cQueryDto));
             } else {
