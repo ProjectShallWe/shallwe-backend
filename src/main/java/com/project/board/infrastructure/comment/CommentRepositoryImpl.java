@@ -3,6 +3,7 @@ package com.project.board.infrastructure.comment;
 import com.project.board.domain.comment.dto.CommentQueryDto;
 import com.project.board.domain.comment.dto.CommentsUserQueryDto;
 import com.project.board.domain.post.dto.PostsUserQueryDto;
+import com.project.board.domain.post.web.Post;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -37,7 +38,8 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom{
                 .from(comment)
                 .join(comment.user, user)
                 .join(comment.post, post)
-                .where(post.id.eq(postId))
+                .where(post.id.eq(postId),
+                       post.status.eq(Post.Status.ENABLE))
                 .fetch();
     }
 

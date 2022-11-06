@@ -3,6 +3,7 @@ package com.project.board.infrastructure.post;
 import com.project.board.controller.PostSearchType;
 import com.project.board.domain.board.web.Board;
 import com.project.board.domain.post.dto.*;
+import com.project.board.domain.post.web.Post;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -46,7 +47,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .join(post.user, user)
                 .join(post.postCategory, postCategory)
                 .join(postCategory.board, board)
-                .where(board.id.eq(boardId))
+                .where(board.id.eq(boardId).and(post.status.eq(Post.Status.ENABLE)))
                 .orderBy(post.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -75,7 +76,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .from(post)
                 .join(post.user, user)
                 .join(post.postCategory, postCategory)
-                .where(postCategory.id.eq(postCategoryId))
+                .where(postCategory.id.eq(postCategoryId),
+                       post.status.eq(Post.Status.ENABLE))
                 .orderBy(post.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -104,7 +106,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .from(post)
                 .join(post.postCategory, postCategory)
                 .join(post.user, user)
-                .where(post.id.eq(postId))
+                .where(post.id.eq(postId),
+                       post.status.eq(Post.Status.ENABLE))
                 .fetchOne()
         );
     }
@@ -125,7 +128,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .join(postCategory.board, board)
                 .where(board.id.eq(boardId),
                         post.createdDate.loe(now),
-                        post.createdDate.gt(twelveHoursAgo))
+                        post.createdDate.gt(twelveHoursAgo),
+                        post.status.eq(Post.Status.ENABLE))
                 .orderBy(post.likeCount.add(post.commentCount).desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -151,7 +155,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .join(post.postCategory, postCategory)
                 .join(postCategory.board, board)
                 .where(post.createdDate.loe(now),
-                       post.createdDate.gt(twelveHoursAgo))
+                       post.createdDate.gt(twelveHoursAgo),
+                       post.status.eq(Post.Status.ENABLE))
                 .orderBy(post.likeCount.add(post.commentCount).desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -183,7 +188,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .join(postCategory.board, board)
                 .where(board.id.eq(boardId),
                         isPostCategoryExist(postCategoryId),
-                        postSearchTypeEq(postSearchType, searchWord))
+                        postSearchTypeEq(postSearchType, searchWord),
+                        post.status.eq(Post.Status.ENABLE))
                 .orderBy(post.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -250,7 +256,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .join(post.user, user)
                 .join(post.postCategory, postCategory)
                 .join(postCategory.board, board)
-                .where(ticonEq(keyword))
+                .where(ticonEq(keyword),
+                       post.status.eq(Post.Status.ENABLE))
                 .orderBy(post.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -279,7 +286,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .join(post.user, user)
                 .join(post.postCategory, postCategory)
                 .join(postCategory.board, board)
-                .where(user.nickname.eq(nickname))
+                .where(user.nickname.eq(nickname),
+                       post.status.eq(Post.Status.ENABLE))
                 .orderBy(post.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
