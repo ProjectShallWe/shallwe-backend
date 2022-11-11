@@ -1,8 +1,6 @@
 package com.project.board.domain.user.web;
 
-import com.project.board.domain.user.dto.UserJoinRequestDto;
-import com.project.board.domain.user.dto.UserUpdateNicknameRequestDto;
-import com.project.board.domain.user.dto.UserUpdatePasswordRequestDto;
+import com.project.board.domain.user.dto.*;
 import com.project.board.global.exception.EntityNotFoundException;
 import com.project.board.global.exception.InvalidParamException;
 import com.project.board.infrastructure.user.UserRepository;
@@ -40,6 +38,19 @@ public class UserService {
     @Transactional(readOnly = true)
     public Boolean checkNicknameDuplication(UserUpdateNicknameRequestDto nicknameUpdateDto) {
         return userRepository.existsByNickname(nicknameUpdateDto.getNickname());
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean checkEmailDuplication(UserEmailRequestDto userEmailRequestDto) {
+        return userRepository.existsByEmail(userEmailRequestDto.getEmail());
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean checkNowPassword(String email,
+                                 UserNowPasswordRequestDto userNowPasswordRequestDto){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(EntityNotFoundException::new);
+        return user.checkPassword(userNowPasswordRequestDto.getNowPassword(), user.getPassword());
     }
 
     @Transactional

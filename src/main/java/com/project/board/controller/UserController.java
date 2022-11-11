@@ -1,8 +1,6 @@
 package com.project.board.controller;
 
-import com.project.board.domain.user.dto.UserJoinRequestDto;
-import com.project.board.domain.user.dto.UserUpdateNicknameRequestDto;
-import com.project.board.domain.user.dto.UserUpdatePasswordRequestDto;
+import com.project.board.domain.user.dto.*;
 import com.project.board.domain.user.web.UserService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +19,20 @@ public class UserController {
         return userService.join(userJoinRequestDto);
     }
 
-    @PostMapping("/check")
+    @PostMapping("/check/nickname")
     public Boolean checkNicknameDuplication(@RequestBody UserUpdateNicknameRequestDto userUpdateNicknameRequestDto) {
         return userService.checkNicknameDuplication(userUpdateNicknameRequestDto);
+    }
+
+    @PostMapping("/check/email")
+    public Boolean checkEmailDuplication(@RequestBody UserEmailRequestDto userEmailRequestDto) {
+        return userService.checkEmailDuplication(userEmailRequestDto);
+    }
+
+    @PostMapping("/check/password")
+    public Boolean checkNowPassword(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                               @RequestBody UserNowPasswordRequestDto userNowPasswordRequestDto) {
+        return userService.checkNowPassword(userDetails.getUsername(), userNowPasswordRequestDto);
     }
 
     @PutMapping("/nickname")
