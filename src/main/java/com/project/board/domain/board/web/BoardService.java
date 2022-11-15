@@ -1,17 +1,21 @@
 package com.project.board.domain.board.web;
 
 import com.project.board.domain.board.dto.BoardInfoResDto;
+import com.project.board.domain.board.dto.BoardRecommendResDto;
 import com.project.board.domain.board.dto.BoardRequestDto;
 import com.project.board.domain.board.dto.BoardResponseDto;
 import com.project.board.global.exception.EntityNotFoundException;
 import com.project.board.global.exception.InvalidParamException;
+import com.project.board.global.redis.CacheKey;
 import com.project.board.infrastructure.board.BoardCategoryRepository;
 import com.project.board.infrastructure.board.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,5 +74,14 @@ public class BoardService {
                 .map(BoardInfoResDto::new)
                 .collect(Collectors.toList());
         return boardInfoResDtos;
+    }
+
+    @Cacheable(value = CacheKey.RECOMMEND_BOARDS, unless = "#result == null")
+    @Transactional(readOnly = true)
+    public BoardRecommendResDto getBoardsByRecommendScore() {
+        List<Board> boards = boardRepository.findBoardsByRecommendScore(LocalDateTime.now(), LocalDateTime.now().minusHours(12));
+        return new BoardRecommendResDto(boards.stream()
+                .map(Board::getId)
+                .collect(Collectors.toList()));
     }
 }
