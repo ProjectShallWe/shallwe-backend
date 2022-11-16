@@ -4,6 +4,7 @@ import com.project.board.domain.board.dto.BoardInfoResDto;
 import com.project.board.domain.board.dto.BoardRecommendResDto;
 import com.project.board.domain.board.dto.BoardRequestDto;
 import com.project.board.domain.board.dto.BoardResponseDto;
+import com.project.board.domain.board.web.BoardFacade;
 import com.project.board.domain.board.web.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,12 +18,13 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final BoardFacade boardFacade;
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Long create(@RequestParam("category") Long boardCategoryId,
+    public Long createBoardWithBasicPostCategory(@RequestParam("category") Long boardCategoryId,
                        @RequestBody BoardRequestDto boardRequestDto) {
-        return boardService.create(boardCategoryId, boardRequestDto);
+        return boardFacade.createBoardWithBasicPostCategory(boardCategoryId, boardRequestDto);
     }
 
     @PutMapping("/{id}")
