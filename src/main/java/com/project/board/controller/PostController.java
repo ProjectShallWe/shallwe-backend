@@ -1,6 +1,7 @@
 package com.project.board.controller;
 
 import com.project.board.domain.post.dto.*;
+import com.project.board.domain.post.web.PostFacade;
 import com.project.board.domain.post.web.PostService;
 import com.project.board.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 public class PostController {
 
     private final PostService postService;
+    private final PostFacade postFacade;
 
     @PostMapping
     public Long write(@AuthenticationPrincipal UserDetailsImpl userDetails,
                       @RequestParam("category") Long postCategoryId,
                       @RequestBody PostWriteRequestDto postWriteRequestDto) {
-        return postService.write(userDetails.getUsername(), postCategoryId, postWriteRequestDto);
+        return postFacade.createPostWithImages(userDetails.getUsername(), postCategoryId, postWriteRequestDto);
     }
 
     @PutMapping("/{postId}")
@@ -30,7 +32,7 @@ public class PostController {
                        @PathVariable Long postId,
                        @RequestParam("category") Long postCategoryId,
                        @RequestBody PostUpdateRequestDto PUReqDto) {
-        return postService.update(userDetails.getUsername(), postId, postCategoryId, PUReqDto);
+        return postFacade.updatePostWithImages(userDetails.getUsername(), postId, postCategoryId, PUReqDto);
     }
 
     @DeleteMapping("/{id}")

@@ -64,6 +64,9 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post")
     private List<LikePost> likePosts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post")
+    private List<PostFile> postFiles = new ArrayList<>();
+
     @Getter
     @RequiredArgsConstructor
     public enum Status {
@@ -88,6 +91,7 @@ public class Post extends BaseEntity {
         this.postCategory = postCategory;
         this.comments = comments;
         this.likePosts = likePosts;
+        this.postFiles = postFiles;
     }
 
     public void update(String title, String content, User user, PostCategory postCategory) {

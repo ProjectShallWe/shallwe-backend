@@ -3,7 +3,7 @@ package com.project.board.global.amazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.project.board.domain.file.web.PostFile;
+import com.project.board.domain.file.dto.FileDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +26,7 @@ public class AwsS3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public PostFile upload(MultipartFile multipartFile, String dirName) throws IOException {
+    public FileDto upload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
 
@@ -45,7 +45,7 @@ public class AwsS3Uploader {
         return Optional.empty();
     }
 
-    private PostFile upload(File uploadFile, String dirName) {
+    private FileDto upload(File uploadFile, String dirName) {
         String originalFileName = dirName + "/"
                 + uploadFile.getName();
         String UUIDFileName = dirName + "/"
@@ -53,8 +53,8 @@ public class AwsS3Uploader {
                 + UUID.randomUUID();
         String uploadImageUrl = putS3(uploadFile, UUIDFileName);
         removeNewFile(uploadFile);
-        return PostFile.builder()
-                .uploadFileName(originalFileName)
+        return FileDto.builder()
+                .originalFileName(originalFileName)
                 .storeFileName(UUIDFileName)
                 .fileUrl(uploadImageUrl)
                 .build();
