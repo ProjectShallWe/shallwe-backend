@@ -74,10 +74,8 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public PostDetailsResponseDto getPostDetails(@PathVariable Long id,
-                                                 HttpServletRequest req,
-                                                 HttpServletResponse res) {
-        return postService.getPostDetails(id, req, res);
+    public PostDetailsResponseDto getPostDetails(@PathVariable Long id) {
+        return postService.getPostDetails(id);
     }
 
     @GetMapping("/nickname")

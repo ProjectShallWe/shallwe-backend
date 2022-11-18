@@ -87,38 +87,7 @@ public class PostService {
     }
 
     @Transactional
-    public PostDetailsResponseDto getPostDetails(Long postId, HttpServletRequest req, HttpServletResponse res) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(EntityNotFoundException::new);
-
-        Cookie oldCookie = null;
-        Cookie[] cookies = req.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("postView")) {
-                    oldCookie = cookie;
-                }
-            }
-        }
-
-        if (oldCookie != null) {
-            // 쿠키가 있다면 기존의 쿠키에 [postId]를 추가한다.
-            if (!oldCookie.getValue().contains("["+ postId +"]")) {
-                post.addHits();
-                oldCookie.setValue(oldCookie.getValue() + "_[" + postId + "]");
-                oldCookie.setPath("/");
-                oldCookie.setMaxAge(60 * 60 * 24);
-                res.addCookie(oldCookie);
-            }
-        } else {
-            // 쿠키가 없다면 새로 만들어 [postId]를 추가한다.
-            post.addHits();
-            Cookie newCookie = new Cookie("postView", "[" + postId + "]");
-            newCookie.setPath("/");
-            newCookie.setMaxAge(60 * 60 * 24);
-            res.addCookie(newCookie);
-        }
-
+    public PostDetailsResponseDto getPostDetails(Long postId) {
         PostDetailsQueryDto postDetailsQueryDto = postRepository.findPostDetailsBy(postId)
                 .orElseThrow(EntityNotFoundException::new);
         PostDetailsResponseDto postDetailsResponseDtos
