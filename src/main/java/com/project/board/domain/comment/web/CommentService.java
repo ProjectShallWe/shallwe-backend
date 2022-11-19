@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -110,10 +111,14 @@ public class CommentService {
         addList.addAll(checkDisable);
         addList.addAll(others);
 
+        List<CommentQueryDto> sortedList = addList.stream()
+                .sorted(Comparator.comparing(CommentQueryDto::getCommentId))
+                .collect(Collectors.toList());
+
         List<ParentCommentsResponseDto> pcResDtos = new ArrayList<>();
         List<ChildCommentsResponseDto> ccResDtos = new ArrayList<>();
 
-        for (CommentQueryDto cQueryDto : addList) {
+        for (CommentQueryDto cQueryDto : sortedList) {
             if (isParentComment(cQueryDto)) {
                 pcResDtos.add(new ParentCommentsResponseDto(cQueryDto));
             } else {
