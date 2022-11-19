@@ -40,7 +40,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         user.nickname,
                         post.createdDate,
                         post.hits,
-                        post.likeCount
+                        post.likeCount,
+                        post.hasImage
                 ))
                 .distinct()
                 .from(post)
@@ -71,7 +72,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         user.nickname,
                         post.createdDate,
                         post.hits,
-                        post.likeCount
+                        post.likeCount,
+                        post.hasImage
                 ))
                 .from(post)
                 .join(post.user, user)
@@ -180,7 +182,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         user.nickname,
                         post.createdDate,
                         post.hits,
-                        post.likeCount
+                        post.likeCount,
+                        post.hasImage
                 ))
                 .from(post)
                 .join(post.user, user)

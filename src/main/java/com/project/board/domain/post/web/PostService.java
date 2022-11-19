@@ -14,9 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +31,10 @@ public class PostService {
         PostCategory postCategory = postCategoryRepository.findById(postCategoryId)
                 .orElseThrow(EntityNotFoundException::new);
         Post post = writeDto.toEntity(user, postCategory);
+
+        if (isImageListEmpty(writeDto.getImages())) {
+            post.updateHasImageToTrue();
+        }
 
         validCheck(post);
         return postRepository.save(post).getId();
@@ -54,8 +56,12 @@ public class PostService {
                 .orElseThrow(EntityNotFoundException::new);
         PostCategory postCategory = postCategoryRepository.findById(postCategoryId)
                         .orElseThrow(EntityNotFoundException::new);
-        post.update(updateDto.getTitle(), updateDto.getContent(), user, postCategory);
+        post.update(updateDto.getTitle(), updateDto.getContent(), isImageListEmpty(updateDto.getImages()), user, postCategory);
         return postId;
+    }
+
+    private Boolean isImageListEmpty(List<String> images) {
+        return !images.isEmpty();
     }
 
     @Transactional
