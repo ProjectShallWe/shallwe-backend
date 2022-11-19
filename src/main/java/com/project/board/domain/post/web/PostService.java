@@ -94,10 +94,14 @@ public class PostService {
 
     @Transactional
     public PostDetailsResponseDto getPostDetails(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(EntityNotFoundException::new);
         PostDetailsQueryDto postDetailsQueryDto = postRepository.findPostDetailsBy(postId)
                 .orElseThrow(EntityNotFoundException::new);
         PostDetailsResponseDto postDetailsResponseDtos
                 = new PostDetailsResponseDto(postDetailsQueryDto);
+
+        post.addHits();
 
         return postDetailsResponseDtos;
     }
