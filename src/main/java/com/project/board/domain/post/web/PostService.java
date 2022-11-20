@@ -32,8 +32,8 @@ public class PostService {
                 .orElseThrow(EntityNotFoundException::new);
         Post post = writeDto.toEntity(user, postCategory);
 
-        if (isImageListEmpty(writeDto.getImages())) {
-            post.updateHasImageToTrue();
+        if (!isImageListEmpty(writeDto.getImages())) {
+            post.updateThumbnailUrl(writeDto.getImages().get(0));
         }
 
         validCheck(post);
@@ -56,12 +56,20 @@ public class PostService {
                 .orElseThrow(EntityNotFoundException::new);
         PostCategory postCategory = postCategoryRepository.findById(postCategoryId)
                         .orElseThrow(EntityNotFoundException::new);
-        post.update(updateDto.getTitle(), updateDto.getContent(), isImageListEmpty(updateDto.getImages()), user, postCategory);
+
+        post.update(updateDto.getTitle(), updateDto.getContent(), user, postCategory);
+
+        if (!isImageListEmpty(updateDto.getImages())) {
+            post.updateThumbnailUrl(updateDto.getImages().get(0));
+        } else {
+            post.updateThumbnailUrl("");
+        }
+
         return postId;
     }
 
     private Boolean isImageListEmpty(List<String> images) {
-        return !images.isEmpty();
+        return images.isEmpty();
     }
 
     @Transactional

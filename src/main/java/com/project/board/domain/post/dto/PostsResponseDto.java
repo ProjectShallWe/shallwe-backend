@@ -20,7 +20,7 @@ public class PostsResponseDto {
     private String createdDate;
     private Long hits;
     private Long likeCount;
-    private Boolean hasImage;
+    private String thumbnailUrl;
 
     @Builder
     public PostsResponseDto (PostsQueryDto postsQueryDto) {
@@ -33,6 +33,6 @@ public class PostsResponseDto {
         this.createdDate = convertLocalDateTimeToMMdd(postsQueryDto.getCreatedDate());
         this.hits = postsQueryDto.getHits();
         this.likeCount = postsQueryDto.getLikeCount();
-        this.hasImage = postsQueryDto.getHasImage();
+        this.thumbnailUrl = postsQueryDto.getThumbnailUrl();
     }
 }

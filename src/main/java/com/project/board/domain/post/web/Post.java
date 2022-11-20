@@ -51,7 +51,7 @@ public class Post extends BaseEntity {
     private Long hits;
 
     @NotNull
-    private Boolean hasImage;
+    private String thumbnailUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -90,7 +90,7 @@ public class Post extends BaseEntity {
         this.likeCount = 0L;
         this.commentCount = 0L;
         this.hits = 0L;
-        this.hasImage = false;
+        this.thumbnailUrl = "";
         this.user = user;
         this.postCategory = postCategory;
         this.comments = comments;
@@ -98,7 +98,7 @@ public class Post extends BaseEntity {
         this.postFiles = postFiles;
     }
 
-    public void update(String title, String content, Boolean hasImage, User user, PostCategory postCategory) {
+    public void update(String title, String content, User user, PostCategory postCategory) {
         if (StringUtils.isEmpty(title)) throw new InvalidParamException("Post.title");
         if (StringUtils.isEmpty(content)) throw new InvalidParamException("Post.content");
 
@@ -108,7 +108,6 @@ public class Post extends BaseEntity {
 
         this.title = title;
         this.content = content;
-        this.hasImage = hasImage;
         this.postCategory = postCategory;
     }
 
@@ -136,7 +135,7 @@ public class Post extends BaseEntity {
         hits += 1;
     }
 
-    public void updateHasImageToTrue() {
-        hasImage = true;
+    public void updateThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 }

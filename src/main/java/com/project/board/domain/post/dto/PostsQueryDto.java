@@ -20,7 +20,7 @@ public class PostsQueryDto {
     private LocalDateTime createdDate;
     private Long hits;
     private Long likeCount;
-    private Boolean hasImage;
+    private String thumbnailUrl;
 
     @Builder
     public PostsQueryDto(Long postId,
@@ -32,7 +32,7 @@ public class PostsQueryDto {
                          LocalDateTime createdDate,
                          Long hits,
                          Long likeCount,
-                         Boolean hasImage) {
+                         String thumbnailUrl) {
         this.postId = postId;
         this.postCategoryId = postCategoryId;
         this.postCategory = postCategory;
@@ -42,6 +42,6 @@ public class PostsQueryDto {
         this.createdDate = createdDate;
         this.hits = hits;
         this.likeCount = likeCount;
-        this.hasImage = hasImage;
+        this.thumbnailUrl = thumbnailUrl;
     }
 }
