@@ -4,6 +4,7 @@ import com.project.board.domain.board.web.Board;
 import com.project.board.domain.post.dto.PostDetailsQueryDto;
 import com.project.board.domain.post.dto.PostsQueryDto;
 import com.project.board.domain.post.dto.RecommendPostsQueryDto;
+import com.project.board.domain.post.web.PageSize;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.post.web.PostCategory;
 import com.project.board.domain.user.web.User;
@@ -54,7 +55,7 @@ class PostRepositoryTest {
     private LikePostRepository likePostRepository;
 
 
-    private static final Pageable pageable = PageRequest.of(0, 10);
+    private static final Pageable pageable = PageRequest.of(0, PageSize.TWENTY.value);
 
     @Test
     void findAllInBoard() {

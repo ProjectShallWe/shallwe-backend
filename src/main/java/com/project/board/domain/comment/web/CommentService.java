@@ -1,6 +1,7 @@
 package com.project.board.domain.comment.web;
 
 import com.project.board.domain.comment.dto.*;
+import com.project.board.domain.post.web.PageSize;
 import com.project.board.domain.post.web.Post;
 import com.project.board.domain.user.web.User;
 import com.project.board.global.exception.EntityNotFoundException;
@@ -150,7 +151,7 @@ public class CommentService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(EntityNotFoundException::new);
 
-        PageRequest pageRequest = PageRequest.of(page, 10);
+        PageRequest pageRequest = PageRequest.of(page, PageSize.TEN.value);
         Page<CommentsUserQueryDto> commentsUserQueryDtos = commentRepository.findCommentsByNickname(user.getNickname(), pageRequest);
         Page<CommentsUserResDto> commentsUserResDtos = commentsUserQueryDtos.map(
                 CommentsUserResDto::new);

@@ -32,7 +32,7 @@ public class PostRecommendService {
         Page<RecommendPostsQueryDto> queryDtos
                 = postRepository.findRecommendPosts(
                 LocalDateTime.now(), LocalDateTime.now().minusHours(12),
-                PageRequest.of(0, 10));
+                PageRequest.of(0, PageSize.TEN.value));
         List<RecommendPostsResponseDto> resDtos = queryDtos.stream()
                 .map(RecommendPostsResponseDto::new)
                 .collect(Collectors.toList());
@@ -47,7 +47,7 @@ public class PostRecommendService {
         Page<RecommendPostsQueryDto> queryDtos
                 = postRepository.findRecommendPostsInBoard(boardId,
                 LocalDateTime.now(), LocalDateTime.now().minusHours(12),
-                PageRequest.of(0, 10));
+                PageRequest.of(0, PageSize.TEN.value));
         List<RecommendPostsResponseDto> resDtos = queryDtos.stream()
                 .map(RecommendPostsResponseDto::new)
                 .collect(Collectors.toList());

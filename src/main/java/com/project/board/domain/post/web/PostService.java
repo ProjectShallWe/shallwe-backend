@@ -84,7 +84,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Page<PostsResponseDto> getPostsInBoard(Long id, Integer page) {
-        PageRequest pageRequest = PageRequest.of(page, 10);
+        PageRequest pageRequest = PageRequest.of(page, PageSize.TWENTY.value);
         Page<PostsQueryDto> postsQueryDtos = postRepository.findAllInBoard(id, pageRequest);
         Page<PostsResponseDto> postsResponseDtos = postsQueryDtos.map(
                 PostsResponseDto::new);
@@ -93,7 +93,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Page<PostsResponseDto> getPostsInPostCategory(Long id, Integer page) {
-        PageRequest pageRequest = PageRequest.of(page, 10);
+        PageRequest pageRequest = PageRequest.of(page, PageSize.TWENTY.value);
         Page<PostsQueryDto> postsQueryDtos = postRepository.findAllInPostCategory(id, pageRequest);
         Page<PostsResponseDto> postsResponseDtos = postsQueryDtos.map(
                 PostsResponseDto::new);
@@ -115,7 +115,7 @@ public class PostService {
     }
 
     public Page<PostsResponseDto> getPostsBySearchWordInBoard(Long boardId, Long postCategoryId, String type, String keyword, Integer page) {
-        PageRequest pageRequest = PageRequest.of(page, 10);
+        PageRequest pageRequest = PageRequest.of(page, PageSize.TWENTY.value);
         Page<PostsQueryDto> postsQueryDtos = postRepository.findPostsBySearchWordInBoard(boardId, postCategoryId, type, keyword, pageRequest);
         Page<PostsResponseDto> postsResponseDtos = postsQueryDtos.map(
                 PostsResponseDto::new);
@@ -123,7 +123,7 @@ public class PostService {
     }
 
     public Page<PostsCommonSearchResDto> getPostsByKeyword(String keyword, Integer page) {
-        PageRequest pageRequest = PageRequest.of(page, 10);
+        PageRequest pageRequest = PageRequest.of(page, PageSize.TEN.value);
         Page<PostsCommonSearchQueryDto> postsCommonSearchQueryDtos = postRepository.findPostsByKeyword(keyword, pageRequest);
         Page<PostsCommonSearchResDto> postsCommonSearchResDtos = postsCommonSearchQueryDtos.map(
                 PostsCommonSearchResDto::new);
@@ -134,7 +134,7 @@ public class PostService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(EntityNotFoundException::new);
 
-        PageRequest pageRequest = PageRequest.of(page, 10);
+        PageRequest pageRequest = PageRequest.of(page, PageSize.TEN.value);
         Page<PostsUserQueryDto> postsUserQueryDtos = postRepository.findPostsByNickname(user.getNickname(), pageRequest);
         Page<PostsUserResDto> postsUserResDtos = postsUserQueryDtos.map(
                 PostsUserResDto::new);
