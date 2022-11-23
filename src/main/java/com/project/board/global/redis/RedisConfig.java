@@ -59,6 +59,8 @@ public class RedisConfig extends CachingConfigurerSupport {
                 .entryTtl(Duration.ofSeconds(CacheKey.RECOMMEND_POST_EXPIRE_SEC)));
         cacheConfigurations.put(CacheKey.RECOMMEND_BOARDS, RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofSeconds(CacheKey.RECOMMEND_BOARDS_EXPIRE_SEC)));
+        cacheConfigurations.put(CacheKey.REAL_TIME_BEST_POST, RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofSeconds(CacheKey.REAL_TIME_BEST_POST_EXPIRE_SEC)));
 
         return RedisCacheManager
                 .RedisCacheManagerBuilder

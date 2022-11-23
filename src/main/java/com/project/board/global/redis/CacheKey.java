@@ -15,6 +15,9 @@ public class CacheKey {
     public static final String RECOMMEND_POST = "recommendPost";
     public static final int RECOMMEND_POST_EXPIRE_SEC = 60;
 
+    public static final String REAL_TIME_BEST_POST = "realTimeBestPost";
+    public static final int REAL_TIME_BEST_POST_EXPIRE_SEC = 60;
+
     public static final String RECOMMEND_BOARDS= "recommendBoards";
     public static final int RECOMMEND_BOARDS_EXPIRE_SEC = 60*60;
     public static final String REFRESH_TOKEN = "refreshToken::";

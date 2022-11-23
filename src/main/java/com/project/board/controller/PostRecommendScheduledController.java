@@ -1,8 +1,10 @@
 package com.project.board.controller;
 
+import com.project.board.domain.post.dto.RealTimeBestPostResDto;
 import com.project.board.domain.post.dto.RecommendPostsWithBoardResDto;
 import com.project.board.domain.post.web.PostRecommendService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,5 +25,10 @@ public class PostRecommendScheduledController {
     @GetMapping
     public RecommendPostsWithBoardResDto getRecommendPostsInBoardFromRedis(@RequestParam("board") Long boardId) {
         return postRecommendService.getRecommendPostsInBoardFromRedis(boardId);
+    }
+
+    @GetMapping("/main")
+    public Page<RealTimeBestPostResDto> getRealTimeBastPosts (@RequestParam("page") Integer page) {
+        return postRecommendService.getRealTimeBestPosts(page);
     }
 }

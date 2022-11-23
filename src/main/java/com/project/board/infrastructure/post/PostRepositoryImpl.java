@@ -301,4 +301,37 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
         return new PageImpl<>(content, pageable, total);
     }
+
+    @Override
+    public Page<RealTimeBestPostQueryDto> findRealTimeBestPosts(Pageable pageable) {
+        QueryResults<RealTimeBestPostQueryDto> results = queryFactory
+                .select(Projections.constructor(RealTimeBestPostQueryDto.class,
+                        board.id,
+                        post.id,
+                        board.title,
+                        post.title,
+                        post.thumbnailUrl,
+                        post.commentCount,
+                        post.createdDate
+                ))
+                .from(post)
+                .join(post.postCategory, postCategory)
+                .join(postCategory.board, board)
+                .where(post.status.eq(Post.Status.ENABLE)
+                        .and(post.likeCount
+                                .add(post.commentCount)
+                                .add(post.hits)
+                                .goe(100L)
+                        )
+                )
+                .orderBy(post.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<RealTimeBestPostQueryDto> content = results.getResults();
+        long total = results.getTotal();
+
+        return new PageImpl<>(content, pageable, total);
+    }
 }

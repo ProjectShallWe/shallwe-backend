@@ -1,9 +1,7 @@
 package com.project.board.domain.post.web;
 
 import com.project.board.domain.board.web.Board;
-import com.project.board.domain.post.dto.RecommendPostsQueryDto;
-import com.project.board.domain.post.dto.RecommendPostsResponseDto;
-import com.project.board.domain.post.dto.RecommendPostsWithBoardResDto;
+import com.project.board.domain.post.dto.*;
 import com.project.board.global.exception.EntityNotFoundException;
 import com.project.board.global.redis.CacheKey;
 import com.project.board.infrastructure.board.BoardRepository;
@@ -51,6 +49,16 @@ public class PostRecommendService {
         List<RecommendPostsResponseDto> resDtos = queryDtos.stream()
                 .map(RecommendPostsResponseDto::new)
                 .collect(Collectors.toList());
-        return new RecommendPostsWithBoardResDto(board,resDtos);
+        return new RecommendPostsWithBoardResDto(board, resDtos);
+    }
+
+    @Cacheable(value = CacheKey.REAL_TIME_BEST_POST, key = "#page", unless = "#result == null")
+    @Transactional(readOnly = true)
+    public Page<RealTimeBestPostResDto> getRealTimeBestPosts(Integer page) {
+        Page<RealTimeBestPostQueryDto> queryDtos
+                = postRepository.findRealTimeBestPosts(PageRequest.of(page, PageSize.TWENTY.value));
+        Page<RealTimeBestPostResDto> resDtos = queryDtos
+                .map(RealTimeBestPostResDto::new);
+        return resDtos;
     }
 }

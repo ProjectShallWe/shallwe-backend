@@ -2,7 +2,6 @@ package com.project.board.infrastructure.post;
 
 import com.project.board.domain.post.dto.*;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
@@ -18,4 +17,5 @@ public interface PostRepositoryCustom {
     Page<PostsQueryDto> findPostsBySearchWordInBoard(Long boardId, Long postCategoryId, String postSearchType, String searchWord, Pageable pageable);
     Page<PostsCommonSearchQueryDto> findPostsByKeyword(String keyword, Pageable pageable);
     Page<PostsUserQueryDto> findPostsByNickname(String nickname, Pageable pageable);
+    Page<RealTimeBestPostQueryDto> findRealTimeBestPosts(Pageable pageable);
 }
