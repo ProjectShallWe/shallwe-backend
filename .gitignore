@@ -11,6 +11,9 @@ application-rds.yml
 ### Amazon S3 Bucket ###
 application-s3.yml
 
+### Amazon Elasticache ###
+application-cache.yml
+
 ### STS ###
 .apt_generated
 .classpath

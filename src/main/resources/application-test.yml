@@ -6,7 +6,7 @@ spring:
         max-idle: 10
         min-idle: 2
     port: 6379
-    host: redis
+    host: localhost
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:

@@ -6,6 +6,7 @@ spring:
         - s3
       dev:
         - dev
+        - cache
         - rds
         - s3
       test:
